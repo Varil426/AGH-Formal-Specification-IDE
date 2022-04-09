@@ -1,22 +1,25 @@
 package bgs.formalspecificationide;
 
+import bgs.formalspecificationide.Services.IResourceService;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class FormalSpecificationIde extends Application {
 
     private final Injector injector = Guice.createInjector(new MainModule());
 
+    private final IResourceService resourceService = injector.getInstance(IResourceService.class);
+
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(FormalSpecificationIde.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
+        stage.setTitle(resourceService.getText("ApplicationTitle"));
+
+        //stage.setWidth();
+        //stage.setHeight();
+        stage.setResizable(false);
+
         stage.show();
     }
 }
