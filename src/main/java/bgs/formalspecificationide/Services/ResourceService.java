@@ -19,9 +19,11 @@ public class ResourceService implements IResourceService {
     private final String textsFile = "/bgs/formalspecificationide/Texts/texts.json";
 
     private final Dictionary<String, String> textsDictionary = new Hashtable<>();
+    private final LoggerService loggerService;
 
     @Inject
-    ResourceService() throws ResourceNotFoundException {
+    ResourceService(LoggerService loggerService) throws ResourceNotFoundException {
+        this.loggerService = loggerService;
         loadTexts();
     }
 
@@ -36,6 +38,8 @@ public class ResourceService implements IResourceService {
         var textsStream = getClass().getResourceAsStream(textsFile);
         if (textsStream == null) throw new ResourceNotFoundException(textsFile);
 
+        loggerService.logDebug("Loaded resource \"Texts\"", this.getClass());
+
         var stringBuilder = new StringBuilder();
         try (var reader = new BufferedReader(new InputStreamReader(textsStream, Charset.forName(StandardCharsets.UTF_8.name())))) {
             int c;
@@ -43,7 +47,7 @@ public class ResourceService implements IResourceService {
                 stringBuilder.append((char) c);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            loggerService.logDebug("Couldn't read resource \"Texts\"", this.getClass());
         }
 
         var jsonObject = new JSONObject(stringBuilder.toString());
