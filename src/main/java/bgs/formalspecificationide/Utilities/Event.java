@@ -1,4 +1,4 @@
-package bgs.formalspecificationide.Events;
+package bgs.formalspecificationide.Utilities;
 
 /**
  * Base event class.
