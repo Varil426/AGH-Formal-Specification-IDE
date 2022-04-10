@@ -9,4 +9,5 @@ module bgs.formalspecificationide {
     exports bgs.formalspecificationide;
     exports bgs.formalspecificationide.Services;
     exports bgs.formalspecificationide.Exceptions;
+    exports bgs.formalspecificationide.Events;
 }
