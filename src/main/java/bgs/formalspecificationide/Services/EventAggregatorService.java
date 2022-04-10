@@ -28,6 +28,7 @@ public class EventAggregatorService {
     /**
      * Used to publish an event.
      * @param event An event.
+     * @param <T> An event type.
      */
     @SuppressWarnings("unchecked")
     public <T extends Event<?>> void publish(T event) {
@@ -51,6 +52,7 @@ public class EventAggregatorService {
      * Subscribes to a given event.
      * @param eventType An event type.
      * @param command A command to be executed on event.
+     * @param <T> An event type.
      */
     public <T extends Event<?>> void subscribe(Class<T> eventType, Command<T> command) {
         if (!eventSubscribers.contains(eventType.getTypeName())) {
@@ -58,5 +60,18 @@ public class EventAggregatorService {
         }
 
         eventSubscribers.get(eventType).add(command);
+    }
+
+    /**
+     *
+     * @param eventType An event type.
+     * @param command A command to be unsubscribed.
+     * @param <T> An event type.
+     */
+    public <T extends Event<?>> void unsubscribe(Class<T> eventType, Command<T> command) {
+        var commands = eventSubscribers.get(eventType);
+        if (commands != null) {
+            commands.removeIf(current -> current == command);
+        }
     }
 }
