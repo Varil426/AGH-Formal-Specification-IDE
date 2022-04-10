@@ -15,13 +15,14 @@ import java.util.Hashtable;
 
 public class ResourceService implements IResourceService {
 
-    final String textsFile = "/bgs/formalspecificationide/Texts/texts.json";
+    @SuppressWarnings("FieldCanBeLocal")
+    private final String textsFile = "/bgs/formalspecificationide/Texts/texts.json";
 
-    final Dictionary<String, String> textsDictionary = new Hashtable<>();
+    private final Dictionary<String, String> textsDictionary = new Hashtable<>();
 
     @Inject
     ResourceService() throws ResourceNotFoundException {
-        LoadTexts();
+        loadTexts();
     }
 
     @Override
@@ -31,7 +32,7 @@ public class ResourceService implements IResourceService {
         return value;
     }
 
-    private void LoadTexts() throws ResourceNotFoundException {
+    private void loadTexts() throws ResourceNotFoundException {
         var textsStream = getClass().getResourceAsStream(textsFile);
         if (textsStream == null) throw new ResourceNotFoundException(textsFile);
 
