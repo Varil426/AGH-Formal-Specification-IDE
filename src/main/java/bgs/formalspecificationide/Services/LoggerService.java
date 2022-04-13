@@ -1,57 +1,85 @@
 package bgs.formalspecificationide.Services;
 
-import bgs.formalspecificationide.Exceptions.ResourceNotFoundException;
-import org.apache.logging.log4j.*;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.config.ConfigurationSource;
+import com.google.inject.Inject;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
-
-import java.io.IOException;
+import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
 
 public class LoggerService {
 
     // TODO Determine if debug
     private final boolean isDebug = true;
 
-    private final String configPath = "/bgs/formalspecificationide/Configs/log4j.properties";
+    private final String loggerName = "MainLogger";
 
-    private final LoggerContext logger;
-
+    @Inject
     LoggerService() {
-        logger = configureLogger();
+        configureLoggers();
     }
 
-    private LoggerContext configureLogger() {
-        var configAsStream = getClass().getResourceAsStream(configPath);
-        if (configAsStream != null) {
-            try {
-                var source = new ConfigurationSource(configAsStream);
-                return Configurator.initialize(null, source);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        throw new RuntimeException();
+    private void configureLoggers() {
+        final var stdoutAppender = "stdout";
+        final var fileAppender = "logFile";
+
+        var configurationBuilder = ConfigurationBuilderFactory.newConfigurationBuilder();
+
+        // Create appenders
+        var console = configurationBuilder.newAppender(stdoutAppender, "Console");
+
+        var file = configurationBuilder.newAppender(fileAppender, "File");
+        file.addAttribute("fileName", "target/logs.log");
+
+        // Create mainLayout
+        var mainLayout = configurationBuilder.newLayout("PatternLayout");
+        mainLayout.addAttribute("pattern", "%d %-5level: %msg%n%throwable");
+
+        // Add layouts to appenders
+        console.add(mainLayout);
+        file.add(mainLayout);
+
+        // Add appenders
+        configurationBuilder.add(console);
+        configurationBuilder.add(file);
+
+        // Configure root logger
+        var rootLoggerBuilder = configurationBuilder.newRootLogger();
+        rootLoggerBuilder.add(configurationBuilder.newAppenderRef(stdoutAppender));
+        rootLoggerBuilder.add(configurationBuilder.newAppenderRef(fileAppender));
+        configurationBuilder.add(rootLoggerBuilder);
+
+        // Configure logger
+        var loggerBuilder = configurationBuilder.newLogger(loggerName, Level.ALL);
+        loggerBuilder.addAttribute("additivity", true);
+        configurationBuilder.add(loggerBuilder);
+
+        // Configure policies
+        var triggeringPolicies = configurationBuilder.newComponent("Policies")
+                .addComponent(configurationBuilder.newComponent("SizeBasedTriggeringPolicy").addAttribute("size", "100M"));
+        file.addComponent(triggeringPolicies);
+
+        Configurator.initialize(configurationBuilder.build());
     }
 
-    public void logDebug(String message, Class<?> type) {
+    public void logDebug(String message) {
         if (isDebug)
-            createLogger(type).debug(message);
+            getLogger().debug(message);
     }
 
-    public void logInfo(String message, Class<?> type) {
-        createLogger(type).info(message);
+    public void logInfo(String message) {
+        getLogger().info(message);
     }
 
-    public void logWarning(String message, Class<?> type) {
-        createLogger(type).warn(message);
+    public void logWarning(String message) {
+        getLogger().warn(message);
     }
 
-    public void logError(String message, Class<?> type) {
-        createLogger(type).error(message);
+    public void logError(String message) {
+        getLogger().error(message);
     }
 
-    private Logger createLogger(Class<?> type) {
-        return logger.getLogger(type);
+    private Logger getLogger() {
+        return LogManager.getLogger(loggerName);
     }
 }

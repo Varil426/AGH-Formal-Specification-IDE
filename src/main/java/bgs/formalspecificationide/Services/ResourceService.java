@@ -39,7 +39,7 @@ public class ResourceService implements IResourceService {
         var textsStream = getClass().getResourceAsStream(textsFile);
         if (textsStream == null) throw new ResourceNotFoundException(textsFile);
 
-        loggerService.logDebug("Loaded resource \"Texts\"", this.getClass());
+        loggerService.logDebug("Loaded resource \"Texts\"");
 
         var stringBuilder = new StringBuilder();
         try (var reader = new BufferedReader(new InputStreamReader(textsStream, Charset.forName(StandardCharsets.UTF_8.name())))) {
@@ -48,7 +48,7 @@ public class ResourceService implements IResourceService {
                 stringBuilder.append((char) c);
             }
         } catch (IOException e) {
-            loggerService.logDebug("Couldn't read resource \"Texts\"", this.getClass());
+            loggerService.logDebug("Couldn't read resource \"Texts\"");
         }
 
         var jsonObject = new JSONObject(stringBuilder.toString());
