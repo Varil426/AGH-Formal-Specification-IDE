@@ -55,6 +55,7 @@ public class EventAggregatorService {
      * @param <T> An event type.
      */
     public <T extends Event<?>> void subscribe(Class<T> eventType, Command<T> command) {
+        // TODO Maybe prevent duplicate subscriptions?
         if (!eventSubscribers.contains(eventType.getTypeName())) {
             eventSubscribers.put(eventType, new ArrayList<>());
         }
