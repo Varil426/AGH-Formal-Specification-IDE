@@ -1,9 +1,12 @@
 package bgs.formalspecificationide.Model;
 
-import bgs.formalspecificationide.Services.EventAggregatorService;
 import bgs.formalspecificationide.Utilities.Event;
+import bgs.formalspecificationide.Utilities.IObservable;
+import bgs.formalspecificationide.Utilities.IObserver;
 
-public abstract class ModelBase {
+import java.util.HashSet;
+
+public abstract class ModelBase implements IObservable {
 
     public static class PropertyChangedEvent extends Event<ModelBase> {
 
@@ -19,13 +22,25 @@ public abstract class ModelBase {
         }
     }
 
-    protected final EventAggregatorService eventAggregatorService;
+    private final HashSet<IObserver> observers = new HashSet<>();
 
-    public ModelBase(EventAggregatorService eventAggregatorService) {
-        this.eventAggregatorService = eventAggregatorService;
+    @Override
+    public final void subscribe(IObserver observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public final void unsubscribe(IObserver observer) {
+        observers.remove(observer);
+    }
+
+    protected final void notifyObservers(Event<?> event) {
+        for (var observer : observers) {
+            observer.notify(event);
+        }
     }
 
     protected void notifyPropertyChanged(String propertyName) {
-        eventAggregatorService.publish(new PropertyChangedEvent(this, propertyName));
+        notifyObservers(new PropertyChangedEvent(this, propertyName));
     }
 }
