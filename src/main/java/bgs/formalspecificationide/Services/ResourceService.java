@@ -3,6 +3,7 @@ package bgs.formalspecificationide.Services;
 import bgs.formalspecificationide.Exceptions.KeyNotFoundException;
 import bgs.formalspecificationide.Exceptions.ResourceNotFoundException;
 import com.google.inject.Inject;
+import org.apache.logging.log4j.core.util.IOUtils;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;

@@ -20,7 +20,7 @@ public class EventAggregatorService {
         void execute(T event);
     }
 
-    private final Hashtable<Class<? extends Event<?>>, List<Command<?>>> eventSubscribers = new Hashtable<>();
+    private final Hashtable<Class<? extends Event<?>>, List<Command<? extends Event<?>>>> eventSubscribers = new Hashtable<>();
 
     @Inject
     public EventAggregatorService() { }
