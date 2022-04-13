@@ -1,5 +1,6 @@
 package bgs.formalspecificationide;
 
+import bgs.formalspecificationide.Factories.ModelFactory;
 import bgs.formalspecificationide.Services.EventAggregatorService;
 import bgs.formalspecificationide.Services.IResourceService;
 import bgs.formalspecificationide.Services.LoggerService;
@@ -19,6 +20,7 @@ public class MainModule extends AbstractModule {
         bind(LoggerService.class).in(Scopes.SINGLETON);
 
         // Factories
+        bind(ModelFactory.class).in(Scopes.SINGLETON);
 
         // Repositories
 
