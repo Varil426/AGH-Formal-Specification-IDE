@@ -3,7 +3,8 @@ module bgs.formalspecificationide {
     requires javafx.fxml;
     requires com.google.guice;
     requires org.json;
-
+    requires org.apache.logging.log4j;
+    requires org.apache.logging.log4j.core;
 
     opens bgs.formalspecificationide to javafx.fxml;
     exports bgs.formalspecificationide;

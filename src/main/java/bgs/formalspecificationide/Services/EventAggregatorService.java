@@ -20,7 +20,7 @@ public class EventAggregatorService {
         void execute(T event);
     }
 
-    private final Hashtable<Class<? extends Event<?>>, List<Command<?>>> eventSubscribers = new Hashtable<>();
+    private final Hashtable<Class<? extends Event<?>>, List<Command<? extends Event<?>>>> eventSubscribers = new Hashtable<>();
 
     @Inject
     public EventAggregatorService() { }
@@ -55,6 +55,7 @@ public class EventAggregatorService {
      * @param <T> An event type.
      */
     public <T extends Event<?>> void subscribe(Class<T> eventType, Command<T> command) {
+        // TODO Maybe prevent duplicate subscriptions?
         if (!eventSubscribers.contains(eventType.getTypeName())) {
             eventSubscribers.put(eventType, new ArrayList<>());
         }
