@@ -89,7 +89,41 @@ public class XmlParser {
         var extXmlElems = gatherExtXmlElems(root);
         var extend = getExtendFromExtXmlElems(extXmlElems, namespaces, useCases);
 
+        var incXmlElems = gatherIncXmlElems(root);
+        var include = getIncludeFromIncXmlElems(incXmlElems, namespaces, useCases);
+
+        var matchedUseCases = matchIncludeExtend(useCasesList, include, extend);
     }
+
+    private static Map<String, Map<String, List<String>>> matchIncludeExtend(List <String> useCasesList, Map<String, Pair<String,String>> include, Map<String, Pair<String,String>> extend){
+        var matchedUseCases = new HashMap<String, Map<String, List<String>>>();
+        for (String ucName: useCasesList){
+            var id_ = ucName.replace(" ", "_").toLowerCase();
+            var useCaseDescription = new HashMap<String, List<String>>();
+            useCaseDescription.put("NAME", new ArrayList<>(List.of(ucName)));
+            useCaseDescription.put("INCLUDE", new ArrayList<>());
+            useCaseDescription.put("EXTEND", new ArrayList<>());
+            matchedUseCases.put(id_, useCaseDescription);
+        }
+        for (var entryMatchedUseCases : matchedUseCases.entrySet()) {
+            for (var entryInclude : include.entrySet()) {
+                if (entryInclude.getValue().getKey().equals(entryMatchedUseCases.getValue().get("NAME").get(0))){
+                    var to = entryInclude.getValue().getValue();
+                    to = to.replace(" ", "_").toLowerCase();
+                    entryMatchedUseCases.getValue().get("INCLUDE").add(to);
+                }
+            }
+            for (var entryExtend : extend.entrySet()) {
+                if (entryExtend.getValue().getKey().equals(entryMatchedUseCases.getValue().get("NAME").get(0))){
+                    var to = entryExtend.getValue().getValue();
+                    to = to.replace(" ", "_").toLowerCase();
+                    entryMatchedUseCases.getValue().get("EXTEND").add(to);
+                }
+            }
+        }
+        return matchedUseCases;
+    }
+
 
     private static Map<String, Pair<String, String>> getExtendFromExtXmlElems(List<Element> extXmlElems, Map<String, String> namespaces, Map<String, String> useCases) {
         var extend = new HashMap<String, Pair<String, String>>();
@@ -114,6 +148,31 @@ public class XmlParser {
             cnt++;
         }
         return extend;
+    }
+
+    private static Map<String, Pair<String, String>> getIncludeFromIncXmlElems(List<Element> incXmlElems, Map<String, String> namespaces, Map<String, String> useCases) {
+        var include = new HashMap<String, Pair<String, String>>();
+        var cnt = 1;
+        for (var elem: incXmlElems){
+            var elementAttributes = getAttributesFromNamedNodeMap(elem.getAttributes());
+            var key = "Inc" + cnt;
+            if (elementAttributes.containsKey("includingCase")){
+                var from = useCases.get(elementAttributes.get("includingCase"));
+                var to = useCases.get(elementAttributes.get("addition"));
+                include.put(key, new Pair<>(from, to));
+            } else if (elementAttributes.containsKey("addition")){
+                var parentElementAttributes = getAttributesFromNamedNodeMap(elem.getParentNode().getAttributes());
+                var from = parentElementAttributes.get("id");
+                var to = useCases.get(elementAttributes.get("addition"));
+                include.put(key, new Pair<>(from, to));
+            } else if (elementAttributes.containsKey("From")){
+                var from = useCases.get(elementAttributes.get("From"));
+                var to = useCases.get(elementAttributes.get("To"));
+                include.put(key, new Pair<>(from, to));
+            }
+            cnt++;
+        }
+        return include;
     }
 
     private static List<Element> gatherExtXmlElems(Element root) {
@@ -143,6 +202,35 @@ public class XmlParser {
             System.out.println("Inny root tag name");
         }
         return extXmlElems;
+    }
+
+    private static List<Element> gatherIncXmlElems(Element root) {
+        var rootTag = root.getTagName(); // root.tag (xmi:XMI)
+        var incXmlElems = new ArrayList<Element>();
+        if (rootTag.equals("xmi:XMI")){
+            var childOfRootNodes = root.getChildNodes();
+            for (int i = 0; i < childOfRootNodes.getLength(); i++) {
+                if (childOfRootNodes.item(i).getNodeType() == Node.ELEMENT_NODE && childOfRootNodes.item(i).getNodeName().equals("uml:Model")){
+                    var modelNode = childOfRootNodes.item(i);
+                    var childOfModelNodes = modelNode.getChildNodes();
+                    for (int j = 0; j < childOfModelNodes.getLength(); j++) {
+                        if (childOfModelNodes.item(j).getNodeType() == Node.ELEMENT_NODE && childOfModelNodes.item(j).getNodeName().equals("packagedElement")){
+                            var packagedElementNode = childOfModelNodes.item(j);
+                            var childOfPackagedElementNode = packagedElementNode.getChildNodes();
+                            for (int k = 0; k < childOfPackagedElementNode.getLength(); k++) {
+                                if (childOfPackagedElementNode.item(k).getNodeType() == Node.ELEMENT_NODE && childOfPackagedElementNode.item(k).getNodeName().equals("include")){
+                                    var includeNode = (Element) childOfPackagedElementNode.item(k);
+                                    incXmlElems.add(includeNode);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            System.out.println("Inny root tag name");
+        }
+        return incXmlElems;
     }
 
     private static Map<String, String> getUseCasesFromUcXmlElems(List<Element> ucXmlElems, Map<String, String> namespaces) {
