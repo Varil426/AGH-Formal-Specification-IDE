@@ -1,6 +1,5 @@
 package bgs.formalspecificationide.Helpers;
 
-import bgs.formalspecificationide.Services.LoggerService;
 import javafx.util.Pair;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -20,7 +19,7 @@ import java.util.Map;
 
 public class XmlParser {
 
-    public static void parseXml(File xmlFile) {
+    public static Map<String, Map<String, List<String>>> parseXml(File xmlFile) {
         // Instantiate the Factory
         var dbf = DocumentBuilderFactory.newInstance();
 
@@ -37,14 +36,16 @@ public class XmlParser {
             // http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
             doc.getDocumentElement().normalize();
 
-            findUseCases(doc);
+            var useCases = findUseCases(doc);
+            return useCases;
 
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
-    private static void findUseCases(Document doc) {
+    private static Map<String, Map<String, List<String>>> findUseCases(Document doc) {
         var root = doc.getDocumentElement();
         var rootTag = root.getTagName(); // root.tag (xmi:XMI)
         var rootAttrib = getAttributesFromNamedNodeMap(root.getAttributes()); // root.attrib (xmi:version) oraz root.nsmap (xmlns:xsi, xmlns:uml, xmlns:xmi)
@@ -64,6 +65,7 @@ public class XmlParser {
         var include = getIncludeFromIncXmlElems(incXmlElems, useCases);
 
         var matchedUseCases = matchIncludeExtend(useCasesList, include, extend);
+        return matchedUseCases;
     }
 
     private static Map<String, Map<String, List<String>>> matchIncludeExtend(List<String> useCasesList, Map<String, Pair<String, String>> include, Map<String, Pair<String, String>> extend) {
@@ -107,7 +109,7 @@ public class XmlParser {
                 extend.put(key, new Pair<>(from, to));
             } else if (elementAttributes.containsKey("extendedCase")) {
                 var parentElementAttributes = getAttributesFromNamedNodeMap(elem.getParentNode().getAttributes());
-                var from = parentElementAttributes.get("id");
+                var from = parentElementAttributes.get("name");
                 var to = useCases.get(elementAttributes.get("extendedCase"));
                 extend.put(key, new Pair<>(from, to));
             } else if (elementAttributes.containsKey("From")) {
@@ -132,7 +134,7 @@ public class XmlParser {
                 include.put(key, new Pair<>(from, to));
             } else if (elementAttributes.containsKey("addition")) {
                 var parentElementAttributes = getAttributesFromNamedNodeMap(elem.getParentNode().getAttributes());
-                var from = parentElementAttributes.get("id");
+                var from = parentElementAttributes.get("name");
                 var to = useCases.get(elementAttributes.get("addition"));
                 include.put(key, new Pair<>(from, to));
             } else if (elementAttributes.containsKey("From")) {
@@ -152,25 +154,33 @@ public class XmlParser {
             var childOfRootNodes = root.getChildNodes();
             for (int i = 0; i < childOfRootNodes.getLength(); i++) {
                 if (childOfRootNodes.item(i).getNodeType() == Node.ELEMENT_NODE && childOfRootNodes.item(i).getNodeName().equals("uml:Model")) {
-                    var modelNode = childOfRootNodes.item(i);
-                    var childOfModelNodes = modelNode.getChildNodes();
-                    for (int j = 0; j < childOfModelNodes.getLength(); j++) {
-                        if (childOfModelNodes.item(j).getNodeType() == Node.ELEMENT_NODE && childOfModelNodes.item(j).getNodeName().equals("packagedElement")) {
-                            var packagedElementNode = childOfModelNodes.item(j);
-                            var childOfPackagedElementNode = packagedElementNode.getChildNodes();
-                            for (int k = 0; k < childOfPackagedElementNode.getLength(); k++) {
-                                if (childOfPackagedElementNode.item(k).getNodeType() == Node.ELEMENT_NODE && childOfPackagedElementNode.item(k).getNodeName().equals("extend")) {
-                                    var extendNode = (Element) childOfPackagedElementNode.item(k);
-                                    extXmlElems.add(extendNode);
-                                }
-                            }
-                        }
-                    }
+                    var modelNode = (Element) childOfRootNodes.item(i);
+                    extXmlElems = new ArrayList<>(getExtXmlElemsFromPackagedElementInsideModel(modelNode));
                 }
             }
+        } else if (rootTag.equals("uml:Model")) {
+            extXmlElems = new ArrayList<>(getExtXmlElemsFromPackagedElementInsideModel(root)); // model element jest rootem w tym przypadku
         } else {
             //TODO zmienić na logger
             System.out.println("Inny root tag name");
+        }
+        return extXmlElems;
+    }
+
+    private static List<Element> getExtXmlElemsFromPackagedElementInsideModel(Element modelNode) {
+        var extXmlElems = new ArrayList<Element>();
+        var childOfModelNodes = modelNode.getChildNodes();
+        for (int j = 0; j < childOfModelNodes.getLength(); j++) {
+            if (childOfModelNodes.item(j).getNodeType() == Node.ELEMENT_NODE && childOfModelNodes.item(j).getNodeName().equals("packagedElement")) {
+                var packagedElementNode = childOfModelNodes.item(j);
+                var childOfPackagedElementNode = packagedElementNode.getChildNodes();
+                for (int k = 0; k < childOfPackagedElementNode.getLength(); k++) {
+                    if (childOfPackagedElementNode.item(k).getNodeType() == Node.ELEMENT_NODE && childOfPackagedElementNode.item(k).getNodeName().equals("extend")) {
+                        var extendNode = (Element) childOfPackagedElementNode.item(k);
+                        extXmlElems.add(extendNode);
+                    }
+                }
+            }
         }
         return extXmlElems;
     }
@@ -182,25 +192,33 @@ public class XmlParser {
             var childOfRootNodes = root.getChildNodes();
             for (int i = 0; i < childOfRootNodes.getLength(); i++) {
                 if (childOfRootNodes.item(i).getNodeType() == Node.ELEMENT_NODE && childOfRootNodes.item(i).getNodeName().equals("uml:Model")) {
-                    var modelNode = childOfRootNodes.item(i);
-                    var childOfModelNodes = modelNode.getChildNodes();
-                    for (int j = 0; j < childOfModelNodes.getLength(); j++) {
-                        if (childOfModelNodes.item(j).getNodeType() == Node.ELEMENT_NODE && childOfModelNodes.item(j).getNodeName().equals("packagedElement")) {
-                            var packagedElementNode = childOfModelNodes.item(j);
-                            var childOfPackagedElementNode = packagedElementNode.getChildNodes();
-                            for (int k = 0; k < childOfPackagedElementNode.getLength(); k++) {
-                                if (childOfPackagedElementNode.item(k).getNodeType() == Node.ELEMENT_NODE && childOfPackagedElementNode.item(k).getNodeName().equals("include")) {
-                                    var includeNode = (Element) childOfPackagedElementNode.item(k);
-                                    incXmlElems.add(includeNode);
-                                }
-                            }
-                        }
-                    }
+                    var modelNode = (Element) childOfRootNodes.item(i);
+                    incXmlElems = new ArrayList<>(getIncXmlElemsFromPackagedElementInsideModel(modelNode));
                 }
             }
+        } else if (rootTag.equals("uml:Model")) {
+            incXmlElems = new ArrayList<>(getIncXmlElemsFromPackagedElementInsideModel(root)); // model element jest rootem w tym przypadku
         } else {
             //TODO zmienić na logger
             System.out.println("Inny root tag name");
+        }
+        return incXmlElems;
+    }
+
+    private static List<Element> getIncXmlElemsFromPackagedElementInsideModel(Element modelNode) {
+        var incXmlElems = new ArrayList<Element>();
+        var childOfModelNodes = modelNode.getChildNodes();
+        for (int j = 0; j < childOfModelNodes.getLength(); j++) {
+            if (childOfModelNodes.item(j).getNodeType() == Node.ELEMENT_NODE && childOfModelNodes.item(j).getNodeName().equals("packagedElement")) {
+                var packagedElementNode = childOfModelNodes.item(j);
+                var childOfPackagedElementNode = packagedElementNode.getChildNodes();
+                for (int k = 0; k < childOfPackagedElementNode.getLength(); k++) {
+                    if (childOfPackagedElementNode.item(k).getNodeType() == Node.ELEMENT_NODE && childOfPackagedElementNode.item(k).getNodeName().equals("include")) {
+                        var includeNode = (Element) childOfPackagedElementNode.item(k);
+                        incXmlElems.add(includeNode);
+                    }
+                }
+            }
         }
         return incXmlElems;
     }
@@ -228,23 +246,31 @@ public class XmlParser {
             var childOfRootNodes = root.getChildNodes();
             for (int i = 0; i < childOfRootNodes.getLength(); i++) {
                 if (childOfRootNodes.item(i).getNodeType() == Node.ELEMENT_NODE && childOfRootNodes.item(i).getNodeName().equals("uml:Model")) {
-                    var modelNode = childOfRootNodes.item(i);
-                    var childOfModelNodes = modelNode.getChildNodes();
-                    for (int j = 0; j < childOfModelNodes.getLength(); j++) {
-                        if (childOfModelNodes.item(j).getNodeType() == Node.ELEMENT_NODE && childOfModelNodes.item(j).getNodeName().equals("packagedElement")) {
-                            var packagedElementNode = (Element) childOfModelNodes.item(j);
-                            var packagedElementNodeAttributes = getAttributesFromNamedNodeMap(packagedElementNode.getAttributes());
-                            var type = packagedElementNodeAttributes.get("type");
-                            if (type.equals("uml:UseCase")) {
-                                ucXmlElems.add(packagedElementNode);
-                            }
-                        }
-                    }
+                    var modelNode = (Element) childOfRootNodes.item(i);
+                    ucXmlElems = new ArrayList<>(getUcXmlElemsFromPackagedElementInsideModel(modelNode));
                 }
             }
+        } else if (rootTag.equals("uml:Model")) {
+            ucXmlElems = new ArrayList<>(getUcXmlElemsFromPackagedElementInsideModel(root)); // model element jest rootem w tym przypadku
         } else {
             //TODO zmienić na logger
             System.out.println("Inny root tag name");
+        }
+        return ucXmlElems;
+    }
+
+    private static List<Element> getUcXmlElemsFromPackagedElementInsideModel(Element modelNode) {
+        var ucXmlElems = new ArrayList<Element>();
+        var childOfModelNodes = modelNode.getChildNodes();
+        for (int j = 0; j < childOfModelNodes.getLength(); j++) {
+            if (childOfModelNodes.item(j).getNodeType() == Node.ELEMENT_NODE && childOfModelNodes.item(j).getNodeName().equals("packagedElement")) {
+                var packagedElementNode = (Element) childOfModelNodes.item(j);
+                var packagedElementNodeAttributes = getAttributesFromNamedNodeMap(packagedElementNode.getAttributes());
+                var type = packagedElementNodeAttributes.get("type");
+                if (type.equals("uml:UseCase")) {
+                    ucXmlElems.add(packagedElementNode);
+                }
+            }
         }
         return ucXmlElems;
     }
