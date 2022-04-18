@@ -183,4 +183,12 @@ class XmlParserTest {
         assert useCases != null;
         assertEquals(expectedResult, useCases.toString());
     }
+
+    @Test
+    void parseXmlSinvas() {
+        var useCases = XmlParser.parseXml(new File("xml_and_png_examples/5.Sinvas/library.xml"));
+        var expectedResult = "{register_book_return={EXTEND=[], INCLUDE=[], NAME=[Register book return]}, register_book_loan={EXTEND=[], INCLUDE=[], NAME=[Register book loan]}, add_new_book={EXTEND=[], INCLUDE=[], NAME=[Add new book]}, query_book_availability={EXTEND=[], INCLUDE=[], NAME=[Query book availability]}}";
+        assert useCases != null;
+        assertEquals(expectedResult, useCases.toString());
+    }
 }
