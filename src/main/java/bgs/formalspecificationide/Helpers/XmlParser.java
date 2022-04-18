@@ -336,6 +336,20 @@ public class XmlParser {
                 if (childOfRootNodes.item(i).getNodeType() == Node.ELEMENT_NODE && childOfRootNodes.item(i).getNodeName().equals("uml:Model")) {
                     var modelNode = (Element) childOfRootNodes.item(i);
                     ucXmlElems = new ArrayList<>(getUcXmlElemsFromPackagedElementInsideModel(modelNode));
+                } else if (childOfRootNodes.item(i).getNodeType() == Node.ELEMENT_NODE && childOfRootNodes.item(i).getNodeName().equals("UMLProject")) {
+                    var umlProjectNode = (Element) childOfRootNodes.item(i);
+                    var childOfUmlProjectNode = umlProjectNode.getChildNodes();
+                    for (int j = 0; j < childOfUmlProjectNode.getLength(); j++) {
+                        if (childOfUmlProjectNode.item(j).getNodeType() == Node.ELEMENT_NODE && childOfUmlProjectNode.item(j).getNodeName().equals("UMLModel")) {
+                            var umlModelNode = (Element) childOfUmlProjectNode.item(j);
+                            var childOUmlModelNode = umlModelNode.getChildNodes();
+                            for (int k = 0; k < childOUmlModelNode.getLength(); k++) {
+                                if (childOUmlModelNode.item(k).getNodeType() == Node.ELEMENT_NODE && childOUmlModelNode.item(k).getNodeName().equals("UMLUseCase")) {
+                                    ucXmlElems.add((Element) childOUmlModelNode.item(k));
+                                }
+                            }
+                        }
+                    }
                 }
             }
         } else if (rootTag.equals("uml:Model")) {
