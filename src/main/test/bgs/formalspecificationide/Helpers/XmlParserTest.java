@@ -79,4 +79,108 @@ class XmlParserTest {
         assert useCases != null;
         assertEquals(expectedResult, useCases.toString());
     }
+
+    @Test
+    void parseXmlEaEx0() {
+        var useCases = XmlParser.parseXml(new File("xml_and_png_examples/4.Enterprise Architect/ex0_xmi_1_0_uml_1_3/mobile_uml_1_3_XML_1_0.xml"));
+        var expectedResult = "{request_a_tablet={EXTEND=[], INCLUDE=[], NAME=[Request a tablet]}, request_a_smart_phone={EXTEND=[], INCLUDE=[], NAME=[Request a smart phone]}, request_a_mobile_device={EXTEND=[], INCLUDE=[], NAME=[Request a mobile device]}, view_list_of_mobile_devices_to_approve={EXTEND=[], INCLUDE=[], NAME=[View list of mobile devices to approve]}, approve_a_mobile_device_reques={EXTEND=[], INCLUDE=[], NAME=[Approve a mobile device reques]}}";
+        assert useCases != null;
+        assertEquals(expectedResult, useCases.toString());
+    }
+
+    @Test
+    void parseXmlEaEx1() {
+        var useCases = XmlParser.parseXml(new File("xml_and_png_examples/4.Enterprise Architect/ex1_xml_1_1_uml_1_3/mobile_uml_1_3_XML_1_1.xml"));
+        var expectedResult = "{request_a_tablet={EXTEND=[], INCLUDE=[], NAME=[Request a tablet]}, request_a_smart_phone={EXTEND=[], INCLUDE=[], NAME=[Request a smart phone]}, request_a_mobile_device={EXTEND=[], INCLUDE=[], NAME=[Request a mobile device]}, view_list_of_mobile_devices_to_approve={EXTEND=[], INCLUDE=[], NAME=[View list of mobile devices to approve]}, approve_a_mobile_device_reques={EXTEND=[], INCLUDE=[], NAME=[Approve a mobile device reques]}}";
+        assert useCases != null;
+        assertEquals(expectedResult, useCases.toString());
+    }
+
+    @Test
+    void parseXmlEaEx2_1_4_XML_1_2() {
+        var useCases = XmlParser.parseXml(new File("xml_and_png_examples/4.Enterprise Architect/ex2_xmi_1_2_uml_1_4/mobile_uml_1_4_XML_1_2.xml"));
+        var expectedResult = "{request_a_tablet={EXTEND=[], INCLUDE=[], NAME=[Request a tablet]}, request_a_smart_phone={EXTEND=[], INCLUDE=[], NAME=[Request a smart phone]}, request_a_mobile_device={EXTEND=[], INCLUDE=[], NAME=[Request a mobile device]}, view_list_of_mobile_devices_to_approve={EXTEND=[], INCLUDE=[], NAME=[View list of mobile devices to approve]}, approve_a_mobile_device_reques={EXTEND=[], INCLUDE=[], NAME=[Approve a mobile device reques]}}";
+        assert useCases != null;
+        assertEquals(expectedResult, useCases.toString());
+    }
+
+    @Test
+    void parseXmlEaEx2_2_0_XML_2_1() {
+        var useCases = XmlParser.parseXml(new File("xml_and_png_examples/4.Enterprise Architect/ex2_xmi_1_2_uml_1_4/mobile_uml_2_0_XML_2_1.xml"));
+        var expectedResult = "{request_a_tablet={EXTEND=[], INCLUDE=[], NAME=[Request a tablet]}, request_a_smart_phone={EXTEND=[], INCLUDE=[], NAME=[Request a smart phone]}, request_a_mobile_device={EXTEND=[], INCLUDE=[], NAME=[Request a mobile device]}, view_list_of_mobile_devices_to_approve={EXTEND=[], INCLUDE=[], NAME=[View list of mobile devices to approve]}, approve_a_mobile_device_reques={EXTEND=[], INCLUDE=[], NAME=[Approve a mobile device reques]}}";
+        assert useCases != null;
+        assertEquals(expectedResult, useCases.toString());
+    }
+
+    @Test
+    void parseXmlEaEx3_2_1_1_XML_2_1() {
+        var useCases = XmlParser.parseXml(new File("xml_and_png_examples/4.Enterprise Architect/ex3_xmi_2_1_uml_2_1/mobile_uml_2_1_1_XML_2_1.xml"));
+        var expectedResult = "{request_a_tablet={EXTEND=[], INCLUDE=[], NAME=[Request a tablet]}, request_a_smart_phone={EXTEND=[], INCLUDE=[], NAME=[Request a smart phone]}, request_a_mobile_device={EXTEND=[], INCLUDE=[], NAME=[Request a mobile device]}, view_list_of_mobile_devices_to_approve={EXTEND=[], INCLUDE=[], NAME=[View list of mobile devices to approve]}, approve_a_mobile_device_reques={EXTEND=[], INCLUDE=[], NAME=[Approve a mobile device reques]}}";
+        assert useCases != null;
+        assertEquals(expectedResult, useCases.toString());
+    }
+
+    @Test
+    void parseXmlEaEx3_2_1_2_XML_2_1() {
+        var useCases = XmlParser.parseXml(new File("xml_and_png_examples/4.Enterprise Architect/ex3_xmi_2_1_uml_2_1/mobile_uml_2_1_2_XML_2_1.xml"));
+        var expectedResult = "{request_a_tablet={EXTEND=[], INCLUDE=[], NAME=[Request a tablet]}, request_a_smart_phone={EXTEND=[], INCLUDE=[], NAME=[Request a smart phone]}, request_a_mobile_device={EXTEND=[], INCLUDE=[], NAME=[Request a mobile device]}, view_list_of_mobile_devices_to_approve={EXTEND=[], INCLUDE=[], NAME=[View list of mobile devices to approve]}, approve_a_mobile_device_reques={EXTEND=[], INCLUDE=[], NAME=[Approve a mobile device reques]}}";
+        assert useCases != null;
+        assertEquals(expectedResult, useCases.toString());
+    }
+
+    @Test
+    void parseXmlEaEx3_2_1_XML_2_1() {
+        var useCases = XmlParser.parseXml(new File("xml_and_png_examples/4.Enterprise Architect/ex3_xmi_2_1_uml_2_1/mobile_uml_2_1_XML_2_1.xml"));
+        var expectedResult = "{request_a_tablet={EXTEND=[], INCLUDE=[], NAME=[Request a tablet]}, request_a_smart_phone={EXTEND=[], INCLUDE=[], NAME=[Request a smart phone]}, request_a_mobile_device={EXTEND=[], INCLUDE=[], NAME=[Request a mobile device]}, view_list_of_mobile_devices_to_approve={EXTEND=[], INCLUDE=[], NAME=[View list of mobile devices to approve]}, approve_a_mobile_device_reques={EXTEND=[], INCLUDE=[], NAME=[Approve a mobile device reques]}}";
+        assert useCases != null;
+        assertEquals(expectedResult, useCases.toString());
+    }
+
+    @Test
+    void parseXmlEaEx3_2_2_XML_2_1() {
+        var useCases = XmlParser.parseXml(new File("xml_and_png_examples/4.Enterprise Architect/ex3_xmi_2_1_uml_2_1/mobile_uml_2_2_XML_2_1.xml"));
+        var expectedResult = "{request_a_tablet={EXTEND=[], INCLUDE=[], NAME=[Request a tablet]}, request_a_smart_phone={EXTEND=[], INCLUDE=[], NAME=[Request a smart phone]}, request_a_mobile_device={EXTEND=[], INCLUDE=[], NAME=[Request a mobile device]}, view_list_of_mobile_devices_to_approve={EXTEND=[], INCLUDE=[], NAME=[View list of mobile devices to approve]}, approve_a_mobile_device_reques={EXTEND=[], INCLUDE=[], NAME=[Approve a mobile device reques]}}";
+        assert useCases != null;
+        assertEquals(expectedResult, useCases.toString());
+    }
+
+    @Test
+    void parseXmlEaEx3_2_3_XML_2_1() {
+        var useCases = XmlParser.parseXml(new File("xml_and_png_examples/4.Enterprise Architect/ex3_xmi_2_1_uml_2_1/mobile_uml_2_3_XML_2_1.xml"));
+        var expectedResult = "{request_a_tablet={EXTEND=[], INCLUDE=[], NAME=[Request a tablet]}, request_a_smart_phone={EXTEND=[], INCLUDE=[], NAME=[Request a smart phone]}, request_a_mobile_device={EXTEND=[], INCLUDE=[], NAME=[Request a mobile device]}, view_list_of_mobile_devices_to_approve={EXTEND=[], INCLUDE=[], NAME=[View list of mobile devices to approve]}, approve_a_mobile_device_reques={EXTEND=[], INCLUDE=[], NAME=[Approve a mobile device reques]}}";
+        assert useCases != null;
+        assertEquals(expectedResult, useCases.toString());
+    }
+
+    @Test
+    void parseXmlEaEx3_2_4_1_XML_2_4_2() {
+        var useCases = XmlParser.parseXml(new File("xml_and_png_examples/4.Enterprise Architect/ex3_xmi_2_1_uml_2_1/mobile_uml_2_4_1_XML_2_4_2.xml"));
+        var expectedResult = "{request_a_tablet={EXTEND=[], INCLUDE=[], NAME=[Request a tablet]}, request_a_smart_phone={EXTEND=[], INCLUDE=[], NAME=[Request a smart phone]}, request_a_mobile_device={EXTEND=[], INCLUDE=[], NAME=[Request a mobile device]}, view_list_of_mobile_devices_to_approve={EXTEND=[], INCLUDE=[], NAME=[View list of mobile devices to approve]}, approve_a_mobile_device_reques={EXTEND=[], INCLUDE=[], NAME=[Approve a mobile device reques]}}";
+        assert useCases != null;
+        assertEquals(expectedResult, useCases.toString());
+    }
+
+    @Test
+    void parseXmlEaEx3_2_4_XML_2_4() {
+        var useCases = XmlParser.parseXml(new File("xml_and_png_examples/4.Enterprise Architect/ex3_xmi_2_1_uml_2_1/mobile_uml_2_4_XML_2_4.xml"));
+        var expectedResult = "{request_a_tablet={EXTEND=[], INCLUDE=[], NAME=[Request a tablet]}, request_a_smart_phone={EXTEND=[], INCLUDE=[], NAME=[Request a smart phone]}, request_a_mobile_device={EXTEND=[], INCLUDE=[], NAME=[Request a mobile device]}, view_list_of_mobile_devices_to_approve={EXTEND=[], INCLUDE=[], NAME=[View list of mobile devices to approve]}, approve_a_mobile_device_reques={EXTEND=[], INCLUDE=[], NAME=[Approve a mobile device reques]}}";
+        assert useCases != null;
+        assertEquals(expectedResult, useCases.toString());
+    }
+
+    @Test
+    void parseXmlEaEx3_2_5_1_XML_2_5_1() {
+        var useCases = XmlParser.parseXml(new File("xml_and_png_examples/4.Enterprise Architect/ex3_xmi_2_1_uml_2_1/mobile_uml_2_5_1_XML_2_5_1.xml"));
+        var expectedResult = "{request_a_tablet={EXTEND=[], INCLUDE=[], NAME=[Request a tablet]}, request_a_smart_phone={EXTEND=[], INCLUDE=[], NAME=[Request a smart phone]}, request_a_mobile_device={EXTEND=[], INCLUDE=[], NAME=[Request a mobile device]}, view_list_of_mobile_devices_to_approve={EXTEND=[], INCLUDE=[], NAME=[View list of mobile devices to approve]}, approve_a_mobile_device_reques={EXTEND=[], INCLUDE=[], NAME=[Approve a mobile device reques]}}";
+        assert useCases != null;
+        assertEquals(expectedResult, useCases.toString());
+    }
+
+    @Test
+    void parseXmlEaEx3_2_5_XML_2_5() {
+        var useCases = XmlParser.parseXml(new File("xml_and_png_examples/4.Enterprise Architect/ex3_xmi_2_1_uml_2_1/mobile_uml_2_5_XML_2_5_1.xml"));
+        var expectedResult = "{request_a_tablet={EXTEND=[], INCLUDE=[], NAME=[Request a tablet]}, request_a_smart_phone={EXTEND=[], INCLUDE=[], NAME=[Request a smart phone]}, request_a_mobile_device={EXTEND=[], INCLUDE=[], NAME=[Request a mobile device]}, view_list_of_mobile_devices_to_approve={EXTEND=[], INCLUDE=[], NAME=[View list of mobile devices to approve]}, approve_a_mobile_device_reques={EXTEND=[], INCLUDE=[], NAME=[Approve a mobile device reques]}}";
+        assert useCases != null;
+        assertEquals(expectedResult, useCases.toString());
+    }
 }
