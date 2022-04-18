@@ -160,6 +160,43 @@ public class XmlParser {
             }
         } else if (rootTag.equals("uml:Model")) {
             extXmlElems = new ArrayList<>(getExtXmlElemsFromPackagedElementInsideModel(root)); // model element jest rootem w tym przypadku
+        } else if (rootTag.equals("Project")) {
+            var childOfRootNodes = root.getChildNodes();
+            for (int i = 0; i < childOfRootNodes.getLength(); i++) {
+                if (childOfRootNodes.item(i).getNodeType() == Node.ELEMENT_NODE && childOfRootNodes.item(i).getNodeName().equals("Models")) {
+                    var modelsNode = (Element) childOfRootNodes.item(i);
+                    var childOfModelsNode = modelsNode.getChildNodes();
+                    for (int j = 0; j < childOfModelsNode.getLength(); j++) {
+                        if (childOfModelsNode.item(j).getNodeType() == Node.ELEMENT_NODE && childOfModelsNode.item(j).getNodeName().equals("ModelRelationshipContainer")) {
+                            var modelRelationshipContainerNode = (Element) childOfModelsNode.item(j);
+                            var childOfModelRelationshipContainerNode = modelRelationshipContainerNode.getChildNodes();
+                            for (int k = 0; k < childOfModelRelationshipContainerNode.getLength(); k++) {
+                                if (childOfModelRelationshipContainerNode.item(k).getNodeType() == Node.ELEMENT_NODE && childOfModelRelationshipContainerNode.item(k).getNodeName().equals("ModelChildren")) {
+                                    var modelChildrenNode = (Element) childOfModelRelationshipContainerNode.item(k);
+                                    var childOfModelChildrenNode = modelChildrenNode.getChildNodes();
+                                    for (int l = 0; l < childOfModelChildrenNode.getLength(); l++) {
+                                        if (childOfModelChildrenNode.item(l).getNodeType() == Node.ELEMENT_NODE && childOfModelChildrenNode.item(l).getNodeName().equals("ModelRelationshipContainer")) {
+                                            var innerModelRelationshipContainer = (Element) childOfModelChildrenNode.item(l);
+                                            var childOfInnerModelRelationshipContainer = innerModelRelationshipContainer.getChildNodes();
+                                            for (int m = 0; m < childOfInnerModelRelationshipContainer.getLength(); m++) {
+                                                if (childOfInnerModelRelationshipContainer.item(m).getNodeType() == Node.ELEMENT_NODE && childOfInnerModelRelationshipContainer.item(m).getNodeName().equals("ModelChildren")) {
+                                                    var innerModelChildrenNode = (Element) childOfInnerModelRelationshipContainer.item(m);
+                                                    var childOfInnerModelChildrenNode = innerModelChildrenNode.getChildNodes();
+                                                    for (int n = 0; n < childOfInnerModelChildrenNode.getLength(); n++) {
+                                                        if (childOfInnerModelChildrenNode.item(n).getNodeType() == Node.ELEMENT_NODE && childOfInnerModelChildrenNode.item(n).getNodeName().equals("Extend")) {
+                                                            extXmlElems.add((Element) childOfInnerModelChildrenNode.item(n));
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         } else {
             //TODO zmienić na logger
             System.out.println("Inny root tag name");
@@ -198,6 +235,43 @@ public class XmlParser {
             }
         } else if (rootTag.equals("uml:Model")) {
             incXmlElems = new ArrayList<>(getIncXmlElemsFromPackagedElementInsideModel(root)); // model element jest rootem w tym przypadku
+        } else if (rootTag.equals("Project")) {
+            var childOfRootNodes = root.getChildNodes();
+            for (int i = 0; i < childOfRootNodes.getLength(); i++) {
+                if (childOfRootNodes.item(i).getNodeType() == Node.ELEMENT_NODE && childOfRootNodes.item(i).getNodeName().equals("Models")) {
+                    var modelsNode = (Element) childOfRootNodes.item(i);
+                    var childOfModelsNode = modelsNode.getChildNodes();
+                    for (int j = 0; j < childOfModelsNode.getLength(); j++) {
+                        if (childOfModelsNode.item(j).getNodeType() == Node.ELEMENT_NODE && childOfModelsNode.item(j).getNodeName().equals("ModelRelationshipContainer")) {
+                            var modelRelationshipContainerNode = (Element) childOfModelsNode.item(j);
+                            var childOfModelRelationshipContainerNode = modelRelationshipContainerNode.getChildNodes();
+                            for (int k = 0; k < childOfModelRelationshipContainerNode.getLength(); k++) {
+                                if (childOfModelRelationshipContainerNode.item(k).getNodeType() == Node.ELEMENT_NODE && childOfModelRelationshipContainerNode.item(k).getNodeName().equals("ModelChildren")) {
+                                    var modelChildrenNode = (Element) childOfModelRelationshipContainerNode.item(k);
+                                    var childOfModelChildrenNode = modelChildrenNode.getChildNodes();
+                                    for (int l = 0; l < childOfModelChildrenNode.getLength(); l++) {
+                                        if (childOfModelChildrenNode.item(l).getNodeType() == Node.ELEMENT_NODE && childOfModelChildrenNode.item(l).getNodeName().equals("ModelRelationshipContainer")) {
+                                            var innerModelRelationshipContainer = (Element) childOfModelChildrenNode.item(l);
+                                            var childOfInnerModelRelationshipContainer = innerModelRelationshipContainer.getChildNodes();
+                                            for (int m = 0; m < childOfInnerModelRelationshipContainer.getLength(); m++) {
+                                                if (childOfInnerModelRelationshipContainer.item(m).getNodeType() == Node.ELEMENT_NODE && childOfInnerModelRelationshipContainer.item(m).getNodeName().equals("ModelChildren")) {
+                                                    var innerModelChildrenNode = (Element) childOfInnerModelRelationshipContainer.item(m);
+                                                    var childOfInnerModelChildrenNode = innerModelChildrenNode.getChildNodes();
+                                                    for (int n = 0; n < childOfInnerModelChildrenNode.getLength(); n++) {
+                                                        if (childOfInnerModelChildrenNode.item(n).getNodeType() == Node.ELEMENT_NODE && childOfInnerModelChildrenNode.item(n).getNodeName().equals("Include")) {
+                                                            incXmlElems.add((Element) childOfInnerModelChildrenNode.item(n));
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         } else {
             //TODO zmienić na logger
             System.out.println("Inny root tag name");
@@ -227,7 +301,12 @@ public class XmlParser {
         var useCases = new HashMap<String, String>();
         for (var elem : ucXmlElems) {
             var elementAttributes = getAttributesFromNamedNodeMap(elem.getAttributes());
-            var id = elementAttributes.get("id");
+            var id = "";
+            if (elementAttributes.containsKey("id")) {
+                id = elementAttributes.get("id");
+            } else {
+                id = elementAttributes.get("Id");
+            }
             if (elementAttributes.containsKey("Name")) {
                 useCases.put(id, elementAttributes.get("Name"));
             } else if (elementAttributes.containsKey("name")) {
@@ -252,6 +331,76 @@ public class XmlParser {
             }
         } else if (rootTag.equals("uml:Model")) {
             ucXmlElems = new ArrayList<>(getUcXmlElemsFromPackagedElementInsideModel(root)); // model element jest rootem w tym przypadku
+        } else if (rootTag.equals("Project")) {
+            var childOfRootNodes = root.getChildNodes();
+            for (int i = 0; i < childOfRootNodes.getLength(); i++) {
+                if (childOfRootNodes.item(i).getNodeType() == Node.ELEMENT_NODE && childOfRootNodes.item(i).getNodeName().equals("Models")) {
+                    var modelsNode = (Element) childOfRootNodes.item(i);
+                    var childOfModelsNode = modelsNode.getChildNodes();
+                    for (int j = 0; j < childOfModelsNode.getLength(); j++) {
+                        if (childOfModelsNode.item(j).getNodeType() == Node.ELEMENT_NODE && childOfModelsNode.item(j).getNodeName().equals("Model")) {
+                            var modelNode = (Element) childOfModelsNode.item(j);
+                            if (modelNode.hasAttribute("Abstract") && modelNode.getAttribute("Abstract").equals("false")) {
+                                var childOfModelNode = modelNode.getChildNodes();
+                                for (int k = 0; k < childOfModelNode.getLength(); k++) {
+                                    if (childOfModelNode.item(k).getNodeType() == Node.ELEMENT_NODE && childOfModelNode.item(k).getNodeName().equals("ModelChildren")) {
+                                        var modelChildrenNode = (Element) childOfModelNode.item(k);
+                                        var childOfModelChildrenNode = modelChildrenNode.getChildNodes();
+                                        for (int l = 0; l < childOfModelChildrenNode.getLength(); l++) {
+                                            if (childOfModelChildrenNode.item(l).getNodeType() == Node.ELEMENT_NODE && childOfModelChildrenNode.item(l).getNodeName().equals("UseCase")) {
+                                                ucXmlElems.add((Element) childOfModelChildrenNode.item(l));
+                                            } else if (childOfModelChildrenNode.item(l).getNodeType() == Node.ELEMENT_NODE && childOfModelChildrenNode.item(l).getNodeName().equals("System")) {
+                                                var systemNode = (Element) childOfModelChildrenNode.item(l);
+                                                var childOfSystemNode = systemNode.getChildNodes();
+                                                for (int m = 0; m < childOfSystemNode.getLength(); m++) {
+                                                    if (childOfSystemNode.item(m).getNodeType() == Node.ELEMENT_NODE && childOfSystemNode.item(m).getNodeName().equals("ModelChildren")) {
+                                                        var innerModelChildrenNode = (Element) childOfSystemNode.item(m);
+                                                        var childOfInnerModelChildrenNode = innerModelChildrenNode.getChildNodes();
+                                                        for (int n = 0; n < childOfInnerModelChildrenNode.getLength(); n++) {
+                                                            if (childOfInnerModelChildrenNode.item(n).getNodeType() == Node.ELEMENT_NODE && childOfInnerModelChildrenNode.item(n).getNodeName().equals("UseCase")) {
+                                                                ucXmlElems.add((Element) childOfInnerModelChildrenNode.item(n));
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            } else if (modelNode.hasAttribute("composite") && modelNode.getAttribute("composite").equals("false")) {
+                                var childOfModelNode = modelNode.getChildNodes();
+                                for (int k = 0; k < childOfModelNode.getLength(); k++) {
+                                    if (childOfModelNode.item(k).getNodeType() == Node.ELEMENT_NODE && childOfModelNode.item(k).getNodeName().equals("ChildModels")) {
+                                        var childModelsNode = (Element) childOfModelNode.item(k);
+                                        var childOfChildModelsNode = childModelsNode.getChildNodes();
+                                        for (int l = 0; l < childOfChildModelsNode.getLength(); l++) {
+                                            if (childOfChildModelsNode.item(l).getNodeType() == Node.ELEMENT_NODE && childOfChildModelsNode.item(l).getNodeName().equals("Model")) {
+                                                var innerModelNode = (Element) childOfChildModelsNode.item(l);
+                                                var childOfInnerModelNode = innerModelNode.getChildNodes();
+                                                for (int m = 0; m < childOfInnerModelNode.getLength(); m++) {
+                                                    if (childOfInnerModelNode.item(m).getNodeType() == Node.ELEMENT_NODE && childOfInnerModelNode.item(m).getNodeName().equals("ChildModels")) {
+                                                        var innerChildModelsNode = (Element) childOfInnerModelNode.item(m);
+                                                        var childOfInnerChildModelsNode = innerChildModelsNode.getChildNodes();
+                                                        for (int n = 0; n < childOfInnerChildModelsNode.getLength(); n++) {
+                                                            if (childOfInnerChildModelsNode.item(n).getNodeType() == Node.ELEMENT_NODE && childOfInnerChildModelsNode.item(n).getNodeName().equals("Model")) {
+                                                                var innerInnerModelNode = (Element) childOfInnerChildModelsNode.item(n);
+                                                                if (innerInnerModelNode.hasAttribute("modelType") && innerInnerModelNode.getAttribute("modelType").equals("UseCase")) {
+                                                                    ucXmlElems.add(innerInnerModelNode);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
         } else {
             //TODO zmienić na logger
             System.out.println("Inny root tag name");
