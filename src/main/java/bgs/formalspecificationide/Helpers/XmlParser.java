@@ -304,8 +304,10 @@ public class XmlParser {
             var id = "";
             if (elementAttributes.containsKey("id")) {
                 id = elementAttributes.get("id");
-            } else {
+            } else if (elementAttributes.containsKey("Id")) {
                 id = elementAttributes.get("Id");
+            } else {
+                id = elementAttributes.get("xmi.id");
             }
             if (elementAttributes.containsKey("Name")) {
                 useCases.put(id, elementAttributes.get("Name"));
@@ -313,6 +315,13 @@ public class XmlParser {
                 useCases.put(id, elementAttributes.get("name"));
             } else if (elem.getTagName().equals("Foundation.Core.ModelElement.name")) {
                 useCases.put(id, elem.getTextContent());
+            } else if (elementAttributes.containsKey("xmi.id")) {
+                var childNodes = elem.getChildNodes();
+                for (int i = 0; i < childNodes.getLength(); i++) {
+                    if (childNodes.item(i).getNodeType() == Node.ELEMENT_NODE && childNodes.item(i).getNodeName().equals("Foundation.Core.ModelElement.name")) {
+                        useCases.put(id, childNodes.item(i).getTextContent());
+                    }
+                }
             }
         }
         return useCases;
@@ -395,7 +404,82 @@ public class XmlParser {
                                         }
                                     }
                                 }
-
+                            }
+                        }
+                    }
+                }
+            }
+        } else if (rootTag.equals("XMI") && !root.hasAttribute("xmlns:UML")) {
+            var childOfRootNodes = root.getChildNodes();
+            for (int i = 0; i < childOfRootNodes.getLength(); i++) {
+                if (childOfRootNodes.item(i).getNodeType() == Node.ELEMENT_NODE && childOfRootNodes.item(i).getNodeName().equals("XMI.content")) {
+                    var xmiContentNode = (Element) childOfRootNodes.item(i);
+                    var childOfXmiContentNode = xmiContentNode.getChildNodes();
+                    for (int j = 0; j < childOfXmiContentNode.getLength(); j++) {
+                        if (childOfXmiContentNode.item(j).getNodeType() == Node.ELEMENT_NODE && childOfXmiContentNode.item(j).getNodeName().equals("Model_Management.Model")) {
+                            var modelManagementModelNode = (Element) childOfXmiContentNode.item(j);
+                            var childOfModelManagementModelNode = modelManagementModelNode.getChildNodes();
+                            for (int k = 0; k < childOfModelManagementModelNode.getLength(); k++) {
+                                if (childOfModelManagementModelNode.item(k).getNodeType() == Node.ELEMENT_NODE && childOfModelManagementModelNode.item(k).getNodeName().equals("Foundation.Core.Namespace.ownedElement")) {
+                                    var FCNOE_Node = (Element) childOfModelManagementModelNode.item(k);
+                                    var childOfFCNOE_Node = FCNOE_Node.getChildNodes();
+                                    for (int l = 0; l < childOfFCNOE_Node.getLength(); l++) {
+                                        if (childOfFCNOE_Node.item(l).getNodeType() == Node.ELEMENT_NODE && childOfFCNOE_Node.item(l).getNodeName().equals("Model_Management.Package")) {
+                                            var modelManagementPackageNode = (Element) childOfFCNOE_Node.item(l);
+                                            var childOfModelManagementPackageNode = modelManagementPackageNode.getChildNodes();
+                                            for (int m = 0; m < childOfModelManagementPackageNode.getLength(); m++) {
+                                                if (childOfModelManagementPackageNode.item(m).getNodeType() == Node.ELEMENT_NODE && childOfModelManagementPackageNode.item(m).getNodeName().equals("Foundation.Core.Namespace.ownedElement")) {
+                                                    var innerFCNOE_Node = (Element) childOfModelManagementPackageNode.item(m);
+                                                    var childOfInnerFCNOE_Node = innerFCNOE_Node.getChildNodes();
+                                                    for (int n = 0; n < childOfInnerFCNOE_Node.getLength(); n++) {
+                                                        if (childOfInnerFCNOE_Node.item(n).getNodeType() == Node.ELEMENT_NODE && childOfInnerFCNOE_Node.item(n).getNodeName().equals("Behavioral_Elements.Use_Cases.UseCase")) {
+                                                            ucXmlElems.add((Element) childOfInnerFCNOE_Node.item(n));
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else if (rootTag.equals("XMI") && root.hasAttribute("xmlns:UML")) {
+            var childOfRootNodes = root.getChildNodes();
+            for (int i = 0; i < childOfRootNodes.getLength(); i++) {
+                if (childOfRootNodes.item(i).getNodeType() == Node.ELEMENT_NODE && childOfRootNodes.item(i).getNodeName().equals("XMI.content")) {
+                    var xmiContentNode = (Element) childOfRootNodes.item(i);
+                    var childOfXmiContentNode = xmiContentNode.getChildNodes();
+                    for (int j = 0; j < childOfXmiContentNode.getLength(); j++) {
+                        if (childOfXmiContentNode.item(j).getNodeType() == Node.ELEMENT_NODE && childOfXmiContentNode.item(j).getNodeName().equals("UML:Model")) {
+                            var umlModelNode = (Element) childOfXmiContentNode.item(j);
+                            var childOfUmlModelNode = umlModelNode.getChildNodes();
+                            for (int k = 0; k < childOfUmlModelNode.getLength(); k++) {
+                                if (childOfUmlModelNode.item(k).getNodeType() == Node.ELEMENT_NODE && childOfUmlModelNode.item(k).getNodeName().equals("UML:Namespace.ownedElement")) {
+                                    var umlNamespaceOwnedElementNode = (Element) childOfUmlModelNode.item(k);
+                                    var childOfUmlNamespaceOwnedElementNode = umlNamespaceOwnedElementNode.getChildNodes();
+                                    for (int l = 0; l < childOfUmlNamespaceOwnedElementNode.getLength(); l++) {
+                                        if (childOfUmlNamespaceOwnedElementNode.item(l).getNodeType() == Node.ELEMENT_NODE && childOfUmlNamespaceOwnedElementNode.item(l).getNodeName().equals("UML:UseCase")) {
+                                            ucXmlElems.add((Element) childOfUmlNamespaceOwnedElementNode.item(l));
+                                        } else if (childOfUmlNamespaceOwnedElementNode.item(l).getNodeType() == Node.ELEMENT_NODE && childOfUmlNamespaceOwnedElementNode.item(l).getNodeName().equals("UML:Package")) {
+                                            var umlPackageNode = (Element) childOfUmlNamespaceOwnedElementNode.item(l);
+                                            var childOfUmlPackageNode = umlPackageNode.getChildNodes();
+                                            for (int m = 0; m < childOfUmlPackageNode.getLength(); m++) {
+                                                if (childOfUmlPackageNode.item(m).getNodeType() == Node.ELEMENT_NODE && childOfUmlPackageNode.item(m).getNodeName().equals("UML:Namespace.ownedElement")) {
+                                                    var innerUmlNamespaceOwnedElementNode = (Element) childOfUmlPackageNode.item(m);
+                                                    var childOfInnerUmlNamespaceOwnedElementNode = innerUmlNamespaceOwnedElementNode.getChildNodes();
+                                                    for (int n = 0; n < childOfInnerUmlNamespaceOwnedElementNode.getLength(); n++) {
+                                                        if (childOfInnerUmlNamespaceOwnedElementNode.item(n).getNodeType() == Node.ELEMENT_NODE && childOfInnerUmlNamespaceOwnedElementNode.item(n).getNodeName().equals("UML:UseCase")) {
+                                                            ucXmlElems.add((Element) childOfInnerUmlNamespaceOwnedElementNode.item(n));
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -418,6 +502,8 @@ public class XmlParser {
                 var type = packagedElementNodeAttributes.get("type");
                 if (type.equals("uml:UseCase")) {
                     ucXmlElems.add(packagedElementNode);
+                } else if (type.equals("uml:Package")) {
+                    ucXmlElems = new ArrayList<>(getUcXmlElemsFromPackagedElementInsideModel(packagedElementNode));
                 }
             }
         }
