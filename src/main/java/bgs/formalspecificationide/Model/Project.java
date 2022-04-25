@@ -1,14 +1,16 @@
 package bgs.formalspecificationide.Model;
 
 import bgs.formalspecificationide.Utilities.Event;
+import bgs.formalspecificationide.Utilities.IAggregateRoot;
 import bgs.formalspecificationide.Utilities.IIsDirty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.UUID;
 
 // TODO Add the rest of properties
-public class Project extends ModelBase implements IIsDirty {
+public final class Project extends ModelAggregate implements IIsDirty, IAggregateRoot<ModelBase> {
 
+    @JsonIgnore
     private boolean isDirty;
 
     private UUID id;
