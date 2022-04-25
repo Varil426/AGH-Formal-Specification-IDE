@@ -3,10 +3,11 @@ package bgs.formalspecificationide.Model;
 import bgs.formalspecificationide.Utilities.Event;
 import bgs.formalspecificationide.Utilities.IObservable;
 import bgs.formalspecificationide.Utilities.IObserver;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.HashSet;
 
-public abstract class ModelBase implements IObservable {
+public abstract class ModelBase implements IObservable, IObserver {
 
     public static class PropertyChangedEvent extends Event<ModelBase> {
 
@@ -22,6 +23,14 @@ public abstract class ModelBase implements IObservable {
         }
     }
 
+    public static class IsDirtyEvent extends Event<ModelBase> {
+
+        public IsDirtyEvent(ModelBase publisher) {
+            super(publisher);
+        }
+    }
+
+    @JsonIgnore
     private final HashSet<IObserver> observers = new HashSet<>();
 
     @Override
@@ -40,7 +49,19 @@ public abstract class ModelBase implements IObservable {
         }
     }
 
-    protected void notifyPropertyChanged(String propertyName) {
+    protected void propertyChanged(String propertyName) {
+        notifyPropertyChanged(propertyName);
+    }
+
+    private void notifyPropertyChanged(String propertyName) {
         notifyObservers(new PropertyChangedEvent(this, propertyName));
+        notifyObservers(new IsDirtyEvent(this));
+    }
+
+    @Override
+    public void notify(Event<?> event) {
+        if (event instanceof IsDirtyEvent) {
+            notifyObservers(event);
+        }
     }
 }

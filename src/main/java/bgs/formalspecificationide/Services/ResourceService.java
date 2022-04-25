@@ -2,29 +2,27 @@ package bgs.formalspecificationide.Services;
 
 import bgs.formalspecificationide.Exceptions.KeyNotFoundException;
 import bgs.formalspecificationide.Exceptions.ResourceNotFoundException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
-import org.apache.logging.log4j.core.util.IOUtils;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.HashMap;
 
 public class ResourceService implements IResourceService {
 
     @SuppressWarnings("FieldCanBeLocal")
     private final String textsFile = "/bgs/formalspecificationide/Texts/texts.json";
 
-    private final Dictionary<String, String> textsDictionary = new Hashtable<>();
+    private HashMap<String, String> textsDictionary = new HashMap<>();
     private final LoggerService loggerService;
 
+    private final ObjectMapper objectMapper;
+
     @Inject
-    ResourceService(LoggerService loggerService) throws ResourceNotFoundException {
+    ResourceService(LoggerService loggerService) {
         this.loggerService = loggerService;
+        objectMapper = new ObjectMapper();
         loadTexts();
     }
 
@@ -35,23 +33,13 @@ public class ResourceService implements IResourceService {
         return value;
     }
 
-    private void loadTexts() throws ResourceNotFoundException {
-        var textsStream = getClass().getResourceAsStream(textsFile);
-        if (textsStream == null) throw new ResourceNotFoundException(textsFile);
-
-        loggerService.logDebug("Loaded resource \"Texts\"");
-
-        var stringBuilder = new StringBuilder();
-        try (var reader = new BufferedReader(new InputStreamReader(textsStream, Charset.forName(StandardCharsets.UTF_8.name())))) {
-            int c;
-            while ((c = reader.read()) != -1) {
-                stringBuilder.append((char) c);
-            }
+    private void loadTexts() {
+        try {
+            textsDictionary = objectMapper.readValue(getClass().getResourceAsStream(textsFile), new TypeReference<>() {});
         } catch (IOException e) {
-            loggerService.logDebug("Couldn't read resource \"Texts\"");
+            loggerService.logDebug("Couldn't load resource \"Texts\"");
         }
 
-        var jsonObject = new JSONObject(stringBuilder.toString());
-        jsonObject.keys().forEachRemaining(key -> textsDictionary.put(key, jsonObject.getString(key)));
+        loggerService.logDebug("Loaded resource \"Texts\"");
     }
 }
