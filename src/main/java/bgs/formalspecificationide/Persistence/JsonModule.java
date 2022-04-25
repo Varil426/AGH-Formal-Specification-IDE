@@ -4,6 +4,8 @@ import bgs.formalspecificationide.Factories.IModelFactory;
 import bgs.formalspecificationide.Model.ModelAggregate;
 import bgs.formalspecificationide.Model.ModelBase;
 import bgs.formalspecificationide.Model.Project;
+import bgs.formalspecificationide.Utilities.IAggregate;
+import bgs.formalspecificationide.Utilities.IAggregateRoot;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -28,6 +30,13 @@ class JsonModule extends SimpleModule {
         protected ObjectMapper getObjectMapper() {
             return objectMapper;
         }
+    }
+
+    private abstract static class AggregateRootDeserializer<T extends ModelBase & IAggregateRoot<?>> extends BaseDeserializer<T> {
+
+        protected AggregateRootDeserializer(ObjectMapper objectMapper) {
+            super(objectMapper);
+        }
 
         protected void observeChildren(ModelBase modelBase) {
             if (modelBase instanceof ModelAggregate modelAggregate) {
@@ -38,10 +47,9 @@ class JsonModule extends SimpleModule {
                 }
             }
         }
-
     }
 
-    private class ProjectDeserializer extends BaseDeserializer<Project> {
+    private class ProjectDeserializer extends AggregateRootDeserializer<Project> {
 
         public ProjectDeserializer(ObjectMapper objectMapper) {
             super(objectMapper);
