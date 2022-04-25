@@ -1,9 +1,11 @@
 package bgs.formalspecificationide.Persistence.Repositories;
 
+import bgs.formalspecificationide.Utilities.IAggregateRoot;
+
 import java.util.List;
 import java.util.function.Predicate;
 
-public interface IRepository<T> {
+public interface IRepository<T extends IAggregateRoot<?>> {
 
     void add(T item);
 

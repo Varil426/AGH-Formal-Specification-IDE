@@ -1,11 +1,13 @@
 package bgs.formalspecificationide.Persistence;
 
 import bgs.formalspecificationide.Factories.IModelFactory;
+import bgs.formalspecificationide.Model.ModelBase;
 import bgs.formalspecificationide.Model.Project;
 import bgs.formalspecificationide.Services.LoggerService;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import com.google.inject.Inject;
 
 import java.io.File;
@@ -31,8 +33,15 @@ class PersistenceHelper implements IPersistenceHelper {
     @Inject
     public PersistenceHelper(LoggerService loggerService, IModelFactory modelFactory) {
         this.loggerService = loggerService;
+
+        var polymorphicTypeValidator = BasicPolymorphicTypeValidator.builder()
+                .allowIfBaseType(ModelBase.class)
+                .allowIfBaseType(List.class)
+                .build();
+
         objectMapper = new ObjectMapper();
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        objectMapper.activateDefaultTyping(polymorphicTypeValidator, ObjectMapper.DefaultTyping.NON_FINAL);
 
         var configuredObjectMapper = objectMapper.copy();
         objectMapper.registerModule(new JsonModule(modelFactory, configuredObjectMapper));
