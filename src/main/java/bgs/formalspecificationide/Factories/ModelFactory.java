@@ -1,5 +1,6 @@
 package bgs.formalspecificationide.Factories;
 
+import bgs.formalspecificationide.Model.ModelBase;
 import bgs.formalspecificationide.Model.Project;
 import bgs.formalspecificationide.Persistence.Repositories.IProjectRepository;
 import bgs.formalspecificationide.Services.LoggerService;
@@ -27,16 +28,15 @@ public class ModelFactory implements IModelFactory {
         var project = new Project();
         project.setName(name);
         project.setId(UUID.randomUUID());
-        registerProject(project);
+        registerInModelTracker(project);
         projectRepository.add(project);
         return project;
     }
 
     @Override
-    public void registerProject(@NotNull Project project) {
-        project.subscribe(modelTrackerService);
-
-        loggerService.logDebug("Registered the project %s.".formatted(project.getName()));
+    public void registerInModelTracker(@NotNull ModelBase item) {
+        item.subscribe(modelTrackerService);
+        loggerService.logDebug("Registered %s in ModelTrackerService.".formatted(item.toString()));
     }
 
 }
