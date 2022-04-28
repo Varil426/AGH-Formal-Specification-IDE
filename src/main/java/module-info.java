@@ -13,9 +13,8 @@ module bgs.formalspecificationide {
     opens bgs.formalspecificationide.Persistence to com.google.guice;
     opens bgs.formalspecificationide.Persistence.Repositories to com.google.guice;
     opens bgs.formalspecificationide.Factories to com.google.guice;
-
     opens bgs.formalspecificationide.Model to com.fasterxml.jackson.databind;
+    opens bgs.formalspecificationide to com.google.guice, javafx.fxml;
 
     exports bgs.formalspecificationide;
-    opens bgs.formalspecificationide to com.google.guice, javafx.fxml;
 }
