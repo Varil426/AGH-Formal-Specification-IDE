@@ -3,13 +3,11 @@ package bgs.formalspecificationide.Persistence;
 import bgs.formalspecificationide.Factories.IModelFactory;
 import bgs.formalspecificationide.Model.ModelAggregate;
 import bgs.formalspecificationide.Model.ModelBase;
-import bgs.formalspecificationide.Model.Project;
-import bgs.formalspecificationide.Utilities.IAggregate;
 import bgs.formalspecificationide.Utilities.IAggregateRoot;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
+import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.inject.Inject;
 
@@ -19,26 +17,48 @@ class JsonModule extends SimpleModule {
 
     private final IModelFactory modelFactory;
 
-    private abstract static class BaseDeserializer<T extends ModelBase> extends JsonDeserializer<T> {
+    private static class BaseDeserializer<T extends ModelBase> extends JsonDeserializer<T> implements ResolvableDeserializer {
 
-        private final ObjectMapper objectMapper;
+        private final JsonDeserializer<?> defaultDeserializer;
 
-        protected BaseDeserializer(ObjectMapper objectMapper) {
-            this.objectMapper = objectMapper;
+        private final IModelFactory modelFactory;
+
+        protected BaseDeserializer(JsonDeserializer<?> defaultDeserializer, IModelFactory modelFactory) {
+            this.defaultDeserializer = defaultDeserializer;
+            this.modelFactory = modelFactory;
         }
 
-        protected ObjectMapper getObjectMapper() {
-            return objectMapper;
+        protected JsonDeserializer<?> getDefaultDeserializer() {
+            return defaultDeserializer;
+        }
+
+        protected IModelFactory getModelFactory() {
+            return modelFactory;
+        }
+
+        @Override
+        public void resolve(DeserializationContext context) throws JsonMappingException
+        {
+            if (defaultDeserializer instanceof ResolvableDeserializer resolvableDeserializer) {
+                resolvableDeserializer.resolve(context);
+            }
+        }
+
+        @Override
+        public T deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            @SuppressWarnings("unchecked") var deserialized =  (T) getDefaultDeserializer().deserialize(jsonParser, deserializationContext);
+            modelFactory.registerInModelTracker(deserialized);
+            return deserialized;
         }
     }
 
-    private abstract static class AggregateRootDeserializer<T extends ModelBase & IAggregateRoot<?>> extends BaseDeserializer<T> {
+    private static class AggregateRootDeserializer<T extends ModelBase & IAggregateRoot<?>> extends BaseDeserializer<T> {
 
-        protected AggregateRootDeserializer(ObjectMapper objectMapper) {
-            super(objectMapper);
+        protected AggregateRootDeserializer(JsonDeserializer<?> defaultDeserializer, IModelFactory modelFactory) {
+            super(defaultDeserializer, modelFactory);
         }
 
-        protected void observeChildren(ModelBase modelBase) {
+        private void observeChildren(ModelBase modelBase) {
             if (modelBase instanceof ModelAggregate modelAggregate) {
                 for (var child : modelAggregate.getChildren()) {
                     child.subscribe(modelAggregate);
@@ -47,32 +67,65 @@ class JsonModule extends SimpleModule {
                 }
             }
         }
+
+        @Override
+        public T deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            var aggregateRoot = super.deserialize(jsonParser, deserializationContext);
+            observeChildren(aggregateRoot);
+            return aggregateRoot;
+        }
     }
 
-    private class ProjectDeserializer extends AggregateRootDeserializer<Project> {
+    /*private static class ProjectDeserializer extends AggregateRootDeserializer<Project> {
 
-        public ProjectDeserializer(ObjectMapper objectMapper) {
-            super(objectMapper);
+        public ProjectDeserializer(JsonDeserializer<?> defaultDeserializer, IModelFactory modelFactory) {
+            super(defaultDeserializer, modelFactory);
         }
 
         @Override
         public Project deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-            var project = getObjectMapper().readValue(jsonParser, Project.class);
+            var deserialized = getDefaultDeserializer().deserialize(jsonParser, deserializationContext);
 
-            if (project != null) {
-                modelFactory.registerProject(project);
+            if (deserialized instanceof Project project) {
+                getModelFactory().registerProject(project);
                 observeChildren(project);
+                return project;
             }
 
-            return project;
+            return null;
         }
-    }
+    }*/
 
     @Inject
-    public JsonModule(IModelFactory modelFactory, ObjectMapper objectMapper) {
+    public JsonModule(IModelFactory modelFactory) {
         this.modelFactory = modelFactory;
 
-        addDeserializer(Project.class, new ProjectDeserializer(objectMapper));
+        setDeserializerModifier(new DeserializerModifier(this.modelFactory));
+    }
+
+    private static class DeserializerModifier extends BeanDeserializerModifier {
+
+        private final IModelFactory modelFactory;
+
+        public DeserializerModifier(IModelFactory modelFactory) {
+
+            this.modelFactory = modelFactory;
+        }
+
+        @Override
+        public  JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
+            var beanClass = beanDesc.getBeanClass();
+            /*if (beanClass == Project.class) {
+                return new ProjectDeserializer(deserializer, modelFactory);
+            }*/
+            if (IAggregateRoot.class.isAssignableFrom(beanClass)) {
+               return new AggregateRootDeserializer<>(deserializer, modelFactory);
+            } else if (ModelBase.class.isAssignableFrom(beanClass)) {
+                return new BaseDeserializer<>(deserializer, modelFactory);
+            }
+
+            return deserializer;
+        }
     }
 
 }

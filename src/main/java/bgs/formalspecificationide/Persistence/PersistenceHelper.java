@@ -5,6 +5,7 @@ import bgs.formalspecificationide.Model.ModelBase;
 import bgs.formalspecificationide.Model.Project;
 import bgs.formalspecificationide.Services.LoggerService;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
@@ -39,12 +40,12 @@ class PersistenceHelper implements IPersistenceHelper {
                 .allowIfBaseType(List.class)
                 .build();
 
+
         objectMapper = new ObjectMapper();
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        objectMapper.activateDefaultTyping(polymorphicTypeValidator, ObjectMapper.DefaultTyping.NON_FINAL);
+        objectMapper.activateDefaultTyping(polymorphicTypeValidator, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
 
-        var configuredObjectMapper = objectMapper.copy();
-        objectMapper.registerModule(new JsonModule(modelFactory, configuredObjectMapper));
+        objectMapper.registerModule(new JsonModule(modelFactory));
 
         setupDirectories();
     }
@@ -64,7 +65,7 @@ class PersistenceHelper implements IPersistenceHelper {
     @Override
     public boolean saveFile(Path path, Object content) {
         try {
-            objectMapper.writeValue(path.toAbsolutePath().toFile(), content);
+            objectMapper.writeValue(path.toAbsolutePath().toFile(), content);//new JsonWrapper<>(content));
             return true;
         } catch (IOException e) {
             loggerService.logError("Couldn't save to file.");
@@ -85,7 +86,6 @@ class PersistenceHelper implements IPersistenceHelper {
     /**
      * Reads file and converts it to Java Object.
      * @param file File.
-     * @param type Type.
      * @param <T> Type to be returned.
      * @return Returns the new Java Object or null in case of failure.
      */

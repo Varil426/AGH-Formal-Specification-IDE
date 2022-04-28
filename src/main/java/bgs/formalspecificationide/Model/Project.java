@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.UUID;
 
 // TODO Add the rest of properties
-public final class Project extends ModelAggregate implements IIsDirty, IAggregateRoot<ModelBase> {
+public class Project extends ModelAggregate implements IIsDirty, IAggregateRoot<ModelBase> {
 
     @JsonIgnore
     private boolean isDirty;
