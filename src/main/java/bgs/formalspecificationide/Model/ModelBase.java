@@ -16,6 +16,7 @@ public abstract class ModelBase implements IObservable, IObserver {
 
         private final String propertyName;
 
+
         public PropertyChangedEvent(ModelBase publisher, String propertyName) {
             super(publisher);
             this.propertyName = propertyName;
