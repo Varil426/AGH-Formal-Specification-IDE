@@ -7,9 +7,7 @@ import com.google.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 
 class ProjectRepository implements IProjectRepository {
@@ -100,4 +98,8 @@ class ProjectRepository implements IProjectRepository {
         return newProject;
     }
 
+    @Override
+    public Optional<Project> getById(UUID id) {
+        return getAll().stream().filter(x -> x.getId() == id).findFirst();
+    }
 }
