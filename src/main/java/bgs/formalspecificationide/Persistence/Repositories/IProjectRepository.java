@@ -5,7 +5,7 @@ import bgs.formalspecificationide.Model.Project;
 import java.util.List;
 import java.util.function.Predicate;
 
-public interface IProjectRepository extends IRepository<Project> {
+public interface IProjectRepository extends IAggregateRepository<Project> {
     List<String> getProjectNames();
 
     @Override

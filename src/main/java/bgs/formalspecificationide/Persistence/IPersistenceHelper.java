@@ -5,6 +5,8 @@ import bgs.formalspecificationide.Model.Project;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public interface IPersistenceHelper {
 
@@ -23,7 +25,17 @@ public interface IPersistenceHelper {
 
     List<File> getAllProjectFiles();
 
+    List<File> getAllImageFiles();
+
     void saveProjectFile(Project project);
+
+    /**
+     * Saves (copies) image file to our persistence.
+     * @param imageFile Image file.
+     * @param id Image id.
+     * @return New file.
+     */
+    Optional<File> saveImage(File imageFile, UUID id);
 
     boolean saveFile(Path path, Object content);
 
@@ -32,6 +44,4 @@ public interface IPersistenceHelper {
     <T> T loadFile(File file, Class<T> type);
 
     Path generatePathToJson(String directory, String name);
-
-    void setupDirectories();
 }

@@ -16,9 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Stream;
 
 class PersistenceHelper implements IPersistenceHelper {
@@ -26,6 +24,8 @@ class PersistenceHelper implements IPersistenceHelper {
     private final Path persistenceDirectory = Paths.get("persistence");
 
     private final Path projectDirectory = persistenceDirectory.resolve("projects");
+
+    private final Path imagesDirectory = persistenceDirectory.resolve("images");
 
     private final LoggerService loggerService;
 
@@ -57,9 +57,29 @@ class PersistenceHelper implements IPersistenceHelper {
     }
 
     @Override
+    public List<File> getAllImageFiles() {
+        return Stream.of(Objects.requireNonNull(new File(imagesDirectory.toAbsolutePath().toString()).listFiles()))
+                .filter(file -> file.isFile() && IPersistenceHelper.getFileExtension(file).equals("png") || IPersistenceHelper.getFileExtension(file).equals("jpg")).toList();
+    }
+
+    @Override
     public void saveProjectFile(Project project) {
         if (saveFile(generatePathToJson(projectDirectory.toAbsolutePath().toString(), project.getName()), project))
             loggerService.logInfo("Saved project %s".formatted(project.getName()));
+    }
+
+    @Override
+    public Optional<File> saveImage(File imageFile, UUID id) {
+        File newFile;
+        try {
+            var newPath = Files.copy(imageFile.toPath(), Path.of(imagesDirectory.toString(), "%s.%s".formatted(id.toString(), IPersistenceHelper.getFileExtension(imageFile))));
+            newFile = newPath.toFile();
+        } catch (IOException e) {
+            loggerService.logError("Couldn't copy image.");
+            return Optional.empty();
+        }
+        loggerService.logInfo("Successfully copied image.");
+        return Optional.of(newFile);
     }
 
     @Override
@@ -75,6 +95,8 @@ class PersistenceHelper implements IPersistenceHelper {
 
     @Override
     public void removeFile(File file) {
+        // TODO Add check for testing whether we are trying to delete file from our persistence and not some random file from drive.
+
         try {
             Files.delete(file.toPath());
             loggerService.logInfo("Deleted file %s".formatted(file.getName()));
@@ -107,9 +129,8 @@ class PersistenceHelper implements IPersistenceHelper {
     /**
      * Checks and creates directories used by the persistence layer.
      */
-    @Override
-    public void setupDirectories() {
-        var paths = Arrays.asList(persistenceDirectory, projectDirectory);
+    private void setupDirectories() {
+        var paths = Arrays.asList(persistenceDirectory, projectDirectory, imagesDirectory);
 
         for (var path : paths) {
             if (!Files.isDirectory(path)) {
