@@ -27,12 +27,48 @@ public class Pattern extends ModelAggregate{
         this.inputs = new ArrayList<>();
     }
 
+    public void setName(String name){
+        this.name = name;
+        propertyChanged("name");
+    }
+
     public void addInput(Pattern pattern){
         this.inputs.add(pattern.getId());
         propertyChanged("inputs");
     }
 
     public void removeInput(Pattern pattern){
+        if(this.inputs.remove(pattern.getId())){
+            propertyChanged("inputs");
+        }
+    }
 
+    public void addOutput(Pattern pattern){
+        this.outputs.add(pattern.getId());
+        propertyChanged("inputs");
+    }
+
+    public void removeOutput(Pattern pattern){
+        if(this.outputs.remove(pattern.getId())){
+            propertyChanged("inputs");
+        }
+    }
+
+    public void addFieldValue(String fieldID, UUID patternTemplateId){
+        boolean changed = false;
+        if(fieldValues.get(fieldID) != patternTemplateId){
+            changed = true;
+        }
+        fieldValues.put(fieldID, patternTemplateId);
+
+        if(changed) {
+            propertyChanged("relations");
+        }
+    }
+
+    public void removeRelations(String fieldID, UUID patternTemplateId){
+        if(fieldValues.remove(fieldID) != null){
+            propertyChanged("relations");
+        }
     }
 }
