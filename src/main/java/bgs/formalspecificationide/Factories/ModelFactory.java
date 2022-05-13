@@ -30,9 +30,8 @@ public class ModelFactory implements IModelFactory {
 
     @Override
     public Project createProject(@NotNull String name) {
-        var project = new Project();
+        var project = new Project(UUID.randomUUID());
         project.setName(name);
-        project.setId(UUID.randomUUID());
         registerInModelTracker(project);
         projectRepository.add(project);
         return project;

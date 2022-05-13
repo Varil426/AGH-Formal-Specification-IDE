@@ -2,15 +2,20 @@ package bgs.formalspecificationide.Model;
 
 import bgs.formalspecificationide.Utilities.IAggregate;
 import bgs.formalspecificationide.Utilities.IAggregateRoot;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public abstract class ModelAggregate extends ModelBase implements IAggregate<ModelBase> {
 
     private final List<ModelBase> children;
 
-    public ModelAggregate() {
+    @JsonCreator
+    public ModelAggregate(@JsonProperty("id") UUID id) {
+        super(id);
         children = new ArrayList<>();
     }
 

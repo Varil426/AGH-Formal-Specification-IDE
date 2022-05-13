@@ -3,7 +3,9 @@ package bgs.formalspecificationide.Model;
 import bgs.formalspecificationide.Utilities.Event;
 import bgs.formalspecificationide.Utilities.IAggregateRoot;
 import bgs.formalspecificationide.Utilities.IIsDirty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.UUID;
 
@@ -13,11 +15,11 @@ public class Project extends ModelAggregate implements IIsDirty, IAggregateRoot<
     @JsonIgnore
     private boolean isDirty;
 
-    private UUID id;
-
     private String name;
 
-    public Project() {
+    @JsonCreator
+    public Project(@JsonProperty("id") UUID id) {
+        super(id);
         isDirty = false;
     }
 
@@ -28,14 +30,6 @@ public class Project extends ModelAggregate implements IIsDirty, IAggregateRoot<
     public void setName(String name) {
         this.name = name;
         propertyChanged("Name");
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     @JsonIgnore

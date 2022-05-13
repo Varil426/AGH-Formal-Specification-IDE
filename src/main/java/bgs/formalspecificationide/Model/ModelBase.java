@@ -3,9 +3,12 @@ package bgs.formalspecificationide.Model;
 import bgs.formalspecificationide.Utilities.Event;
 import bgs.formalspecificationide.Utilities.IObservable;
 import bgs.formalspecificationide.Utilities.IObserver;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashSet;
+import java.util.UUID;
 
 public abstract class ModelBase implements IObservable, IObserver {
 
@@ -28,6 +31,17 @@ public abstract class ModelBase implements IObservable, IObserver {
         public IsDirtyEvent(ModelBase publisher) {
             super(publisher);
         }
+    }
+
+    @JsonCreator
+    public ModelBase(@JsonProperty("id") UUID id) {
+        this.id = id;
+    }
+
+    private final UUID id;
+
+    public UUID getId() {
+        return id;
     }
 
     @JsonIgnore
