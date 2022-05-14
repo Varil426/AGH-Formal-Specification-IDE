@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashSet;
 import java.util.UUID;
 
-public abstract class ModelBase implements IObservable, IObserver {
+public abstract class ModelBase implements IObservable {
 
     public static class PropertyChangedEvent extends Event<ModelBase> {
 
@@ -70,12 +70,5 @@ public abstract class ModelBase implements IObservable, IObserver {
     private void notifyPropertyChanged(String propertyName) {
         notifyObservers(new PropertyChangedEvent(this, propertyName));
         notifyObservers(new IsDirtyEvent(this));
-    }
-
-    @Override
-    public void notify(Event<?> event) {
-        if (event instanceof IsDirtyEvent) {
-            notifyObservers(event);
-        }
     }
 }

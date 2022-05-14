@@ -1,7 +1,9 @@
 package bgs.formalspecificationide.Model;
 
+import bgs.formalspecificationide.Utilities.Event;
 import bgs.formalspecificationide.Utilities.IAggregate;
 import bgs.formalspecificationide.Utilities.IAggregateRoot;
+import bgs.formalspecificationide.Utilities.IObserver;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -9,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class ModelAggregate extends ModelBase implements IAggregate<ModelBase> {
+public abstract class ModelAggregate extends ModelBase implements IAggregate<ModelBase>, IObserver {
 
     private final List<ModelBase> children;
 
@@ -51,6 +53,13 @@ public abstract class ModelAggregate extends ModelBase implements IAggregate<Mod
     public void removeChildren(List<ModelBase> children) {
         for (var child : children) {
             removeChild(child);
+        }
+    }
+
+    @Override
+    public void notify(Event<?> event) {
+        if (event instanceof IsDirtyEvent) {
+            notifyObservers(event);
         }
     }
 }
