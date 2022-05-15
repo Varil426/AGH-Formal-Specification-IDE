@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class ActivityDiagram extends ModelAggregate{
@@ -15,19 +16,16 @@ public class ActivityDiagram extends ModelAggregate{
         super(id);
     }
 
-    public ArrayList<Pattern> getPatternList() {
-        return patternList;
+    public List<Pattern> getPatternList() {
+        return getChildren().stream().filter(e -> e instanceof Pattern).map(e -> (Pattern) e).toList();
     }
 
     public void addPatternList(Pattern pattern) {
-        this.patternList.add(pattern);
-        propertyChanged("patternList");
+        addChild(pattern);
     }
 
     public void removePatternList(Pattern pattern) {
-        if(this.patternList.remove(pattern)) {
-            propertyChanged("patternList");
-        }
+        removeChild(pattern);
     }
 
 }

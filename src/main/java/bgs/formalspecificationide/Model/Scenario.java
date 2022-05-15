@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -12,7 +13,6 @@ public class Scenario extends ModelAggregate{
     private ArrayList<String> actions;
     private boolean isMainScenario;
     Set<UUID> atomicActivities;
-    private ActivityDiagram activityDiagram;
 
     @JsonCreator
     public Scenario(@JsonProperty("id")UUID id, boolean isMainScenario){
@@ -21,18 +21,16 @@ public class Scenario extends ModelAggregate{
         this.actions = new ArrayList<>();
     }
 
-    public ActivityDiagram getActivityDiagram() {
-        return activityDiagram;
+    public List<ActivityDiagram> getActivityDiagram() {
+        return getChildren().stream().map(e -> (ActivityDiagram) e).toList();
     }
 
     public void setActivityDiagram(ActivityDiagram activityDiagram) {
-        this.activityDiagram = activityDiagram;
-        propertyChanged("activityDiagram");
+        addChild(activityDiagram);
     }
 
-    public void removeActivityDiagram(){
-        this.activityDiagram = null;
-        propertyChanged("activityDiagram");
+    public void removeActivityDiagram(ActivityDiagram activityDiagram){
+        removeChild(activityDiagram);
     }
 
     public void setMainScenario(boolean isMain){

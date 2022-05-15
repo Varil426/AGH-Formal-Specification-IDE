@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class Pattern extends ModelAggregate{
+public class Pattern extends ModelBase{
 
     private String name;
     private UUID patternTemplateId;

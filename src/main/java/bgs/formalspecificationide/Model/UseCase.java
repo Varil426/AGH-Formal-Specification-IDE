@@ -3,16 +3,15 @@ package bgs.formalspecificationide.Model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class UseCase extends ModelAggregate{
 
     private String useCaseName;
     private HashMap<UUID, ArrayList<RelationEnum>> relations;
-    private ArrayList<Scenario> scenarioList;
 
     public enum RelationEnum {
         EXTEND,
@@ -24,7 +23,6 @@ public class UseCase extends ModelAggregate{
         super(id);
         this.useCaseName = name;
         this.relations = new HashMap<>();
-        this.scenarioList = new ArrayList<>();
     }
 
     public void setName(String name) {
@@ -33,18 +31,15 @@ public class UseCase extends ModelAggregate{
     }
 
     public void addScenario(Scenario scenario) {
-        this.scenarioList.add(scenario);
-        propertyChanged("scenarioList");
+        addChild(scenario);
     }
 
     public void removeScenario(Scenario scenario) {
-        if(this.scenarioList.remove(scenario)) {
-            propertyChanged("scenarioList");
-        }
+        removeChild(scenario);
     }
 
-    public ArrayList<Scenario> getScenarioList() {
-        return scenarioList;
+    public List<Scenario> getScenarioList() {
+        return getChildren().stream().filter(e -> e instanceof Scenario).map(e -> (Scenario) e ).toList();
     }
 
     public void addRelations(UUID otherUseCaseId, RelationEnum relation){
