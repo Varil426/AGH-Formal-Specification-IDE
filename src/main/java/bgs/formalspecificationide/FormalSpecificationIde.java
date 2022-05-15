@@ -19,15 +19,6 @@ public class FormalSpecificationIde extends Application {
     public void start(Stage stage) throws Exception {
         stage.setTitle(resourceService.getText("ApplicationTitle"));
 
-        ModelFactory fabryka = injector.getInstance(ModelFactory.class);
-        Project proj = fabryka.createProject("Project");
-        proj.setName("klalala");
-        IProjectRepository repo = injector.getInstance(IProjectRepository.class);
-        repo.saveAll();
-
-        //stage.setWidth();
-        //stage.setHeight();
-        stage.setResizable(false);
 
         stage.show();
     }

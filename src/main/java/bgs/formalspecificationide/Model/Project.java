@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 // TODO Add the rest of properties
@@ -17,28 +17,23 @@ public class Project extends ModelAggregate implements IIsDirty, IAggregateRoot<
     private boolean isDirty;
 
     private String name;
-    private ArrayList<UseCaseDiagram> useCaseDiagramList;
 
     @JsonCreator
     public Project(@JsonProperty("id") UUID id) {
         super(id);
         isDirty = false;
-        this.useCaseDiagramList= new ArrayList<>();
     }
 
-    public ArrayList<UseCaseDiagram> getUseCaseDiagramList() {
-        return useCaseDiagramList;
+    public List<UseCaseDiagram> getUseCaseDiagramList() {
+        return getChildren().stream().filter(e -> e instanceof UseCaseDiagram).map(e -> (UseCaseDiagram) e).toList();
     }
 
     public void addUseCaseDiagram(UseCaseDiagram useCaseDiagram){
-        this.useCaseDiagramList.add(useCaseDiagram);
-        propertyChanged("useCaseDiagramList");
+        addChild(useCaseDiagram);
     }
 
     public void removeUseCaseDiagram(UseCaseDiagram useCaseDiagram){
-        if(this.useCaseDiagramList.remove(useCaseDiagram)) {
-            propertyChanged("useCaseDiagramList");
-        }
+        removeChild(useCaseDiagram);
     }
 
     public String getName() {
