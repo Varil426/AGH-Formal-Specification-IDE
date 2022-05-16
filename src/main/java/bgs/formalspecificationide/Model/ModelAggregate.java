@@ -1,9 +1,6 @@
 package bgs.formalspecificationide.Model;
 
-import bgs.formalspecificationide.Utilities.Event;
-import bgs.formalspecificationide.Utilities.IAggregate;
-import bgs.formalspecificationide.Utilities.IAggregateRoot;
-import bgs.formalspecificationide.Utilities.IObserver;
+import bgs.formalspecificationide.Utilities.*;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,6 +9,34 @@ import java.util.List;
 import java.util.UUID;
 
 public abstract class ModelAggregate extends ModelBase implements IAggregate<ModelBase>, IObserver {
+
+    public static class ChildAddedEvent extends Event<ModelBase> {
+        private final ModelBase child;
+
+        public ChildAddedEvent(ModelBase publisher, ModelBase child) {
+            super(publisher);
+
+            this.child = child;
+        }
+
+        public ModelBase getChild() {
+            return child;
+        }
+    }
+
+    public static class ChildRemovedEvent extends Event<ModelBase> {
+        private final ModelBase child;
+
+        public ChildRemovedEvent(ModelBase publisher, ModelBase child) {
+            super(publisher);
+
+            this.child = child;
+        }
+
+        public ModelBase getChild() {
+            return child;
+        }
+    }
 
     private final List<ModelBase> children;
 
@@ -34,6 +59,9 @@ public abstract class ModelAggregate extends ModelBase implements IAggregate<Mod
 
         children.add(child);
         child.subscribe(this);
+
+        notifyObservers(new ChildAddedEvent(this, child));
+        notifyDirty();
     }
 
     @Override
@@ -47,6 +75,9 @@ public abstract class ModelAggregate extends ModelBase implements IAggregate<Mod
     public void removeChild(ModelBase child) {
         children.remove(child);
         child.unsubscribe(this);
+
+        notifyObservers(new ChildRemovedEvent(this, child));
+        notifyDirty();
     }
 
     @Override
