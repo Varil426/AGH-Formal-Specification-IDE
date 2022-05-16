@@ -11,6 +11,16 @@ public interface IModelFactory {
 
     Image createImage(UUID id, File file);
 
+    UseCaseDiagram createUseCaseDiagram(Project parent, UUID id, UUID imageID);
+
+    UseCase createUseCase(UseCaseDiagram parent, UUID id, String name);
+
+    Scenario createScenario(UseCase parent, UUID id, boolean isMain);
+
+    ActivityDiagram createActivityDiagram(Scenario parent, UUID id);
+
+    Pattern createPattern(ActivityDiagram parent, UUID id, String name);
+
     AtomicActivity createAtomicActivity(Project project, String atomicActivity);
 
     AtomicActivity createAtomicActivity(AtomicActivityCollection atomicActivityCollection, String atomicActivity);

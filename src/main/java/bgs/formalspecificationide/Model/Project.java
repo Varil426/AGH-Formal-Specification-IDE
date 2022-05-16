@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
 import java.util.UUID;
 
 public class Project extends ModelAggregate implements IIsDirty, ICanSetDirty, IAggregateRoot<ModelBase> {
@@ -23,6 +24,18 @@ public class Project extends ModelAggregate implements IIsDirty, ICanSetDirty, I
     public Project(@JsonProperty("id") UUID id) {
         super(id);
         isDirty = false;
+    }
+
+    public List<UseCaseDiagram> getUseCaseDiagramList() {
+        return getChildren().stream().filter(e -> e instanceof UseCaseDiagram).map(e -> (UseCaseDiagram) e).toList();
+    }
+
+    public void addUseCaseDiagram(UseCaseDiagram useCaseDiagram){
+        addChild(useCaseDiagram);
+    }
+
+    public void removeUseCaseDiagram(UseCaseDiagram useCaseDiagram){
+        removeChild(useCaseDiagram);
     }
 
     public String getName() {
