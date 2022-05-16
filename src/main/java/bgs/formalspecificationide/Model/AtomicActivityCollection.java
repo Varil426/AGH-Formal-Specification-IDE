@@ -8,39 +8,27 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-public class Project extends ModelAggregate implements IIsDirty, ICanSetDirty, IAggregateRoot<ModelBase> {
+public class AtomicActivityCollection extends ModelAggregate implements IIsDirty, ICanSetDirty, IAggregateRoot<ModelBase> {
+
+    private final UUID projectId;
 
     @JsonIgnore
     private boolean isDirty;
 
-    private String name;
-
-    private UUID atomicActivityCollectionId;
-
     @JsonCreator
-    public Project(@JsonProperty("id") UUID id) {
+    public AtomicActivityCollection(@JsonProperty("id") UUID id, @JsonProperty("projectId") UUID projectId) {
         super(id);
-        isDirty = false;
+        this.projectId = projectId;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-        propertyChanged("Name");
-    }
-
+    @JsonIgnore
     @Override
     public boolean isDirty() {
         return isDirty;
-    }
-
-    public UUID getAtomicActivityCollectionId() {
-        return atomicActivityCollectionId;
     }
 
     @Override
@@ -62,13 +50,15 @@ public class Project extends ModelAggregate implements IIsDirty, ICanSetDirty, I
         }
     }
 
-    @Override
-    protected void propertyChanged(String propertyName) {
-        super.propertyChanged(propertyName);
-        isDirty = true;
+    public List<AtomicActivity> getAtomicActivities() {
+        return getChildren().stream().filter(x -> x instanceof AtomicActivity).map(x -> (AtomicActivity)x).toList();
     }
 
-    public void setAtomicActivityCollectionId(UUID atomicActivityCollectionId) {
-        this.atomicActivityCollectionId = atomicActivityCollectionId;
+    public Optional<AtomicActivity> getAtomicActivityById(UUID id) {
+        return getAtomicActivities().stream().filter(x -> x.getId().equals(id)).findFirst();
+    }
+
+    public UUID getProjectId() {
+        return projectId;
     }
 }
