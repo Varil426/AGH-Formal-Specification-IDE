@@ -31,7 +31,7 @@ class ProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public void add(Project item) {
+    public void add(@NotNull Project item) {
         projects.add(item);
     }
 
@@ -77,7 +77,7 @@ class ProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public void save(Project item) {
+    public void save(@NotNull Project item) {
         if (item.isDirty()) {
             persistenceHelper.saveProjectFile(item);
             item.clearIsDirty();

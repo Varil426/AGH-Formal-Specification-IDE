@@ -4,6 +4,7 @@ package bgs.formalspecificationide.Persistence.Repositories;
 import bgs.formalspecificationide.Model.Image;
 import bgs.formalspecificationide.Persistence.IPersistenceHelper;
 import com.google.inject.Inject;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.List;
@@ -23,7 +24,7 @@ public class ImageRepository implements IImageRepository {
     }
 
     @Override
-    public void add(Image item) {
+    public void add(@NotNull Image item) {
         if (images.stream().anyMatch(x -> x.getId() == item.getId()))
             return;
         var newFile = persistenceHelper.saveImage(item.getImageFile(), item.getId());
@@ -56,7 +57,7 @@ public class ImageRepository implements IImageRepository {
     }
 
     @Override
-    public void remove(Image item) {
+    public void remove(@NotNull Image item) {
         persistenceHelper.removeFile(item.getImageFile());
         images.remove(item);
     }
@@ -67,7 +68,7 @@ public class ImageRepository implements IImageRepository {
     }
 
     @Override
-    public void save(Image item) {
+    public void save(@NotNull Image item) {
         // Ignore
     }
 }

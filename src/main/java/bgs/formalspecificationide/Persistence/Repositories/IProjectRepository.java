@@ -1,6 +1,7 @@
 package bgs.formalspecificationide.Persistence.Repositories;
 
 import bgs.formalspecificationide.Model.Project;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -9,7 +10,7 @@ public interface IProjectRepository extends IAggregateRepository<Project> {
     List<String> getProjectNames();
 
     @Override
-    void add(Project item);
+    void add(@NotNull Project item);
 
     @Override
     List<Project> getAll();
@@ -20,11 +21,11 @@ public interface IProjectRepository extends IAggregateRepository<Project> {
     Project getByName(String name);
 
     @Override
-    void remove(Project item);
+    void remove(@NotNull Project item);
 
     @Override
     void saveAll();
 
     @Override
-    void save(Project item);
+    void save(@NotNull Project item);
 }
