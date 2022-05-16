@@ -1,8 +1,6 @@
 package bgs.formalspecificationide.Model;
 
-import bgs.formalspecificationide.Utilities.Event;
-import bgs.formalspecificationide.Utilities.IObservable;
-import bgs.formalspecificationide.Utilities.IObserver;
+import bgs.formalspecificationide.Utilities.*;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -69,6 +67,12 @@ public abstract class ModelBase implements IObservable {
 
     private void notifyPropertyChanged(String propertyName) {
         notifyObservers(new PropertyChangedEvent(this, propertyName));
+        notifyDirty();
+    }
+
+    protected void notifyDirty() {
         notifyObservers(new IsDirtyEvent(this));
+        if (this instanceof ICanSetDirty dirty)
+            dirty.setDirty();
     }
 }

@@ -2,6 +2,7 @@ package bgs.formalspecificationide.Model;
 
 import bgs.formalspecificationide.Utilities.Event;
 import bgs.formalspecificationide.Utilities.IAggregateRoot;
+import bgs.formalspecificationide.Utilities.ICanSetDirty;
 import bgs.formalspecificationide.Utilities.IIsDirty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -9,8 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.UUID;
 
-// TODO Add the rest of properties
-public class Project extends ModelAggregate implements IIsDirty, IAggregateRoot<ModelBase> {
+public class Project extends ModelAggregate implements IIsDirty, ICanSetDirty, IAggregateRoot<ModelBase> {
 
     @JsonIgnore
     private boolean isDirty;
@@ -41,6 +41,11 @@ public class Project extends ModelAggregate implements IIsDirty, IAggregateRoot<
     @Override
     public void clearIsDirty() {
         isDirty = false;
+    }
+
+    @Override
+    public void setDirty() {
+        isDirty = true;
     }
 
     @Override

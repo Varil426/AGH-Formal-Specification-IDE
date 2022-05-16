@@ -4,6 +4,4 @@ public interface IIsDirty {
 
     boolean isDirty();
 
-    void clearIsDirty();
-
 }
