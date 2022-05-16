@@ -1,5 +1,6 @@
 package bgs.formalspecificationide.Persistence;
 
+import bgs.formalspecificationide.Model.AtomicActivityCollection;
 import bgs.formalspecificationide.Model.Project;
 
 import java.io.File;
@@ -27,7 +28,11 @@ public interface IPersistenceHelper {
 
     List<File> getAllImageFiles();
 
+    List<File> getAllAtomicActivityCollectionFiles();
+
     void saveProjectFile(Project project);
+
+    void saveAtomicActivityCollectionFile(AtomicActivityCollection atomicActivityCollection);
 
     /**
      * Saves (copies) image file to our persistence.

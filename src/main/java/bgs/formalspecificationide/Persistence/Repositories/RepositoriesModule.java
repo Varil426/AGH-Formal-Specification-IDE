@@ -12,10 +12,12 @@ public class RepositoriesModule extends PrivateModule {
         // Repositories
         bind(IProjectRepository.class).to(ProjectRepository.class).in(Scopes.SINGLETON);
         bind(IImageRepository.class).to(ImageRepository.class).in(Scopes.SINGLETON);
+        bind(IAtomicActivityRepository.class).to(AtomicActivityRepository.class).in(Scopes.SINGLETON);
 
         // Expose
         expose(IProjectRepository.class);
         expose(IImageRepository.class);
+        expose(IAtomicActivityRepository.class);
 
         // Submodules
         install(new PersistenceModule());
