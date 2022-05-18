@@ -1,12 +1,12 @@
 package bgs.formalspecificationide.Model;
 
+import bgs.formalspecificationide.Events.Event;
+import bgs.formalspecificationide.Events.IsDirtyEvent;
 import bgs.formalspecificationide.Events.ModelEvents.ChildAddedEvent;
 import bgs.formalspecificationide.Events.ModelEvents.ChildRemovedEvent;
-import bgs.formalspecificationide.Events.IsDirtyEvent;
-import bgs.formalspecificationide.Utilities.*;
-import bgs.formalspecificationide.Events.Event;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import bgs.formalspecificationide.Utilities.IAggregate;
+import bgs.formalspecificationide.Utilities.IAggregateRoot;
+import bgs.formalspecificationide.Utilities.IObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +16,7 @@ public abstract class ModelAggregate extends ModelBase implements IAggregate<Mod
 
     private final List<ModelBase> children;
 
-    @JsonCreator
-    public ModelAggregate(@JsonProperty("id") UUID id) {
+    public ModelAggregate(UUID id) {
         super(id);
         children = new ArrayList<>();
     }

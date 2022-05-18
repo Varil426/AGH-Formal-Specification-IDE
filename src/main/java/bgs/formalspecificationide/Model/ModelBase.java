@@ -1,12 +1,13 @@
 package bgs.formalspecificationide.Model;
 
+import bgs.formalspecificationide.Events.Event;
 import bgs.formalspecificationide.Events.IsDirtyEvent;
 import bgs.formalspecificationide.Events.PropertyChangedEvent;
-import bgs.formalspecificationide.Utilities.*;
-import bgs.formalspecificationide.Events.Event;
-import com.fasterxml.jackson.annotation.JsonCreator;
+import bgs.formalspecificationide.Utilities.IAggregateMember;
+import bgs.formalspecificationide.Utilities.ICanSetDirty;
+import bgs.formalspecificationide.Utilities.IObservable;
+import bgs.formalspecificationide.Utilities.IObserver;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -14,8 +15,7 @@ import java.util.UUID;
 
 public abstract class ModelBase implements IObservable, IAggregateMember<ModelAggregate> {
 
-    @JsonCreator
-    public ModelBase(@JsonProperty("id") UUID id) {
+    public ModelBase(UUID id) {
         this.id = id;
     }
 
