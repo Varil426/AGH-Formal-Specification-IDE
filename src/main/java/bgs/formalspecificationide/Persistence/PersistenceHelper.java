@@ -1,9 +1,7 @@
 package bgs.formalspecificationide.Persistence;
 
 import bgs.formalspecificationide.Factories.IModelFactory;
-import bgs.formalspecificationide.Model.AtomicActivityCollection;
-import bgs.formalspecificationide.Model.ModelBase;
-import bgs.formalspecificationide.Model.Project;
+import bgs.formalspecificationide.Model.*;
 import bgs.formalspecificationide.Services.LoggerService;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -22,13 +20,15 @@ import java.util.stream.Stream;
 
 class PersistenceHelper implements IPersistenceHelper {
 
-    private final Path persistenceDirectory = Paths.get("persistence");
+    private final Path persistenceDirectory = Paths.get("persistence").toAbsolutePath();
 
-    private final Path projectDirectory = persistenceDirectory.resolve("projects");
+    private final Path projectDirectory = persistenceDirectory.resolve("projects").toAbsolutePath();
 
-    private final Path imageDirectory = persistenceDirectory.resolve("images");
+    private final Path imageDirectory = persistenceDirectory.resolve("images").toAbsolutePath();
 
-    private final Path atomicActivityCollectionsDirectory = persistenceDirectory.resolve("atomicActivityCollections");
+    private final Path atomicActivityCollectionsDirectory = persistenceDirectory.resolve("atomicActivityCollections").toAbsolutePath();
+
+    private final Path projectNamesFile = persistenceDirectory.resolve("projectNames.json").toAbsolutePath();
 
     private final LoggerService loggerService;
 
@@ -70,15 +70,26 @@ class PersistenceHelper implements IPersistenceHelper {
     }
 
     @Override
+    public File getProjectNamesFile() {
+        return projectNamesFile.toFile();
+    }
+
+    @Override
     public void saveProjectFile(Project project) {
-        if (saveFile(generatePathToJson(projectDirectory.toAbsolutePath().toString(), project.getName()), project))
-            loggerService.logInfo("Saved project %s".formatted(project.getName()));
+        if (saveFile(generatePathToJson(projectDirectory.toString(), project.getId().toString()), project))
+            loggerService.logInfo("Saved project %s".formatted(project.getId()));
     }
 
     @Override
     public void saveAtomicActivityCollectionFile(AtomicActivityCollection atomicActivityCollection) {
-        if (saveFile(generatePathToJson(atomicActivityCollectionsDirectory.toAbsolutePath().toString(), atomicActivityCollection.getId().toString()), atomicActivityCollection))
+        if (saveFile(generatePathToJson(atomicActivityCollectionsDirectory.toString(), atomicActivityCollection.getId().toString()), atomicActivityCollection))
             loggerService.logInfo("Saved Atomic Activity Collection %s".formatted(atomicActivityCollection.getId().toString()));
+    }
+
+    @Override
+    public void saveProjectNames(ProjectNameList projectNames) {
+        if (saveFile(projectNamesFile, projectNames))
+            loggerService.logInfo("Saved Project Names");
     }
 
     @Override

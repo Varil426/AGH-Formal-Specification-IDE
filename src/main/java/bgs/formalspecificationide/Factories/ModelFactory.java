@@ -3,6 +3,7 @@ package bgs.formalspecificationide.Factories;
 import bgs.formalspecificationide.Model.*;
 import bgs.formalspecificationide.Persistence.Repositories.IAtomicActivityRepository;
 import bgs.formalspecificationide.Persistence.Repositories.IImageRepository;
+import bgs.formalspecificationide.Persistence.Repositories.IProjectNameRepository;
 import bgs.formalspecificationide.Persistence.Repositories.IProjectRepository;
 import bgs.formalspecificationide.Services.LoggerService;
 import bgs.formalspecificationide.Services.ModelTrackerService;
@@ -16,14 +17,16 @@ public class ModelFactory implements IModelFactory {
 
     private final ModelTrackerService modelTrackerService;
     private final IProjectRepository projectRepository;
+    private final IProjectNameRepository projectNameRepository;
     private final IImageRepository imageRepository;
     private final IAtomicActivityRepository atomicActivityRepository;
     private final LoggerService loggerService;
 
     @Inject
-    public ModelFactory(ModelTrackerService modelTrackerService, IProjectRepository projectRepository, IImageRepository imageRepository, IAtomicActivityRepository atomicActivityRepository, LoggerService loggerService) {
+    public ModelFactory(ModelTrackerService modelTrackerService, IProjectRepository projectRepository, IProjectNameRepository projectNameRepository, IImageRepository imageRepository, IAtomicActivityRepository atomicActivityRepository, LoggerService loggerService) {
         this.modelTrackerService = modelTrackerService;
         this.projectRepository = projectRepository;
+        this.projectNameRepository = projectNameRepository;
         this.imageRepository = imageRepository;
         this.atomicActivityRepository = atomicActivityRepository;
         this.loggerService = loggerService;
@@ -32,8 +35,14 @@ public class ModelFactory implements IModelFactory {
     @Override
     public Project createProject(@NotNull String name) {
         var project = new Project(UUID.randomUUID());
-        project.setName(name);
+        project.setDirty();
+
+        var projectName = new ProjectName(UUID.randomUUID(), project.getId(), name);
+        registerInModelTracker(projectName);
+        projectNameRepository.add(projectName);
+
         var atomicActivityCollection = createAtomicActivityCollection(project.getId());
+        atomicActivityCollection.setDirty();
         project.setAtomicActivityCollectionId(atomicActivityCollection.getId());
         registerInModelTracker(project);
         projectRepository.add(project);

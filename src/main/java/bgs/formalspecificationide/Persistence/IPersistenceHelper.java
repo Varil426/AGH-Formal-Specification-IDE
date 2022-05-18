@@ -2,6 +2,7 @@ package bgs.formalspecificationide.Persistence;
 
 import bgs.formalspecificationide.Model.AtomicActivityCollection;
 import bgs.formalspecificationide.Model.Project;
+import bgs.formalspecificationide.Model.ProjectNameList;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -30,9 +31,13 @@ public interface IPersistenceHelper {
 
     List<File> getAllAtomicActivityCollectionFiles();
 
+    File getProjectNamesFile();
+
     void saveProjectFile(Project project);
 
     void saveAtomicActivityCollectionFile(AtomicActivityCollection atomicActivityCollection);
+
+    void saveProjectNames(ProjectNameList projectNames);
 
     /**
      * Saves (copies) image file to our persistence.

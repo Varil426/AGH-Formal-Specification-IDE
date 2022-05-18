@@ -4,6 +4,7 @@ import bgs.formalspecificationide.Model.Project;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 public interface IProjectRepository extends IAggregateRepository<Project> {
@@ -18,7 +19,7 @@ public interface IProjectRepository extends IAggregateRepository<Project> {
     @Override
     List<Project> get(Predicate<Project> predicate);
 
-    Project getByName(String name);
+    Optional<Project> getByName(String name);
 
     @Override
     void remove(@NotNull Project item);

@@ -8,8 +8,6 @@ import java.util.UUID;
 
 public class Project extends ModelRootAggregate {
 
-    private String name;
-
     private UUID atomicActivityCollectionId;
 
     @JsonCreator
@@ -27,15 +25,6 @@ public class Project extends ModelRootAggregate {
 
     public void removeUseCaseDiagram(UseCaseDiagram useCaseDiagram){
         removeChild(useCaseDiagram);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-        propertyChanged("Name");
     }
 
     public UUID getAtomicActivityCollectionId() {
