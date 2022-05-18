@@ -69,4 +69,9 @@ public abstract class ModelAggregate extends ModelBase implements IAggregate<Mod
             notifyObservers(event);
         }
     }
+
+    @Override
+    public <Z extends ModelBase> List<Z> getChildrenOfType(Class<Z> type) {
+        return getChildren().stream().filter(x -> type.isAssignableFrom(x.getClass())).map(type::cast).toList();
+    }
 }
