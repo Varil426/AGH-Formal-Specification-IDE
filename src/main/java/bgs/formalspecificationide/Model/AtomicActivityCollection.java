@@ -1,54 +1,20 @@
 package bgs.formalspecificationide.Model;
 
-import bgs.formalspecificationide.Events.Event;
-import bgs.formalspecificationide.Events.IsDirtyEvent;
-import bgs.formalspecificationide.Utilities.IAggregateRoot;
-import bgs.formalspecificationide.Utilities.ICanSetDirty;
-import bgs.formalspecificationide.Utilities.IIsDirty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class AtomicActivityCollection extends ModelAggregate implements IIsDirty, ICanSetDirty, IAggregateRoot<ModelBase> {
+public class AtomicActivityCollection extends ModelRootAggregate {
 
     private final UUID projectId;
-
-    @JsonIgnore
-    private boolean isDirty;
 
     @JsonCreator
     public AtomicActivityCollection(@JsonProperty("id") UUID id, @JsonProperty("projectId") UUID projectId) {
         super(id);
         this.projectId = projectId;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isDirty() {
-        return isDirty;
-    }
-
-    @Override
-    public void clearIsDirty() {
-        isDirty = false;
-    }
-
-    @Override
-    public void setDirty() {
-        isDirty = true;
-    }
-
-    @Override
-    public void notify(Event<?> event) {
-        super.notify(event);
-
-        if (event instanceof IsDirtyEvent) {
-            isDirty = true;
-        }
     }
 
     public List<AtomicActivity> getAtomicActivities() {
