@@ -4,7 +4,7 @@ import bgs.formalspecificationide.Model.ModelBase;
 
 import java.util.List;
 
-public interface IAggregate<T> {
+public interface IAggregate<T extends IAggregateMember<?>> {
 
     List<T> getChildren();
 

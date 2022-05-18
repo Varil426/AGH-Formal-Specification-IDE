@@ -9,9 +9,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.UUID;
 
-public abstract class ModelBase implements IObservable {
+public abstract class ModelBase implements IObservable, IAggregateMember<ModelAggregate> {
 
     @JsonCreator
     public ModelBase(@JsonProperty("id") UUID id) {
@@ -20,12 +21,25 @@ public abstract class ModelBase implements IObservable {
 
     private final UUID id;
 
+    @JsonIgnore
+    private ModelAggregate parent;
+
     public UUID getId() {
         return id;
     }
 
     @JsonIgnore
     private final HashSet<IObserver> observers = new HashSet<>();
+
+    @Override
+    public final Optional<ModelAggregate> getParent() {
+        return Optional.ofNullable(parent);
+    }
+
+    @Override
+    public final void setParent(ModelAggregate parent) {
+        this.parent = parent;
+    }
 
     @Override
     public final void subscribe(IObserver observer) {
