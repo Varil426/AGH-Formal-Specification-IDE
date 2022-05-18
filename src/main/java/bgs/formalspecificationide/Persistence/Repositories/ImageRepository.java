@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class ImageRepository implements IImageRepository {
+class ImageRepository implements IImageRepository {
 
     private final Set<Image> images;
     private final IPersistenceHelper persistenceHelper;

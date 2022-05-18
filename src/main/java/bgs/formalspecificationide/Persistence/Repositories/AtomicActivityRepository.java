@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class AtomicActivityRepository implements IAtomicActivityRepository {
+class AtomicActivityRepository implements IAtomicActivityRepository {
 
     private final IPersistenceHelper persistenceHelper;
     private final LoggerService loggerService;

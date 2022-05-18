@@ -11,7 +11,7 @@ public class UseCaseDiagram extends ModelAggregate {
     private UUID imageID;
 
     @JsonCreator
-    public UseCaseDiagram(@JsonProperty("id")UUID id, UUID imageID) {
+    public UseCaseDiagram(@JsonProperty("id")UUID id, @JsonProperty("imageID") UUID imageID) {
         super(id);
         this.imageID = imageID;
     }
@@ -27,5 +27,13 @@ public class UseCaseDiagram extends ModelAggregate {
 
     public void removeUseCase(UseCase useCase){
         removeChild(useCase);
+    }
+
+    public UUID getImageID() {
+        return imageID;
+    }
+
+    public void setImageID(UUID imageID) {
+        this.imageID = imageID;
     }
 }
