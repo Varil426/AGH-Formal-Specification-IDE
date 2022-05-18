@@ -1,6 +1,6 @@
 package bgs.formalspecificationide.Services;
 
-import bgs.formalspecificationide.Utilities.Event;
+import bgs.formalspecificationide.Events.Event;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;

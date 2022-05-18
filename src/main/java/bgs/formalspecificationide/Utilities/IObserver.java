@@ -1,5 +1,7 @@
 package bgs.formalspecificationide.Utilities;
 
+import bgs.formalspecificationide.Events.Event;
+
 public interface IObserver {
 
     /**

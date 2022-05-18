@@ -1,6 +1,9 @@
 package bgs.formalspecificationide.Model;
 
+import bgs.formalspecificationide.Events.IsDirtyEvent;
+import bgs.formalspecificationide.Events.PropertyChangedEvent;
 import bgs.formalspecificationide.Utilities.*;
+import bgs.formalspecificationide.Events.Event;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,28 +12,6 @@ import java.util.HashSet;
 import java.util.UUID;
 
 public abstract class ModelBase implements IObservable {
-
-    public static class PropertyChangedEvent extends Event<ModelBase> {
-
-        private final String propertyName;
-
-
-        public PropertyChangedEvent(ModelBase publisher, String propertyName) {
-            super(publisher);
-            this.propertyName = propertyName;
-        }
-
-        public String getPropertyName() {
-            return propertyName;
-        }
-    }
-
-    public static class IsDirtyEvent extends Event<ModelBase> {
-
-        public IsDirtyEvent(ModelBase publisher) {
-            super(publisher);
-        }
-    }
 
     @JsonCreator
     public ModelBase(@JsonProperty("id") UUID id) {

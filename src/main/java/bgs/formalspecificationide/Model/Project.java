@@ -1,6 +1,7 @@
 package bgs.formalspecificationide.Model;
 
-import bgs.formalspecificationide.Utilities.Event;
+import bgs.formalspecificationide.Events.Event;
+import bgs.formalspecificationide.Events.IsDirtyEvent;
 import bgs.formalspecificationide.Utilities.IAggregateRoot;
 import bgs.formalspecificationide.Utilities.ICanSetDirty;
 import bgs.formalspecificationide.Utilities.IIsDirty;
