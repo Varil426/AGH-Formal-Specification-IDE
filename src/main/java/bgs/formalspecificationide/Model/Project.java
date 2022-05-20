@@ -16,7 +16,7 @@ public class Project extends ModelRootAggregate {
     }
 
     public List<UseCaseDiagram> getUseCaseDiagramList() {
-        return getChildren().stream().filter(e -> e instanceof UseCaseDiagram).map(e -> (UseCaseDiagram) e).toList();
+        return getChildrenOfType(UseCaseDiagram.class);
     }
 
     public void addUseCaseDiagram(UseCaseDiagram useCaseDiagram){

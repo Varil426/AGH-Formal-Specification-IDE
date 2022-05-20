@@ -11,7 +11,7 @@ import java.util.UUID;
 public class UseCase extends ModelAggregate{
 
     private String useCaseName;
-    private HashMap<UUID, ArrayList<RelationEnum>> relations;
+    private final HashMap<UUID, ArrayList<RelationEnum>> relations;
 
     public enum RelationEnum {
         EXTEND,
@@ -19,15 +19,17 @@ public class UseCase extends ModelAggregate{
     }
 
     @JsonCreator
-    public UseCase(@JsonProperty("id")UUID id, String name){
+    public UseCase(@JsonProperty("id")UUID id, @JsonProperty("useCaseName") String useCaseName){
         super(id);
-        this.useCaseName = name;
+        this.useCaseName = useCaseName;
         this.relations = new HashMap<>();
     }
 
     public void setName(String name) {
-        this.useCaseName = name;
-        propertyChanged("useCaseName");
+        if (!useCaseName.equals(name)) {
+            this.useCaseName = name;
+            propertyChanged("useCaseName");
+        }
     }
 
     public void addScenario(Scenario scenario) {
@@ -38,8 +40,22 @@ public class UseCase extends ModelAggregate{
         removeChild(scenario);
     }
 
+    @Override
+    public void removeChild(ModelBase item) {
+        if (item instanceof Scenario scenario && scenario.isMainScenario())
+            throw new IllegalArgumentException("Can't remove the main scenario");
+        super.removeChild(item);
+    }
+
+    @Override
+    public void addChild(ModelBase item) {
+        if (item instanceof Scenario scenario && scenario.isMainScenario() && getScenarioList().stream().anyMatch(Scenario::isMainScenario))
+            throw new IllegalArgumentException("Can't add more than one main scenario");
+        super.addChild(item);
+    }
+
     public List<Scenario> getScenarioList() {
-        return getChildren().stream().filter(e -> e instanceof Scenario).map(e -> (Scenario) e ).toList();
+        return getChildrenOfType(Scenario.class);
     }
 
     public void addRelations(UUID otherUseCaseId, RelationEnum relation){
@@ -69,7 +85,7 @@ public class UseCase extends ModelAggregate{
     }
 
     public HashMap<UUID, ArrayList<RelationEnum>> getRelations() {
-        return relations;
+        return new HashMap<>(relations);
     }
 
 

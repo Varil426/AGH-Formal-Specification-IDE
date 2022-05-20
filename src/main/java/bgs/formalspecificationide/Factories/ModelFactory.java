@@ -37,9 +37,7 @@ public class ModelFactory implements IModelFactory {
         var project = new Project(UUID.randomUUID());
         project.setDirty();
 
-        var projectName = new ProjectName(UUID.randomUUID(), project.getId(), name);
-        registerInModelTracker(projectName);
-        projectNameRepository.add(projectName);
+        createProjectName(project.getId(), name);
 
         var atomicActivityCollection = createAtomicActivityCollection(project.getId());
         atomicActivityCollection.setDirty();
@@ -84,6 +82,9 @@ public class ModelFactory implements IModelFactory {
         UseCase useCase = new UseCase(id, name);
         parent.addChild(useCase);
 
+        var mainScenario = createScenario(useCase, UUID.randomUUID(), true);
+        useCase.addScenario(mainScenario);
+
         registerInModelTracker(useCase);
         return useCase;
     }
@@ -107,8 +108,8 @@ public class ModelFactory implements IModelFactory {
     }
 
     @Override
-    public Pattern createPattern(ActivityDiagram parent, UUID id, String name){
-        Pattern pattern = new Pattern(id, name);
+    public Pattern createPattern(ActivityDiagram parent, UUID id, String name, UUID patternTemplateId){
+        Pattern pattern = new Pattern(id, name, patternTemplateId);
         parent.addChild(parent);
 
         registerInModelTracker(pattern);
@@ -126,6 +127,13 @@ public class ModelFactory implements IModelFactory {
         registerInModelTracker(atomicActivityCollection);
         atomicActivityRepository.add(atomicActivityCollection);
         return atomicActivityCollection;
+    }
+
+    private ProjectName createProjectName(UUID projectId, String name) {
+        var projectName = new ProjectName(UUID.randomUUID(), projectId, name);
+        registerInModelTracker(projectName);
+        projectNameRepository.add(projectName);
+        return projectName;
     }
 
 }

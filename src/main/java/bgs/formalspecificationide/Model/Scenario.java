@@ -10,19 +10,19 @@ import java.util.UUID;
 
 public class Scenario extends ModelAggregate{
 
-    private ArrayList<String> actions;
-    private boolean isMainScenario;
+    private final ArrayList<String> actions;
+    private final boolean isMainScenario;
     Set<UUID> atomicActivities;
 
     @JsonCreator
-    public Scenario(@JsonProperty("id")UUID id, boolean isMainScenario){
+    public Scenario(@JsonProperty("id")UUID id, @JsonProperty("isMainScenario") boolean isMainScenario){
         super(id);
         this.isMainScenario = isMainScenario;
         this.actions = new ArrayList<>();
     }
 
     public List<ActivityDiagram> getActivityDiagram() {
-        return getChildren().stream().map(e -> (ActivityDiagram) e).toList();
+        return getChildrenOfType(ActivityDiagram.class);
     }
 
     public void setActivityDiagram(ActivityDiagram activityDiagram) {
@@ -31,11 +31,6 @@ public class Scenario extends ModelAggregate{
 
     public void removeActivityDiagram(ActivityDiagram activityDiagram){
         removeChild(activityDiagram);
-    }
-
-    public void setMainScenario(boolean isMain){
-        this.isMainScenario = isMain;
-        propertyChanged("isMainScenario");
     }
 
     public void addAtomicActivity(UUID atomicId){

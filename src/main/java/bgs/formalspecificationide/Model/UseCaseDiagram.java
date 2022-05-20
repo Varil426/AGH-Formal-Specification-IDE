@@ -17,8 +17,7 @@ public class UseCaseDiagram extends ModelAggregate {
     }
 
     public List<UseCase> getUseCaseList() {
-
-        return getChildren().stream().filter(e -> e instanceof UseCase).map(e -> (UseCase) e).toList();
+        return getChildrenOfType(UseCase.class);
     }
 
     public void addUseCase(UseCase useCase){
@@ -34,6 +33,9 @@ public class UseCaseDiagram extends ModelAggregate {
     }
 
     public void setImageID(UUID imageID) {
-        this.imageID = imageID;
+        if (!this.imageID.equals(imageID)) {
+            this.imageID = imageID;
+            propertyChanged("imageId");
+        }
     }
 }

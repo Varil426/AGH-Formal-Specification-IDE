@@ -19,7 +19,7 @@ public interface IModelFactory {
 
     ActivityDiagram createActivityDiagram(Scenario parent, UUID id);
 
-    Pattern createPattern(ActivityDiagram parent, UUID id, String name);
+    Pattern createPattern(ActivityDiagram parent, UUID id, String name, UUID patternTemplateId);
 
     AtomicActivity createAtomicActivity(Project project, String atomicActivity);
 
