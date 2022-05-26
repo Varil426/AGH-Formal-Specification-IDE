@@ -1,6 +1,7 @@
 package bgs.formalspecificationide.Persistence;
 
 import bgs.formalspecificationide.Model.AtomicActivityCollection;
+import bgs.formalspecificationide.Model.PatternTemplateCollection;
 import bgs.formalspecificationide.Model.Project;
 import bgs.formalspecificationide.Model.ProjectNameList;
 
@@ -33,11 +34,15 @@ public interface IPersistenceHelper {
 
     File getProjectNamesFile();
 
+    File getPatternTemplatesFile();
+
     void saveProjectFile(Project project);
 
     void saveAtomicActivityCollectionFile(AtomicActivityCollection atomicActivityCollection);
 
     void saveProjectNames(ProjectNameList projectNames);
+
+    void savePatternTemplateFile(PatternTemplateCollection patternTemplateCollection);
 
     /**
      * Saves (copies) image file to our persistence.

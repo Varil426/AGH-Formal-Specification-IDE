@@ -69,6 +69,20 @@ public class ModelFactory implements IModelFactory {
     }
 
     @Override
+    public PatternTemplate createPatternTemplate(String name, int inputs, int outputs) {
+        var patternTemplate = new PatternTemplate(UUID.randomUUID(), name, inputs, outputs);
+        registerInModelTracker(patternTemplate);
+        return patternTemplate;
+    }
+
+    @Override
+    public PatternTemplateCollection createPatternTemplateCollection() {
+        var patternTemplateCollection = new PatternTemplateCollection(UUID.randomUUID());
+        registerInModelTracker(patternTemplateCollection);
+        return patternTemplateCollection;
+    }
+
+    @Override
     public UseCaseDiagram createUseCaseDiagram(Project parent, UUID id, UUID imageID){
         UseCaseDiagram useCaseDiagram = new UseCaseDiagram(id, imageID);
         parent.addChild(useCaseDiagram);

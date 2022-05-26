@@ -25,5 +25,9 @@ public interface IModelFactory {
 
     AtomicActivity createAtomicActivity(AtomicActivityCollection atomicActivityCollection, String atomicActivity);
 
+    PatternTemplate createPatternTemplate(String name, int inputs, int outputs);
+
+    PatternTemplateCollection createPatternTemplateCollection();
+
     void registerInModelTracker(@NotNull ModelBase item);
 }

@@ -30,6 +30,8 @@ class PersistenceHelper implements IPersistenceHelper {
 
     private final Path projectNamesFile = persistenceDirectory.resolve("projectNames.json").toAbsolutePath();
 
+    private final Path patternTemplatesFile = persistenceDirectory.resolve("patternTemplates.json").toAbsolutePath();
+
     private final LoggerService loggerService;
 
     private final ObjectMapper objectMapper;
@@ -75,6 +77,11 @@ class PersistenceHelper implements IPersistenceHelper {
     }
 
     @Override
+    public File getPatternTemplatesFile() {
+        return patternTemplatesFile.toFile();
+    }
+
+    @Override
     public void saveProjectFile(Project project) {
         if (saveFile(generatePathToJson(projectDirectory.toString(), project.getId().toString()), project))
             loggerService.logInfo("Saved project %s".formatted(project.getId()));
@@ -90,6 +97,12 @@ class PersistenceHelper implements IPersistenceHelper {
     public void saveProjectNames(ProjectNameList projectNames) {
         if (saveFile(projectNamesFile, projectNames))
             loggerService.logInfo("Saved Project Names");
+    }
+
+    @Override
+    public void savePatternTemplateFile(PatternTemplateCollection patternTemplateCollection) {
+        if (saveFile(patternTemplatesFile, patternTemplateCollection))
+            loggerService.logInfo("Saved Pattern Templates");
     }
 
     @Override
