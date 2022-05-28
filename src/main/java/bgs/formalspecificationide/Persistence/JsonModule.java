@@ -52,7 +52,7 @@ class JsonModule extends SimpleModule {
         }
     }
 
-    private static class AggregateRootDeserializer<T extends ModelBase & IAggregateRoot<?>> extends BaseDeserializer<T> {
+    private static class AggregateRootDeserializer<T extends ModelAggregate & IAggregateRoot<ModelBase>> extends BaseDeserializer<T> {
 
         protected AggregateRootDeserializer(JsonDeserializer<?> defaultDeserializer, IModelFactory modelFactory) {
             super(defaultDeserializer, modelFactory);
@@ -68,10 +68,20 @@ class JsonModule extends SimpleModule {
             }
         }
 
+        private void setParents(ModelAggregate root) {
+            for (var child : root.getChildren()) {
+                child.setParent(root);
+
+                if (child instanceof ModelAggregate childModelAggregate)
+                    setParents(childModelAggregate);
+            }
+        }
+
         @Override
         public T deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
             var aggregateRoot = super.deserialize(jsonParser, deserializationContext);
             observeChildren(aggregateRoot);
+            setParents(aggregateRoot);
             return aggregateRoot;
         }
     }

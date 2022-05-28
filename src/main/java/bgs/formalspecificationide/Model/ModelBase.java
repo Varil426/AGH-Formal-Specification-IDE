@@ -1,37 +1,45 @@
 package bgs.formalspecificationide.Model;
 
-import bgs.formalspecificationide.Utilities.Event;
+import bgs.formalspecificationide.Events.Event;
+import bgs.formalspecificationide.Events.IsDirtyEvent;
+import bgs.formalspecificationide.Events.PropertyChangedEvent;
+import bgs.formalspecificationide.Utilities.IAggregateMember;
+import bgs.formalspecificationide.Utilities.ICanSetDirty;
 import bgs.formalspecificationide.Utilities.IObservable;
 import bgs.formalspecificationide.Utilities.IObserver;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.HashSet;
+import java.util.Optional;
+import java.util.UUID;
 
-public abstract class ModelBase implements IObservable, IObserver {
+public abstract class ModelBase implements IObservable, IAggregateMember<ModelAggregate> {
 
-    public static class PropertyChangedEvent extends Event<ModelBase> {
-
-        private final String propertyName;
-
-        public PropertyChangedEvent(ModelBase publisher, String propertyName) {
-            super(publisher);
-            this.propertyName = propertyName;
-        }
-
-        public String getPropertyName() {
-            return propertyName;
-        }
+    public ModelBase(UUID id) {
+        this.id = id;
     }
 
-    public static class IsDirtyEvent extends Event<ModelBase> {
+    private final UUID id;
 
-        public IsDirtyEvent(ModelBase publisher) {
-            super(publisher);
-        }
+    @JsonIgnore
+    private ModelAggregate parent;
+
+    public UUID getId() {
+        return id;
     }
 
     @JsonIgnore
     private final HashSet<IObserver> observers = new HashSet<>();
+
+    @Override
+    public final Optional<ModelAggregate> getParent() {
+        return Optional.ofNullable(parent);
+    }
+
+    @Override
+    public final void setParent(ModelAggregate parent) {
+        this.parent = parent;
+    }
 
     @Override
     public final void subscribe(IObserver observer) {
@@ -55,13 +63,12 @@ public abstract class ModelBase implements IObservable, IObserver {
 
     private void notifyPropertyChanged(String propertyName) {
         notifyObservers(new PropertyChangedEvent(this, propertyName));
-        notifyObservers(new IsDirtyEvent(this));
+        notifyDirty();
     }
 
-    @Override
-    public void notify(Event<?> event) {
-        if (event instanceof IsDirtyEvent) {
-            notifyObservers(event);
-        }
+    protected void notifyDirty() {
+        notifyObservers(new IsDirtyEvent(this));
+        if (this instanceof ICanSetDirty dirty)
+            dirty.setDirty();
     }
 }

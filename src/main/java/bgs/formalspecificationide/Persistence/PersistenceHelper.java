@@ -1,8 +1,7 @@
 package bgs.formalspecificationide.Persistence;
 
 import bgs.formalspecificationide.Factories.IModelFactory;
-import bgs.formalspecificationide.Model.ModelBase;
-import bgs.formalspecificationide.Model.Project;
+import bgs.formalspecificationide.Model.*;
 import bgs.formalspecificationide.Services.LoggerService;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,16 +15,22 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Stream;
 
 class PersistenceHelper implements IPersistenceHelper {
 
-    private final Path persistenceDirectory = Paths.get("persistence");
+    private final Path persistenceDirectory = Paths.get("persistence").toAbsolutePath();
 
-    private final Path projectDirectory = persistenceDirectory.resolve("projects");
+    private final Path projectDirectory = persistenceDirectory.resolve("projects").toAbsolutePath();
+
+    private final Path imageDirectory = persistenceDirectory.resolve("images").toAbsolutePath();
+
+    private final Path atomicActivityCollectionsDirectory = persistenceDirectory.resolve("atomicActivityCollections").toAbsolutePath();
+
+    private final Path projectNamesFile = persistenceDirectory.resolve("projectNames.json").toAbsolutePath();
+
+    private final Path patternTemplatesFile = persistenceDirectory.resolve("patternTemplates.json").toAbsolutePath();
 
     private final LoggerService loggerService;
 
@@ -42,6 +47,7 @@ class PersistenceHelper implements IPersistenceHelper {
 
 
         objectMapper = new ObjectMapper();
+        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         objectMapper.activateDefaultTyping(polymorphicTypeValidator, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
 
@@ -52,14 +58,65 @@ class PersistenceHelper implements IPersistenceHelper {
 
     @Override
     public List<File> getAllProjectFiles() {
-        return Stream.of(Objects.requireNonNull(new File(projectDirectory.toAbsolutePath().toString()).listFiles()))
-                .filter(file -> file.isFile() && IPersistenceHelper.getFileExtension(file).equals("json")).toList();
+        return getAllFilesInDirectory(projectDirectory, "json").toList();
+    }
+
+    @Override
+    public List<File> getAllImageFiles() {
+        return getAllFilesInDirectory(imageDirectory, "png", "jpg").toList();
+    }
+
+    @Override
+    public List<File> getAllAtomicActivityCollectionFiles() {
+        return getAllFilesInDirectory(atomicActivityCollectionsDirectory, "json").toList();
+    }
+
+    @Override
+    public File getProjectNamesFile() {
+        return projectNamesFile.toFile();
+    }
+
+    @Override
+    public File getPatternTemplatesFile() {
+        return patternTemplatesFile.toFile();
     }
 
     @Override
     public void saveProjectFile(Project project) {
-        if (saveFile(generatePathToJson(projectDirectory.toAbsolutePath().toString(), project.getName()), project))
-            loggerService.logInfo("Saved project %s".formatted(project.getName()));
+        if (saveFile(generatePathToJson(projectDirectory.toString(), project.getId().toString()), project))
+            loggerService.logInfo("Saved project %s".formatted(project.getId()));
+    }
+
+    @Override
+    public void saveAtomicActivityCollectionFile(AtomicActivityCollection atomicActivityCollection) {
+        if (saveFile(generatePathToJson(atomicActivityCollectionsDirectory.toString(), atomicActivityCollection.getId().toString()), atomicActivityCollection))
+            loggerService.logInfo("Saved Atomic Activity Collection %s".formatted(atomicActivityCollection.getId().toString()));
+    }
+
+    @Override
+    public void saveProjectNames(ProjectNameList projectNames) {
+        if (saveFile(projectNamesFile, projectNames))
+            loggerService.logInfo("Saved Project Names");
+    }
+
+    @Override
+    public void savePatternTemplateFile(PatternTemplateCollection patternTemplateCollection) {
+        if (saveFile(patternTemplatesFile, patternTemplateCollection))
+            loggerService.logInfo("Saved Pattern Templates");
+    }
+
+    @Override
+    public Optional<File> saveImage(File imageFile, UUID id) {
+        File newFile;
+        try {
+            var newPath = Files.copy(imageFile.toPath(), Path.of(imageDirectory.toString(), "%s.%s".formatted(id.toString(), IPersistenceHelper.getFileExtension(imageFile))));
+            newFile = newPath.toFile();
+        } catch (IOException e) {
+            loggerService.logError("Couldn't copy image.");
+            return Optional.empty();
+        }
+        loggerService.logInfo("Successfully copied image.");
+        return Optional.of(newFile);
     }
 
     @Override
@@ -75,6 +132,8 @@ class PersistenceHelper implements IPersistenceHelper {
 
     @Override
     public void removeFile(File file) {
+        // TODO Add check for testing whether we are trying to delete file from our persistence and not some random file from drive.
+
         try {
             Files.delete(file.toPath());
             loggerService.logInfo("Deleted file %s".formatted(file.getName()));
@@ -107,9 +166,8 @@ class PersistenceHelper implements IPersistenceHelper {
     /**
      * Checks and creates directories used by the persistence layer.
      */
-    @Override
-    public void setupDirectories() {
-        var paths = Arrays.asList(persistenceDirectory, projectDirectory);
+    private void setupDirectories() {
+        var paths = Arrays.asList(persistenceDirectory, projectDirectory, imageDirectory, atomicActivityCollectionsDirectory);
 
         for (var path : paths) {
             if (!Files.isDirectory(path)) {
@@ -120,5 +178,13 @@ class PersistenceHelper implements IPersistenceHelper {
                 }
             }
         }
+    }
+
+    private Stream<File> getAllFilesInDirectory(Path directory) {
+        return Stream.of(Objects.requireNonNull(new File(directory.toAbsolutePath().toString()).listFiles()));
+    }
+
+    private Stream<File> getAllFilesInDirectory(Path directory, String... extensions) {
+        return getAllFilesInDirectory(directory).filter(file -> file.isFile() && Arrays.stream(extensions).anyMatch(x -> IPersistenceHelper.getFileExtension(file).equals(x)));
     }
 }

@@ -1,39 +1,39 @@
 package bgs.formalspecificationide.Persistence.Repositories;
 
 import bgs.formalspecificationide.Model.Project;
+import bgs.formalspecificationide.Model.ProjectName;
 import bgs.formalspecificationide.Persistence.IPersistenceHelper;
 import bgs.formalspecificationide.Services.LoggerService;
 import com.google.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 
 class ProjectRepository implements IProjectRepository {
 
     private final IPersistenceHelper persistenceHelper;
+    private final IProjectNameRepository projectNameRepository;
     private final LoggerService loggerService;
 
     private final Set<Project> projects;
 
     @Inject
-    public ProjectRepository(IPersistenceHelper persistenceHelper, LoggerService loggerService) {
+    public ProjectRepository(IPersistenceHelper persistenceHelper, IProjectNameRepository projectNameRepository, LoggerService loggerService) {
         this.persistenceHelper = persistenceHelper;
+        this.projectNameRepository = projectNameRepository;
         this.loggerService = loggerService;
         projects = new HashSet<>();
     }
 
     @Override
     public List<String> getProjectNames() {
-        return persistenceHelper.getAllProjectFiles().stream()
-                .map(file -> file.getName().substring(0, file.getName().lastIndexOf('.'))).toList();
+        return projectNameRepository.getAll().stream().map(ProjectName::getProjectName).toList();
     }
 
     @Override
-    public void add(Project item) {
+    public void add(@NotNull Project item) {
         projects.add(item);
     }
 
@@ -57,16 +57,20 @@ class ProjectRepository implements IProjectRepository {
      * @return The project or null if not found.
      */
     @Override
-    public Project getByName(String name) {
+    public Optional<Project> getByName(String name) {
+        var projectId = projectNameRepository.get(x -> x.getProjectName().equals(name)).stream().findFirst();
+        if (projectId.isEmpty())
+            return Optional.empty();
+
         var projectFiles = persistenceHelper.getAllProjectFiles();
-        var foundProjectFile = projectFiles.stream().filter(x -> x.getName().equals(name)).findFirst();
-        return foundProjectFile.map(this::loadProject).orElse(null);
+        var foundProjectFile = projectFiles.stream().filter(x -> x.getName().equals(projectId.get().toString())).findFirst();
+        return foundProjectFile.map(this::loadProject);
     }
 
     @Override
     public void remove(@NotNull Project item) {
-        var name = item.getName();
-        var file = persistenceHelper.getAllProjectFiles().stream().filter(x -> name.equals(IPersistenceHelper.getFileNameWithoutExtension(x))).findFirst();
+        var projectId = item.getId().toString();
+        var file = persistenceHelper.getAllProjectFiles().stream().filter(x -> projectId.equals(IPersistenceHelper.getFileNameWithoutExtension(x))).findFirst();
         file.ifPresent(persistenceHelper::removeFile);
         projects.remove(item);
     }
@@ -79,7 +83,7 @@ class ProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public void save(Project item) {
+    public void save(@NotNull Project item) {
         if (item.isDirty()) {
             persistenceHelper.saveProjectFile(item);
             item.clearIsDirty();
@@ -87,10 +91,10 @@ class ProjectRepository implements IProjectRepository {
     }
 
     private Project loadProject(File file) {
-        var projectName = IPersistenceHelper.getFileNameWithoutExtension(file);
-        if (projects.stream().anyMatch(x -> x.getName().equals(projectName))) {
+        var projectId = IPersistenceHelper.getFileNameWithoutExtension(file);
+        if (projects.stream().anyMatch(x -> x.getId().toString().equals(projectId))) {
             //noinspection OptionalGetWithoutIsPresent
-            return projects.stream().filter(x -> x.getName().equals(projectName)).findFirst().get();
+            return projects.stream().filter(x -> x.getId().toString().equals(projectId)).findFirst().get();
         }
         var newProject = persistenceHelper.loadFile(file, Project.class);
 
@@ -100,4 +104,8 @@ class ProjectRepository implements IProjectRepository {
         return newProject;
     }
 
+    @Override
+    public Optional<Project> getById(UUID id) {
+        return getAll().stream().filter(x -> x.getId() == id).findFirst();
+    }
 }

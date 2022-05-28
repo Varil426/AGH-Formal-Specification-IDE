@@ -1,16 +1,23 @@
 package bgs.formalspecificationide.Model;
 
+import bgs.formalspecificationide.Events.Event;
+import bgs.formalspecificationide.Events.IsDirtyEvent;
+import bgs.formalspecificationide.Events.ModelEvents.ChildAddedEvent;
+import bgs.formalspecificationide.Events.ModelEvents.ChildRemovedEvent;
 import bgs.formalspecificationide.Utilities.IAggregate;
 import bgs.formalspecificationide.Utilities.IAggregateRoot;
+import bgs.formalspecificationide.Utilities.IObserver;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-public abstract class ModelAggregate extends ModelBase implements IAggregate<ModelBase> {
+public abstract class ModelAggregate extends ModelBase implements IAggregate<ModelBase>, IObserver {
 
     private final List<ModelBase> children;
 
-    public ModelAggregate() {
+    public ModelAggregate(UUID id) {
+        super(id);
         children = new ArrayList<>();
     }
 
@@ -27,6 +34,9 @@ public abstract class ModelAggregate extends ModelBase implements IAggregate<Mod
 
         children.add(child);
         child.subscribe(this);
+
+        notifyObservers(new ChildAddedEvent(this, child));
+        notifyDirty();
     }
 
     @Override
@@ -40,6 +50,9 @@ public abstract class ModelAggregate extends ModelBase implements IAggregate<Mod
     public void removeChild(ModelBase child) {
         children.remove(child);
         child.unsubscribe(this);
+
+        notifyObservers(new ChildRemovedEvent(this, child));
+        notifyDirty();
     }
 
     @Override
@@ -47,5 +60,17 @@ public abstract class ModelAggregate extends ModelBase implements IAggregate<Mod
         for (var child : children) {
             removeChild(child);
         }
+    }
+
+    @Override
+    public void notify(Event<?> event) {
+        if (event instanceof IsDirtyEvent) {
+            notifyObservers(event);
+        }
+    }
+
+    @Override
+    public <Z extends ModelBase> List<Z> getChildrenOfType(Class<Z> type) {
+        return getChildren().stream().filter(x -> type.isAssignableFrom(x.getClass())).map(type::cast).toList();
     }
 }

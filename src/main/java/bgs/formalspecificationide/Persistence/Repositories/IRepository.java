@@ -1,22 +1,20 @@
 package bgs.formalspecificationide.Persistence.Repositories;
 
-import bgs.formalspecificationide.Utilities.IAggregateRoot;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.Predicate;
 
-public interface IRepository<T extends IAggregateRoot<?>> {
-
-    void add(T item);
+public interface IRepository<T> {
+    void add(@NotNull T item);
 
     List<T> getAll();
 
     List<T> get(Predicate<T> predicate);
 
-    void remove(T item);
+    void remove(@NotNull T item);
 
     void saveAll();
 
-    void save(T item);
-
+    void save(@NotNull T item);
 }
