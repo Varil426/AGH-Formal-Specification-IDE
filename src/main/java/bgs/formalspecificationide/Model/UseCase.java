@@ -57,8 +57,9 @@ public class UseCase extends ModelAggregate{
 
     @Override
     public void addChild(ModelBase item) {
-        if (item instanceof Scenario scenario && scenario.isMainScenario() && getScenarioList().stream().anyMatch(Scenario::isMainScenario))
-            throw new IllegalArgumentException("Can't add more than one main scenario");
+        //TODO poprawić to bo nie działa
+//        if (item instanceof Scenario scenario && scenario.isMainScenario() && getScenarioList().stream().anyMatch(Scenario::isMainScenario))
+//            throw new IllegalArgumentException("Can't add more than one main scenario");
         super.addChild(item);
     }
 
