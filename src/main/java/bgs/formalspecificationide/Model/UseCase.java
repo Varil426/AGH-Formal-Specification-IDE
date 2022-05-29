@@ -10,7 +10,8 @@ import java.util.UUID;
 
 public class UseCase extends ModelAggregate{
 
-    private String useCaseName;
+    private String useCaseName; // np.: create_order
+    private String useCasePrettyName; // np.: Create Order
     private final HashMap<UUID, ArrayList<RelationEnum>> relations;
 
     public enum RelationEnum {
@@ -29,6 +30,13 @@ public class UseCase extends ModelAggregate{
         if (!useCaseName.equals(name)) {
             this.useCaseName = name;
             propertyChanged("useCaseName");
+        }
+    }
+
+    public void setPrettyName(String name) {
+        if (useCasePrettyName == null || !useCasePrettyName.equals(name)) {
+            this.useCasePrettyName = name;
+            propertyChanged("useCasePrettyName");
         }
     }
 
@@ -82,6 +90,10 @@ public class UseCase extends ModelAggregate{
 
     public String getUseCaseName() {
         return useCaseName;
+    }
+
+    public String getUseCasePrettyName() {
+        return useCasePrettyName;
     }
 
     public HashMap<UUID, ArrayList<RelationEnum>> getRelations() {
