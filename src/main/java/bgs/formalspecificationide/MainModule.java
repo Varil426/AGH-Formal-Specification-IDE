@@ -1,6 +1,8 @@
 package bgs.formalspecificationide;
 
+import bgs.formalspecificationide.Factories.IModelFactory;
 import bgs.formalspecificationide.Factories.ModelFactory;
+import bgs.formalspecificationide.Persistence.Repositories.RepositoriesModule;
 import bgs.formalspecificationide.Services.*;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
@@ -18,9 +20,9 @@ public class MainModule extends AbstractModule {
         bind(LoggerService.class).in(Scopes.SINGLETON);
 
         // Factories
-        bind(ModelFactory.class).in(Scopes.SINGLETON);
+        bind(IModelFactory.class).to(ModelFactory.class).in(Scopes.SINGLETON);
 
-        // Repositories
-
+        // Submodules
+        install(new RepositoriesModule());
     }
 }

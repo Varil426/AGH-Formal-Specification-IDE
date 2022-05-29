@@ -1,16 +1,37 @@
 package bgs.formalspecificationide.Model;
 
-// TODO Add the rest of properties
-public class Project extends ModelBase {
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-    private String name;
+import java.util.List;
+import java.util.UUID;
 
-    public String getName() {
-        return name;
+public class Project extends ModelRootAggregate {
+
+    private UUID atomicActivityCollectionId;
+
+    @JsonCreator
+    public Project(@JsonProperty("id") UUID id) {
+        super(id);
     }
 
-    public void setName(String name) {
-        this.name = name;
-        notifyPropertyChanged("Name");
+    public List<UseCaseDiagram> getUseCaseDiagramList() {
+        return getChildrenOfType(UseCaseDiagram.class);
+    }
+
+    public void addUseCaseDiagram(UseCaseDiagram useCaseDiagram){
+        addChild(useCaseDiagram);
+    }
+
+    public void removeUseCaseDiagram(UseCaseDiagram useCaseDiagram){
+        removeChild(useCaseDiagram);
+    }
+
+    public UUID getAtomicActivityCollectionId() {
+        return atomicActivityCollectionId;
+    }
+
+    public void setAtomicActivityCollectionId(UUID atomicActivityCollectionId) {
+        this.atomicActivityCollectionId = atomicActivityCollectionId;
     }
 }

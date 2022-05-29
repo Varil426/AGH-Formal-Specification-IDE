@@ -1,5 +1,8 @@
 package bgs.formalspecificationide;
 
+import bgs.formalspecificationide.Factories.ModelFactory;
+import bgs.formalspecificationide.Model.Project;
+import bgs.formalspecificationide.Persistence.Repositories.IProjectRepository;
 import bgs.formalspecificationide.Services.IResourceService;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -16,9 +19,6 @@ public class FormalSpecificationIde extends Application {
     public void start(Stage stage) throws Exception {
         stage.setTitle(resourceService.getText("ApplicationTitle"));
 
-        //stage.setWidth();
-        //stage.setHeight();
-        stage.setResizable(false);
 
         stage.show();
     }

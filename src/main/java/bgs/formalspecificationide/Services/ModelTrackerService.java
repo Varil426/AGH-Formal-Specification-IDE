@@ -1,6 +1,6 @@
 package bgs.formalspecificationide.Services;
 
-import bgs.formalspecificationide.Utilities.Event;
+import bgs.formalspecificationide.Events.Event;
 import bgs.formalspecificationide.Utilities.IObserver;
 import com.google.inject.Inject;
 
