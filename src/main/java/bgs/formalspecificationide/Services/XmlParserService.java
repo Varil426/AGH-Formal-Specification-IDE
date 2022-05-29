@@ -1,6 +1,8 @@
 package bgs.formalspecificationide.Services;
 
 import bgs.formalspecificationide.Factories.IModelFactory;
+import bgs.formalspecificationide.Model.UseCase;
+import bgs.formalspecificationide.Model.UseCaseDiagram;
 import com.google.inject.Inject;
 import javafx.util.Pair;
 import org.w3c.dom.Document;
@@ -14,10 +16,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class XmlParserService {
 
@@ -28,7 +27,7 @@ public class XmlParserService {
         this.modelFactory = modelFactory;
     }
 
-    public Map<String, Map<String, List<String>>> parseXml(File xmlFile) {
+    public Map<String, Map<String, List<String>>> parseXml(UseCaseDiagram useCaseDiagram, File xmlFile) {
         // Instantiate the Factory
         var dbf = DocumentBuilderFactory.newInstance();
 
@@ -46,12 +45,34 @@ public class XmlParserService {
             doc.getDocumentElement().normalize();
 
             var useCases = findUseCases(doc);
+            createUseCaseObjects(useCases, useCaseDiagram);
             return useCases;
 
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private void createUseCaseObjects(Map<String, Map<String, List<String>>> useCases, UseCaseDiagram useCaseDiagram) {
+        useCaseDiagram.setUseCasesRaw(useCases);
+        var useCasesList = new ArrayList<UseCase>();
+        for (var entry : useCases.entrySet()) {
+            var useCase = modelFactory.createUseCase(useCaseDiagram, UUID.randomUUID(), entry.getKey());
+            useCase.setPrettyName(entry.getValue().get("NAME").get(0));
+            useCasesList.add(useCase);
+        }
+        for (var entry : useCases.entrySet()) {
+            var useCase = useCasesList.stream().filter(x -> x.getUseCaseName().equals(entry.getKey())).findFirst().orElseThrow();
+            for (var inc : entry.getValue().get("INCLUDE")) {
+                var useCaseInInclude = useCasesList.stream().filter(x -> x.getUseCaseName().equals(inc)).findFirst().orElseThrow();
+                useCase.addRelations(useCaseInInclude.getId(), UseCase.RelationEnum.INCLUDE);
+            }
+            for (var ext : entry.getValue().get("EXTEND")) {
+                var useCaseInExtend = useCasesList.stream().filter(x -> x.getUseCaseName().equals(ext)).findFirst().orElseThrow();
+                useCase.addRelations(useCaseInExtend.getId(), UseCase.RelationEnum.EXTEND);
+            }
+        }
     }
 
     private Map<String, Map<String, List<String>>> findUseCases(Document doc) {
