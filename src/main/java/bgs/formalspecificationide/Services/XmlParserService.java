@@ -1,5 +1,6 @@
 package bgs.formalspecificationide.Services;
 
+import bgs.formalspecificationide.Factories.IModelFactory;
 import com.google.inject.Inject;
 import javafx.util.Pair;
 import org.w3c.dom.Document;
@@ -20,8 +21,11 @@ import java.util.Map;
 
 public class XmlParserService {
 
+    private final IModelFactory modelFactory;
+
     @Inject
-    XmlParserService() {
+    XmlParserService(IModelFactory modelFactory) {
+        this.modelFactory = modelFactory;
     }
 
     public Map<String, Map<String, List<String>>> parseXml(File xmlFile) {
