@@ -18,6 +18,7 @@ public class MainModule extends AbstractModule {
         bind(EventAggregatorService.class).in(Scopes.SINGLETON);
         bind(ModelTrackerService.class).in(Scopes.SINGLETON);
         bind(LoggerService.class).in(Scopes.SINGLETON);
+        bind(XmlParserService.class).in(Scopes.SINGLETON);
 
         // Factories
         bind(IModelFactory.class).to(ModelFactory.class).in(Scopes.SINGLETON);
