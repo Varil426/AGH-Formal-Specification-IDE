@@ -1,12 +1,15 @@
 package bgs.formalspecificationide.Helpers;
 
+import bgs.formalspecificationide.Factories.ModelFactory;
 import bgs.formalspecificationide.MainModule;
+import bgs.formalspecificationide.Model.UseCase;
 import bgs.formalspecificationide.Services.XmlParserService;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -14,23 +17,90 @@ class XmlParserTest {
 
     private final Injector injector = Guice.createInjector(new MainModule());
     private final XmlParserService xmlParserService = injector.getInstance(XmlParserService.class);
+    private final ModelFactory modelFactory = injector.getInstance(ModelFactory.class);
 
     @Test
     void parseXmlShop() {
-        var useCases = xmlParserService.parseXml(new File("xml_and_png_examples/1. GenMyModel/shop.xml"));
+        var project = modelFactory.createProject("test1");
+        var image = modelFactory.createImage(UUID.randomUUID(), new File("xml_and_png_examples/1. GenMyModel/shop.jpeg"));
+        var useCaseDiagram = modelFactory.createUseCaseDiagram(project, UUID.randomUUID(), image.getId());
+        xmlParserService.parseXml(useCaseDiagram, new File("xml_and_png_examples/1. GenMyModel/shop.xml"));
+        var useCaseList = useCaseDiagram.getUseCaseList();
+        for (var uc : useCaseList) {
+            var useCaseName = uc.getUseCaseName();
+            var useCasePrettyName = uc.getUseCasePrettyName();
+            var relations = uc.getRelations();
+            switch (useCaseName) {
+                case "ship_order" -> {
+                    assertEquals(useCasePrettyName, "Ship Order");
+                    assertEquals(relations.size(), 0);
+                }
+                case "create_order" -> {
+                    assertEquals(useCasePrettyName, "Create Order");
+                    assertEquals(relations.size(), 0);
+                }
+                case "update_items" -> {
+                    assertEquals(useCasePrettyName, "Update Items");
+                    assertEquals(relations.size(), 0);
+                }
+                case "register_details" -> {
+                    assertEquals(useCasePrettyName, "Register Details");
+                    assertEquals(relations.size(), 0);
+                }
+                default -> assertEquals(0, 1);
+            }
+        }
+        assertEquals(useCaseDiagram.getUseCaseList().size(), 4);
         var expectedResult = "{ship_order={EXTEND=[], INCLUDE=[], NAME=[Ship Order]}, create_order={EXTEND=[], INCLUDE=[], NAME=[Create Order]}, update_items={EXTEND=[], INCLUDE=[], NAME=[Update Items]}, register_details={EXTEND=[], INCLUDE=[], NAME=[Register Details]}}";
-        assert useCases != null;
-        assertEquals(expectedResult, useCases.toString());
+        assert useCaseDiagram.getUseCasesRaw() != null;
+        assertEquals(expectedResult, useCaseDiagram.getUseCasesRaw().toString());
     }
 
     @Test
     void parseXmlShopExt() {
-        var useCases = xmlParserService.parseXml(new File("xml_and_png_examples/1. GenMyModel/shop_ext.xml"));
+        var project = modelFactory.createProject("test2");
+        var image = modelFactory.createImage(UUID.randomUUID(), new File("xml_and_png_examples/1. GenMyModel/shop_ext.jpeg"));
+        var useCaseDiagram = modelFactory.createUseCaseDiagram(project, UUID.randomUUID(), image.getId());
+        xmlParserService.parseXml(useCaseDiagram, new File("xml_and_png_examples/1. GenMyModel/shop_ext.xml"));
+        var useCaseList = useCaseDiagram.getUseCaseList();
+        for (var uc : useCaseList) {
+            var useCaseName = uc.getUseCaseName();
+            var useCasePrettyName = uc.getUseCasePrettyName();
+            var relations = uc.getRelations();
+            switch (useCaseName) {
+                case "ship_order" -> {
+                    assertEquals(useCasePrettyName, "Ship Order");
+                    assertEquals(relations.size(), 1);
+                    for (var r : relations.entrySet()) {
+                        UUID ucInRelationId = r.getKey();
+                        String ucInRelationName = useCaseList.stream().filter(x -> x.getId() == ucInRelationId).findFirst().orElseThrow().getUseCaseName();
+                        assertEquals(r.getValue().get(0), UseCase.RelationEnum.EXTEND);
+                        assertEquals(ucInRelationName, "register_details");
+                    }
+                }
+                case "create_order" -> {
+                    assertEquals(useCasePrettyName, "Create Order");
+                    assertEquals(relations.size(), 0);
+                }
+                case "update_items" -> {
+                    assertEquals(useCasePrettyName, "Update Items");
+                    assertEquals(relations.size(), 0);
+                }
+                case "register_details" -> {
+                    assertEquals(useCasePrettyName, "Register Details");
+                    assertEquals(relations.size(), 1);
+                    for (var r : relations.entrySet()) {
+                        UUID ucInRelationId = r.getKey();
+                        String ucInRelationName = useCaseList.stream().filter(x -> x.getId() == ucInRelationId).findFirst().orElseThrow().getUseCaseName();
+                        assertEquals(r.getValue().get(0), UseCase.RelationEnum.INCLUDE);
+                        assertEquals(ucInRelationName, "create_order");
+                    }
+                }
+                default -> assertEquals(0, 1);
+            }
+        }
+        assertEquals(useCaseDiagram.getUseCaseList().size(), 4);
         var expectedResult = "{ship_order={EXTEND=[register_details], INCLUDE=[], NAME=[Ship Order]}, create_order={EXTEND=[], INCLUDE=[], NAME=[Create Order]}, update_items={EXTEND=[], INCLUDE=[], NAME=[Update Items]}, register_details={EXTEND=[], INCLUDE=[create_order], NAME=[Register Details]}}";
-        assert useCases != null;
-        assertEquals(expectedResult, useCases.toString());
-    }
-
     @Test
     void parseXmlBank() {
         var useCases = xmlParserService.parseXml(new File("xml_and_png_examples/2. Papyrus/Bank.xml"));
