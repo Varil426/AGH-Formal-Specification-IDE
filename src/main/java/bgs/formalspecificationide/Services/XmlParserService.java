@@ -1,5 +1,6 @@
-package bgs.formalspecificationide.Helpers;
+package bgs.formalspecificationide.Services;
 
+import com.google.inject.Inject;
 import javafx.util.Pair;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -17,9 +18,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class XmlParser {
+public class XmlParserService {
 
-    public static Map<String, Map<String, List<String>>> parseXml(File xmlFile) {
+    @Inject
+    XmlParserService() {
+    }
+
+    public Map<String, Map<String, List<String>>> parseXml(File xmlFile) {
         // Instantiate the Factory
         var dbf = DocumentBuilderFactory.newInstance();
 
@@ -45,7 +50,7 @@ public class XmlParser {
         return null;
     }
 
-    private static Map<String, Map<String, List<String>>> findUseCases(Document doc) {
+    private Map<String, Map<String, List<String>>> findUseCases(Document doc) {
         var root = doc.getDocumentElement();
         var rootTag = root.getTagName(); // root.tag (xmi:XMI)
         var rootAttrib = getAttributesFromNamedNodeMap(root.getAttributes()); // root.attrib (xmi:version) oraz root.nsmap (xmlns:xsi, xmlns:uml, xmlns:xmi)
@@ -68,7 +73,7 @@ public class XmlParser {
         return matchedUseCases;
     }
 
-    private static Map<String, Map<String, List<String>>> matchIncludeExtend(List<String> useCasesList, Map<String, Pair<String, String>> include, Map<String, Pair<String, String>> extend) {
+    private Map<String, Map<String, List<String>>> matchIncludeExtend(List<String> useCasesList, Map<String, Pair<String, String>> include, Map<String, Pair<String, String>> extend) {
         var matchedUseCases = new HashMap<String, Map<String, List<String>>>();
         for (String ucName : useCasesList) {
             var id_ = ucName.replace(" ", "_").toLowerCase();
@@ -97,7 +102,7 @@ public class XmlParser {
         return matchedUseCases;
     }
 
-    private static Map<String, Pair<String, String>> getExtendFromExtXmlElems(List<Element> extXmlElems, Map<String, String> useCases) {
+    private Map<String, Pair<String, String>> getExtendFromExtXmlElems(List<Element> extXmlElems, Map<String, String> useCases) {
         var extend = new HashMap<String, Pair<String, String>>();
         var cnt = 1;
         for (var elem : extXmlElems) {
@@ -122,7 +127,7 @@ public class XmlParser {
         return extend;
     }
 
-    private static Map<String, Pair<String, String>> getIncludeFromIncXmlElems(List<Element> incXmlElems, Map<String, String> useCases) {
+    private Map<String, Pair<String, String>> getIncludeFromIncXmlElems(List<Element> incXmlElems, Map<String, String> useCases) {
         var include = new HashMap<String, Pair<String, String>>();
         var cnt = 1;
         for (var elem : incXmlElems) {
@@ -147,7 +152,7 @@ public class XmlParser {
         return include;
     }
 
-    private static List<Element> gatherExtXmlElems(Element root) {
+    private List<Element> gatherExtXmlElems(Element root) {
         var rootTag = root.getTagName(); // root.tag (xmi:XMI)
         var extXmlElems = new ArrayList<Element>();
         if (rootTag.equals("xmi:XMI")) {
@@ -204,7 +209,7 @@ public class XmlParser {
         return extXmlElems;
     }
 
-    private static List<Element> getExtXmlElemsFromPackagedElementInsideModel(Element modelNode) {
+    private List<Element> getExtXmlElemsFromPackagedElementInsideModel(Element modelNode) {
         var extXmlElems = new ArrayList<Element>();
         var childOfModelNodes = modelNode.getChildNodes();
         for (int j = 0; j < childOfModelNodes.getLength(); j++) {
@@ -222,7 +227,7 @@ public class XmlParser {
         return extXmlElems;
     }
 
-    private static List<Element> gatherIncXmlElems(Element root) {
+    private List<Element> gatherIncXmlElems(Element root) {
         var rootTag = root.getTagName(); // root.tag (xmi:XMI)
         var incXmlElems = new ArrayList<Element>();
         if (rootTag.equals("xmi:XMI")) {
@@ -279,7 +284,7 @@ public class XmlParser {
         return incXmlElems;
     }
 
-    private static List<Element> getIncXmlElemsFromPackagedElementInsideModel(Element modelNode) {
+    private List<Element> getIncXmlElemsFromPackagedElementInsideModel(Element modelNode) {
         var incXmlElems = new ArrayList<Element>();
         var childOfModelNodes = modelNode.getChildNodes();
         for (int j = 0; j < childOfModelNodes.getLength(); j++) {
@@ -297,7 +302,7 @@ public class XmlParser {
         return incXmlElems;
     }
 
-    private static Map<String, String> getUseCasesFromUcXmlElems(List<Element> ucXmlElems) {
+    private Map<String, String> getUseCasesFromUcXmlElems(List<Element> ucXmlElems) {
         var useCases = new HashMap<String, String>();
         for (var elem : ucXmlElems) {
             var elementAttributes = getAttributesFromNamedNodeMap(elem.getAttributes());
@@ -327,7 +332,7 @@ public class XmlParser {
         return useCases;
     }
 
-    private static List<Element> gatherUcXmlElems(Element root) {
+    private List<Element> gatherUcXmlElems(Element root) {
         var rootTag = root.getTagName(); // root.tag (xmi:XMI)
         var ucXmlElems = new ArrayList<Element>();
         if (rootTag.equals("xmi:XMI")) {
@@ -506,7 +511,7 @@ public class XmlParser {
         return ucXmlElems;
     }
 
-    private static List<Element> getUcXmlElemsFromPackagedElementInsideModel(Element modelNode) {
+    private List<Element> getUcXmlElemsFromPackagedElementInsideModel(Element modelNode) {
         var ucXmlElems = new ArrayList<Element>();
         var childOfModelNodes = modelNode.getChildNodes();
         for (int j = 0; j < childOfModelNodes.getLength(); j++) {
@@ -524,7 +529,7 @@ public class XmlParser {
         return ucXmlElems;
     }
 
-    private static Map<String, String> getAttributesFromNamedNodeMap(NamedNodeMap attributesRaw) {
+    private Map<String, String> getAttributesFromNamedNodeMap(NamedNodeMap attributesRaw) {
         var attributesMap = new HashMap<String, String>();
         for (int i = 0; i < attributesRaw.getLength(); i++) {
             var node = attributesRaw.item(i);
@@ -537,7 +542,7 @@ public class XmlParser {
         return attributesMap;
     }
 
-    private static List<String> gatherRulesUseCases(Map<String, String> namespaces) {
+    private List<String> gatherRulesUseCases(Map<String, String> namespaces) {
         var ucMatches = new ArrayList<String>();
         ucMatches.add(".//UseCase[@Abstract='false']");    // visual paradigm 'Xml_structure': 'simple'
         ucMatches.add(".//Model[@modelType='UseCase']");   // visual paradigm 'Xml_structure': 'traditional'
@@ -559,7 +564,7 @@ public class XmlParser {
         return ucMatches;
     }
 
-    private static List<String> gatherRulesExtends(Map<String, String> namespaces) {
+    private List<String> gatherRulesExtends(Map<String, String> namespaces) {
         var extMatches = new ArrayList<String>();
         extMatches.add(".//Extend[@BacklogActivityId='0']");
 
@@ -572,7 +577,7 @@ public class XmlParser {
         return extMatches;
     }
 
-    private static List<String> gatherRulesIncludes(Map<String, String> namespaces) {
+    private List<String> gatherRulesIncludes(Map<String, String> namespaces) {
         var incMatches = new ArrayList<String>();
         incMatches.add(".//Include[@BacklogActivityId='0']");
 
