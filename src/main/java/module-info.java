@@ -4,6 +4,7 @@ module bgs.formalspecificationide {
     requires com.google.guice;
     requires org.apache.logging.log4j;
     requires org.apache.logging.log4j.core;
+    requires java.xml;
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.annotation;
     requires com.fasterxml.jackson.databind;

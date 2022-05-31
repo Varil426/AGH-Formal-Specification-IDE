@@ -10,7 +10,8 @@ import java.util.UUID;
 
 public class UseCase extends ModelAggregate{
 
-    private String useCaseName;
+    private String useCaseName; // np.: create_order
+    private String useCasePrettyName; // np.: Create Order
     private final HashMap<UUID, ArrayList<RelationEnum>> relations;
 
     public enum RelationEnum {
@@ -32,6 +33,13 @@ public class UseCase extends ModelAggregate{
         }
     }
 
+    public void setPrettyName(String name) {
+        if (useCasePrettyName == null || !useCasePrettyName.equals(name)) {
+            this.useCasePrettyName = name;
+            propertyChanged("useCasePrettyName");
+        }
+    }
+
     public void addScenario(Scenario scenario) {
         addChild(scenario);
     }
@@ -49,8 +57,9 @@ public class UseCase extends ModelAggregate{
 
     @Override
     public void addChild(ModelBase item) {
-        if (item instanceof Scenario scenario && scenario.isMainScenario() && getScenarioList().stream().anyMatch(Scenario::isMainScenario))
-            throw new IllegalArgumentException("Can't add more than one main scenario");
+        //TODO poprawić to bo nie działa
+//        if (item instanceof Scenario scenario && scenario.isMainScenario() && getScenarioList().stream().anyMatch(Scenario::isMainScenario))
+//            throw new IllegalArgumentException("Can't add more than one main scenario");
         super.addChild(item);
     }
 
@@ -82,6 +91,10 @@ public class UseCase extends ModelAggregate{
 
     public String getUseCaseName() {
         return useCaseName;
+    }
+
+    public String getUseCasePrettyName() {
+        return useCasePrettyName;
     }
 
     public HashMap<UUID, ArrayList<RelationEnum>> getRelations() {
