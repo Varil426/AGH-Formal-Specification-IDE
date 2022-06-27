@@ -64,6 +64,11 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>io.github.eckig.grapheditor</groupId>
+            <artifactId>grapheditor-core</artifactId>
+            <version>18.0.1</version>
+        </dependency>
     </dependencies>
 
     <build>
