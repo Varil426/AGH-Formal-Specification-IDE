@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-import io.github.eckig.grapheditor.core.connections.ConnectionCopier;
 
+import bgs.formalspecificationide.GraphEditor.api.src.main.java.io.github.eckig.grapheditor.*;
+import bgs.formalspecificationide.GraphEditor.core.src.main.java.io.github.eckig.grapheditor.core.connections.*;
+import bgs.formalspecificationide.GraphEditor.model.src.main.java.io.github.eckig.grapheditor.model.*;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -15,14 +17,6 @@ import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
-import io.github.eckig.grapheditor.GNodeSkin;
-import io.github.eckig.grapheditor.SelectionManager;
-import io.github.eckig.grapheditor.SkinLookup;
-import io.github.eckig.grapheditor.model.GConnection;
-import io.github.eckig.grapheditor.model.GJoint;
-import io.github.eckig.grapheditor.model.GModel;
-import io.github.eckig.grapheditor.model.GNode;
-import io.github.eckig.grapheditor.model.GraphPackage;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
