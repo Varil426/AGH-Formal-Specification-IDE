@@ -30,14 +30,14 @@ public enum AwesomeIcon {
 
     private static final String STYLE_CLASS = "icon"; //$NON-NLS-1$
     private static final String FONT_AWESOME = "FontAwesome"; //$NON-NLS-1$
-    private int unicode;
+    private final int unicode;
 
     /**
      * Creates a new awesome icon for the given unicode value.
      *
      * @param pUnicode the unicode value as an integer
      */
-    private AwesomeIcon(final int pUnicode) {
+    AwesomeIcon(final int pUnicode) {
         this.unicode = pUnicode;
     }
 

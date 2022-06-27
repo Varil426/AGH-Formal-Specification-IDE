@@ -15,9 +15,6 @@
 							<items>
 								<MenuItem text="Default Skins - Small" onAction="#loadSample"/>
 								<MenuItem text="Default Skins - Large" onAction="#loadSampleLarge"/>
-<!--								<SeparatorMenuItem/>-->
-<!--								<MenuItem text="Tree Skins" onAction="#loadTree"/>-->
-<!--								<MenuItem text="Titled Skins" onAction="#loadTitled"/>-->
 							</items>
 						</Menu>
 						<MenuItem text="Save" onAction="#save"/>
@@ -68,8 +65,6 @@
 						<Menu text="Skin Type">
 							<items>
 								<RadioMenuItem fx:id="defaultSkinButton" text="Default" onAction="#setDefaultSkin" selected="true"/>
-<!--								<RadioMenuItem fx:id="treeSkinButton" text="Tree" onAction="#setTreeSkin"/>-->
-								<RadioMenuItem fx:id="titledSkinButton" text="Titled" onAction="#setTitledSkin"/>
 							</items>
 						</Menu>
 						<!-- Added blank spaces to force menu to be wider. -->

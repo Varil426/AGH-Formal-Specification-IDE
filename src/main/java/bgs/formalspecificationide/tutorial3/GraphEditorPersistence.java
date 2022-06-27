@@ -1,21 +1,19 @@
 package bgs.formalspecificationide.tutorial3;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-
 import io.github.eckig.grapheditor.GraphEditor;
-
+import io.github.eckig.grapheditor.model.GModel;
+import javafx.scene.Scene;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
-import io.github.eckig.grapheditor.model.GModel;
-import javafx.scene.Scene;
-import javafx.stage.FileChooser;
-import javafx.stage.Window;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
 
 /**
  * Helper class for crudely loading {@link GModel} states to and from XML.
@@ -31,8 +29,6 @@ public class GraphEditorPersistence {
 
     private static final String SAMPLE_FILE = "sample" + FILE_EXTENSION; //$NON-NLS-1$
     private static final String SAMPLE_FILE_LARGE = "sample-large" + FILE_EXTENSION; //$NON-NLS-1$
-    private static final String TREE_FILE = "tree" + FILE_EXTENSION; //$NON-NLS-1$
-    private static final String TITLED_FILE = "titled" + FILE_EXTENSION; //$NON-NLS-1$
 
     private File initialDirectory = null;
 
@@ -93,24 +89,6 @@ public class GraphEditorPersistence {
     }
 
     /**
-     * Loads the sample saved in the <b>tree.graph</b> file.
-     *
-     * @param graphEditor the graph editor in which the loaded model will be set
-     */
-    public void loadTree(final GraphEditor graphEditor) {
-        loadSample(TREE_FILE, graphEditor);
-    }
-
-    /**
-     * Loads the sample saved in the <b>titled.graph</b> file.
-     *
-     * @param graphEditor the graph editor in which the loaded model will be set
-     */
-    public void loadTitled(final GraphEditor graphEditor) {
-        loadSample(TITLED_FILE, graphEditor);
-    }
-
-    /**
      * Loads the sample saved in the given file.
      *
      * @param graphEditor the graph editor in which the loaded model will be set
@@ -138,9 +116,8 @@ public class GraphEditorPersistence {
      * Opens the file chooser and returns the selected {@link File}.
      *
      * @param window
-     * @param save
-     *            {@code true} to open a save dialog, {@code false} to open a
-     *            load dialog
+     * @param save   {@code true} to open a save dialog, {@code false} to open a
+     *               load dialog
      * @return the chosen file
      */
     private File showFileChooser(final Window window, final boolean save) {
@@ -164,7 +141,7 @@ public class GraphEditorPersistence {
     /**
      * Saves the graph editor's model state in the given file.
      *
-     * @param file the {@link File} the model state will be saved in
+     * @param file  the {@link File} the model state will be saved in
      * @param model the {@link GModel} to be saved
      */
     private void saveModel(final File file, final GModel model) {
@@ -196,7 +173,7 @@ public class GraphEditorPersistence {
     /**
      * Loads the model from the given file and sets it in the given graph editor.
      *
-     * @param file the {@link File} to be loaded
+     * @param file        the {@link File} to be loaded
      * @param graphEditor the {@link GraphEditor} in which the loaded model will be set
      */
     private void loadModel(final File file, final GraphEditor graphEditor) {
