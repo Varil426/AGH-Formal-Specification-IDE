@@ -71,9 +71,14 @@ public class DefaultSkinController implements SkinController {
         rightOutput.setType(DefaultConnectorTypes.RIGHT_OUTPUT);
         leftInput.setType(DefaultConnectorTypes.LEFT_INPUT);
 
-        System.out.println(node.getConnectors());
-        System.out.println(node.getX());
-        System.out.println(node.getY());
+//        System.out.println(node.getConnectors());
+//        System.out.println(node.getX());
+//        System.out.println(node.getY());
+
+        System.out.println("graphEditor.getModel()");
+        System.out.println(graphEditor.getModel());
+        System.out.println("graphEditor.getModel()");
+//        System.out.println(graphEditor.getModel().getNodes().);
 
         Commands.addNode(graphEditor.getModel(), node);
     }
@@ -157,32 +162,31 @@ public class DefaultSkinController implements SkinController {
      */
     private String getType(final Side position, final boolean input)
     {
-        switch (position)
-        {
-            case TOP:
-                if (input)
-                {
+        switch (position) {
+            case TOP -> {
+                if (input) {
                     return DefaultConnectorTypes.TOP_INPUT;
                 }
                 return DefaultConnectorTypes.TOP_OUTPUT;
-            case RIGHT:
-                if (input)
-                {
+            }
+            case RIGHT -> {
+                if (input) {
                     return DefaultConnectorTypes.RIGHT_INPUT;
                 }
                 return DefaultConnectorTypes.RIGHT_OUTPUT;
-            case BOTTOM:
-                if (input)
-                {
+            }
+            case BOTTOM -> {
+                if (input) {
                     return DefaultConnectorTypes.BOTTOM_INPUT;
                 }
                 return DefaultConnectorTypes.BOTTOM_OUTPUT;
-            case LEFT:
-                if (input)
-                {
+            }
+            case LEFT -> {
+                if (input) {
                     return DefaultConnectorTypes.LEFT_INPUT;
                 }
                 return DefaultConnectorTypes.LEFT_OUTPUT;
+            }
         }
         return null;
     }

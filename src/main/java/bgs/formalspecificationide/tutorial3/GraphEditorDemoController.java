@@ -34,8 +34,7 @@ import java.util.Map;
 public class GraphEditorDemoController {
 
     private final GraphEditor graphEditor = new DefaultGraphEditor();
-    private final SelectionCopier selectionCopier = new SelectionCopier(graphEditor.getSkinLookup(),
-            graphEditor.getSelectionManager());
+    private final SelectionCopier selectionCopier = new SelectionCopier(graphEditor.getSkinLookup(), graphEditor.getSelectionManager());
     private final GraphEditorPersistence graphEditorPersistence = new GraphEditorPersistence();
     private final ObjectProperty<SkinController> activeSkinController = new SimpleObjectProperty<>() {
 
