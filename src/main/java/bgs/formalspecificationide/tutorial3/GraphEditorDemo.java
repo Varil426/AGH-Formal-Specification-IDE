@@ -4,7 +4,7 @@ package bgs.formalspecificationide.tutorial3;/*
 
 import java.net.URL;
 
-import bgs.formalspecificationide.GraphEditor.api.src.main.java.io.github.eckig.grapheditor.*;
+import io.github.eckig.grapheditor.GraphEditor;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,7 +25,6 @@ public class GraphEditorDemo extends Application {
     public void start(final Stage stage) throws Exception {
 
         final URL location = getClass().getClassLoader().getResource("GraphEditorDemo.fxml");
-        System.out.println(location);
         final FXMLLoader loader = new FXMLLoader();
         final Parent root = loader.load(location.openStream());
 

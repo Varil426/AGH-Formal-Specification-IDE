@@ -9,16 +9,10 @@ module bgs.formalspecificationide {
     requires com.fasterxml.jackson.annotation;
     requires com.fasterxml.jackson.databind;
     requires org.jetbrains.annotations;
-//    requires io.github.eckig.grapheditor.api;
-//    requires io.github.eckig.grapheditor.core;
-    requires org.eclipse.emf.ecore;
-    requires org.eclipse.emf.common;
-    requires org.eclipse.emf.ecore.xmi;
+    requires io.github.eckig.grapheditor.api;
+    requires io.github.eckig.grapheditor.core;
     requires org.eclipse.emf.edit;
-    requires org.slf4j;
-
-//    requires org.eclipse.emf.edit;
-//    requires org.eclipse.emf.ecore.xmi;
+    requires org.eclipse.emf.ecore.xmi;
 
     opens bgs.formalspecificationide.Services to com.google.guice;
     opens bgs.formalspecificationide.Persistence to com.google.guice;

@@ -1,14 +1,18 @@
 package bgs.formalspecificationide.tutorial3;
 
-import bgs.formalspecificationide.GraphEditor.api.src.main.java.io.github.eckig.grapheditor.*;
-import bgs.formalspecificationide.GraphEditor.core.src.main.java.io.github.eckig.grapheditor.core.*;
-import bgs.formalspecificationide.GraphEditor.core.src.main.java.io.github.eckig.grapheditor.core.skins.defaults.connection.*;
-import bgs.formalspecificationide.GraphEditor.core.src.main.java.io.github.eckig.grapheditor.core.view.*;
-import bgs.formalspecificationide.GraphEditor.model.src.main.java.io.github.eckig.grapheditor.model.*;
 import bgs.formalspecificationide.tutorial3.customskins.DefaultSkinController;
 import bgs.formalspecificationide.tutorial3.customskins.SkinController;
 import bgs.formalspecificationide.tutorial3.selections.SelectionCopier;
 import bgs.formalspecificationide.tutorial3.utils.AwesomeIcon;
+import io.github.eckig.grapheditor.Commands;
+import io.github.eckig.grapheditor.EditorElement;
+import io.github.eckig.grapheditor.GraphEditor;
+import io.github.eckig.grapheditor.core.DefaultGraphEditor;
+import io.github.eckig.grapheditor.core.skins.defaults.connection.SimpleConnectionSkin;
+import io.github.eckig.grapheditor.core.view.GraphEditorContainer;
+import io.github.eckig.grapheditor.model.GModel;
+import io.github.eckig.grapheditor.model.GNode;
+import io.github.eckig.grapheditor.model.GraphFactory;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;

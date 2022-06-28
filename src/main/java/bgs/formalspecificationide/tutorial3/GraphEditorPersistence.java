@@ -1,7 +1,7 @@
 package bgs.formalspecificationide.tutorial3;
 
-import bgs.formalspecificationide.GraphEditor.api.src.main.java.io.github.eckig.grapheditor.*;
-import bgs.formalspecificationide.GraphEditor.model.src.main.java.io.github.eckig.grapheditor.model.*;
+import io.github.eckig.grapheditor.GraphEditor;
+import io.github.eckig.grapheditor.model.GModel;
 import javafx.scene.Scene;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
