@@ -348,7 +348,7 @@ public class OwnGraphEditorSkinManager implements SkinManager
         GNodeSkin skin = mNodeSkinFactory == null ? null : mNodeSkinFactory.call(pNode);
         if (skin == null)
         {
-            skin = new DefaultNodeSkin(pNode);
+            skin = new OwnDefaultNodeSkin(pNode);
         }
         skin.setGraphEditor(mGraphEditor);
         skin.getRoot().setEditorProperties(mGraphEditor.getProperties());

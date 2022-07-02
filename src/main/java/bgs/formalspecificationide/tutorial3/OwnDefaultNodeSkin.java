@@ -35,7 +35,7 @@ import javafx.scene.shape.Rectangle;
  */
 public class OwnDefaultNodeSkin extends GNodeSkin {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(io.github.eckig.grapheditor.core.skins.defaults.DefaultNodeSkin.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OwnDefaultNodeSkin.class);
 
     private static final String STYLE_CLASS_BORDER = "default-node-border";
     private static final String STYLE_CLASS_BACKGROUND = "default-node-background";
