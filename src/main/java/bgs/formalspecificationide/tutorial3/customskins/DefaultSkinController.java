@@ -1,5 +1,6 @@
 package bgs.formalspecificationide.tutorial3.customskins;
 
+import bgs.formalspecificationide.tutorial3.*;
 import bgs.formalspecificationide.tutorial3.selections.SelectionCopier;
 import io.github.eckig.grapheditor.core.connectors.DefaultConnectorTypes;
 
@@ -57,28 +58,22 @@ public class DefaultSkinController implements SkinController {
         final double windowXOffset = graphEditorContainer.getContentX() / currentZoomFactor;
         final double windowYOffset = graphEditorContainer.getContentY() / currentZoomFactor;
 
-        final GNode node = GraphFactory.eINSTANCE.createGNode();
+//        final GNode node = GraphFactory.eINSTANCE.createGNode();
+        final GNode node = new GNodeOwnImpl();
+        node.setWidth(200);
+
         node.setY(NODE_INITIAL_Y + windowYOffset);
 
-        final GConnector rightOutput = GraphFactory.eINSTANCE.createGConnector();
-        node.getConnectors().add(rightOutput);
+        final GConnector bottomOutput = GraphFactory.eINSTANCE.createGConnector();
+        node.getConnectors().add(bottomOutput);
 
-        final GConnector leftInput = GraphFactory.eINSTANCE.createGConnector();
-        node.getConnectors().add(leftInput);
+        final GConnector topInput = GraphFactory.eINSTANCE.createGConnector();
+        node.getConnectors().add(topInput);
 
         node.setX(NODE_INITIAL_X + windowXOffset);
 
-        rightOutput.setType(DefaultConnectorTypes.RIGHT_OUTPUT);
-        leftInput.setType(DefaultConnectorTypes.LEFT_INPUT);
-
-//        System.out.println(node.getConnectors());
-//        System.out.println(node.getX());
-//        System.out.println(node.getY());
-
-        System.out.println("graphEditor.getModel()");
-        System.out.println(graphEditor.getModel());
-        System.out.println("graphEditor.getModel()");
-//        System.out.println(graphEditor.getModel().getNodes().);
+        bottomOutput.setType(DefaultConnectorTypes.BOTTOM_OUTPUT);
+        topInput.setType(DefaultConnectorTypes.TOP_INPUT);
 
         Commands.addNode(graphEditor.getModel(), node);
     }
