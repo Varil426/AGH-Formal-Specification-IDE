@@ -13,6 +13,10 @@ module bgs.formalspecificationide {
     requires io.github.eckig.grapheditor.core;
     requires org.eclipse.emf.edit;
     requires org.eclipse.emf.ecore.xmi;
+    requires org.eclipse.core.resources;
+    requires org.eclipse.equinox.common;
+    requires jface;
+    requires org.slf4j;
 
     opens bgs.formalspecificationide.Services to com.google.guice;
     opens bgs.formalspecificationide.Persistence to com.google.guice;
