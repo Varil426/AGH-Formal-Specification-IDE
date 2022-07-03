@@ -1,32 +1,19 @@
 package bgs.formalspecificationide.tutorial3.selections;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.BiConsumer;
+import io.github.eckig.grapheditor.*;
+import io.github.eckig.grapheditor.core.connections.*;
+import io.github.eckig.grapheditor.model.*;
+import javafx.geometry.*;
+import javafx.scene.*;
+import javafx.scene.layout.*;
+import org.eclipse.emf.common.command.*;
+import org.eclipse.emf.ecore.*;
+import org.eclipse.emf.ecore.util.*;
+import org.eclipse.emf.edit.command.*;
+import org.eclipse.emf.edit.domain.*;
 
-import io.github.eckig.grapheditor.core.connections.ConnectionCopier;
-
-import org.eclipse.emf.common.command.CompoundCommand;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.edit.command.AddCommand;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.emf.edit.domain.EditingDomain;
-
-import io.github.eckig.grapheditor.GNodeSkin;
-import io.github.eckig.grapheditor.SelectionManager;
-import io.github.eckig.grapheditor.SkinLookup;
-import io.github.eckig.grapheditor.model.GConnection;
-import io.github.eckig.grapheditor.model.GJoint;
-import io.github.eckig.grapheditor.model.GModel;
-import io.github.eckig.grapheditor.model.GNode;
-import io.github.eckig.grapheditor.model.GraphPackage;
-import javafx.geometry.Point2D;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.layout.Region;
+import java.util.*;
+import java.util.function.*;
 
 /**
  * Manages cut, copy and paste actions on the current selection.
@@ -61,12 +48,10 @@ public class SelectionCopier {
     /**
      * Creates a new {@link SelectionCopier} instance.
      *
-     * @param skinLookup
-     *            the {@link SkinLookup} instance for the graph editor
-     * @param selectionManager
-     *            the {@link SelectionManager} instance for the graph editor
+     * @param skinLookup       the {@link SkinLookup} instance for the graph editor
+     * @param selectionManager the {@link SelectionManager} instance for the graph editor
      */
-	public SelectionCopier(final SkinLookup skinLookup, final SelectionManager selectionManager) {
+    public SelectionCopier(final SkinLookup skinLookup, final SelectionManager selectionManager) {
 
         this.skinLookup = skinLookup;
         this.selectionManager = selectionManager;
@@ -121,7 +106,7 @@ public class SelectionCopier {
      */
     public List<GNode> paste(final BiConsumer<List<GNode>, CompoundCommand> consumer) {
 
-    	selectionManager.clearSelection();
+        selectionManager.clearSelection();
 
         final List<GNode> pastedNodes = new ArrayList<>();
         final List<GConnection> pastedConnections = new ArrayList<>();
@@ -132,12 +117,12 @@ public class SelectionCopier {
         addPastedElements(pastedNodes, pastedConnections, consumer);
 
         for (final GNode pastedNode : pastedNodes) {
-        	selectionManager.select(pastedNode);
+            selectionManager.select(pastedNode);
         }
 
         for (final GConnection pastedConnection : pastedConnections) {
             for (final GJoint pastedJoint : pastedConnection.getJoints()) {
-            	selectionManager.select(pastedJoint);
+                selectionManager.select(pastedJoint);
             }
         }
 
@@ -155,7 +140,7 @@ public class SelectionCopier {
     /**
      * Prepares the lists of pasted nodes and connections.
      *
-     * @param pastedNodes an empty list to be filled with pasted nodes
+     * @param pastedNodes       an empty list to be filled with pasted nodes
      * @param pastedConnections an empty list to be filled with pasted connections
      */
     private void preparePastedElements(final List<GNode> pastedNodes, final List<GConnection> pastedConnections) {
@@ -176,7 +161,7 @@ public class SelectionCopier {
     /**
      * Adds an x and y offset to all nodes and connections that are about to be pasted.
      *
-     * @param pastedNodes the nodes that are going to be pasted
+     * @param pastedNodes       the nodes that are going to be pasted
      * @param pastedConnections the connections that are going to be pasted
      */
     private void addPasteOffset(final List<GNode> pastedNodes, final List<GConnection> pastedConnections) {
@@ -203,7 +188,7 @@ public class SelectionCopier {
      * Corrects the x and y positions accordingly if they will be outside the bounds.
      * </p>
      *
-     * @param pastedNodes the nodes that are going to be pasted
+     * @param pastedNodes       the nodes that are going to be pasted
      * @param pastedConnections the connections that are going to be pasted
      */
     private void checkWithinBounds(final List<GNode> pastedNodes, final List<GConnection> pastedConnections) {
@@ -250,12 +235,12 @@ public class SelectionCopier {
     /**
      * Adds the pasted elements to the graph editor via a single EMF command.
      *
-     * @param pastedNodes the pasted nodes to be added
+     * @param pastedNodes       the pasted nodes to be added
      * @param pastedConnections the pasted connections to be added
-     * @param consumer a consumer to allow custom commands to be appended to the paste command
+     * @param consumer          a consumer to allow custom commands to be appended to the paste command
      */
     private void addPastedElements(final List<GNode> pastedNodes, final List<GConnection> pastedConnections,
-            final BiConsumer<List<GNode>, CompoundCommand> consumer) {
+                                   final BiConsumer<List<GNode>, CompoundCommand> consumer) {
 
         final EditingDomain editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(model);
         final CompoundCommand command = new CompoundCommand();
@@ -355,7 +340,7 @@ public class SelectionCopier {
     /**
      * Gets the start and end x- and y-positions of the given group of nodes and joints.
      *
-     * @param nodes a list of nodes
+     * @param nodes       a list of nodes
      * @param connections a list of connections
      * @return the start and end x- and y-positions of the given nodes and joints.
      */
