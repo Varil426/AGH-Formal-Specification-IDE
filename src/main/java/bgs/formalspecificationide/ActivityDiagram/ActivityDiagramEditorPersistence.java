@@ -1,4 +1,4 @@
-package bgs.formalspecificationide.WorkflowDiagram;
+package bgs.formalspecificationide.ActivityDiagram;
 
 import io.github.eckig.grapheditor.*;
 import io.github.eckig.grapheditor.model.*;
@@ -16,10 +16,10 @@ import java.util.*;
  * Helper class for crudely loading {@link GModel} states to and from XML.
  *
  * <p>
- * Not part of the graph editor library, only used in the {@link WorkflowDiagramEditor} application.
+ * Not part of the graph editor library, only used in the {@link ActivityDiagramEditor} application.
  * </p>
  */
-public class WorkflowDiagramEditorPersistence {
+public class ActivityDiagramEditorPersistence {
 
     private static final String FILE_EXTENSION = ".graph"; //$NON-NLS-1$
     private static final String CHOOSER_TEXT = "Graph Model Files (*" + FILE_EXTENSION + ")"; //$NON-NLS-1$ //$NON-NLS-2$

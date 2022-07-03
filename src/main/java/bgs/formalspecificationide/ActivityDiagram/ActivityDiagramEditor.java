@@ -1,4 +1,4 @@
-package bgs.formalspecificationide.WorkflowDiagram;
+package bgs.formalspecificationide.ActivityDiagram;
 
 import io.github.eckig.grapheditor.*;
 import javafx.application.*;
@@ -12,7 +12,7 @@ import java.net.*;
 /**
  * A demo application to show uses of the {@link GraphEditor} library.
  */
-public class WorkflowDiagramEditor extends Application {
+public class ActivityDiagramEditor extends Application {
 
     private static final String APPLICATION_TITLE = "Workflow Diagram";
     private static final String DEMO_STYLESHEET = "demo.css";
@@ -25,7 +25,7 @@ public class WorkflowDiagramEditor extends Application {
     @Override
     public void start(final Stage stage) throws Exception {
 
-        final URL location = getClass().getClassLoader().getResource("WorkflowDiagramEditor.fxml");
+        final URL location = getClass().getClassLoader().getResource("ActivityDiagramEditor.fxml");
         final FXMLLoader loader = new FXMLLoader();
         final Parent root = loader.load(location.openStream());
 
@@ -39,7 +39,7 @@ public class WorkflowDiagramEditor extends Application {
 
         stage.show();
 
-        final WorkflowDiagramEditorController controller = loader.getController();
+        final ActivityDiagramEditorController controller = loader.getController();
         controller.panToCenter();
     }
 }

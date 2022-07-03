@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <AnchorPane fx:id="root" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="bgs.formalspecificationide.WorkflowDiagram.WorkflowDiagramEditorController">
+            fx:controller="bgs.formalspecificationide.ActivityDiagram.ActivityDiagramEditorController">
     <VBox AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0"
           AnchorPane.bottomAnchor="0">
         <MenuBar fx:id="menuBar">

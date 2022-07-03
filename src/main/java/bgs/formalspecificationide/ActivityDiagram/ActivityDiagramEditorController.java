@@ -1,10 +1,10 @@
-package bgs.formalspecificationide.WorkflowDiagram;
+package bgs.formalspecificationide.ActivityDiagram;
 
-import bgs.formalspecificationide.WorkflowDiagram.customskin.*;
-import bgs.formalspecificationide.WorkflowDiagram.managers.*;
-import bgs.formalspecificationide.WorkflowDiagram.ownImpl.*;
-import bgs.formalspecificationide.WorkflowDiagram.selections.*;
-import bgs.formalspecificationide.WorkflowDiagram.utils.*;
+import bgs.formalspecificationide.ActivityDiagram.customskin.*;
+import bgs.formalspecificationide.ActivityDiagram.managers.*;
+import bgs.formalspecificationide.ActivityDiagram.ownImpl.*;
+import bgs.formalspecificationide.ActivityDiagram.selections.*;
+import bgs.formalspecificationide.ActivityDiagram.utils.*;
 import io.github.eckig.grapheditor.*;
 import io.github.eckig.grapheditor.core.skins.defaults.connection.*;
 import io.github.eckig.grapheditor.core.view.*;
@@ -12,7 +12,6 @@ import io.github.eckig.grapheditor.model.*;
 import javafx.application.*;
 import javafx.beans.property.*;
 import javafx.collections.*;
-import javafx.event.*;
 import javafx.fxml.*;
 import javafx.geometry.*;
 import javafx.scene.control.*;
@@ -22,13 +21,13 @@ import org.eclipse.emf.ecore.*;
 import java.util.*;
 
 /**
- * Controller for the {@link WorkflowDiagramEditor} application.
+ * Controller for the {@link ActivityDiagramEditor} application.
  */
-public class WorkflowDiagramEditorController {
+public class ActivityDiagramEditorController {
 
     private final GraphEditor graphEditor = new OwnDefaultGraphEditor();
     private final SelectionCopier selectionCopier = new SelectionCopier(graphEditor.getSkinLookup(), graphEditor.getSelectionManager());
-    private final WorkflowDiagramEditorPersistence graphEditorPersistence = new WorkflowDiagramEditorPersistence();
+    private final ActivityDiagramEditorPersistence graphEditorPersistence = new ActivityDiagramEditorPersistence();
     private final ObjectProperty<DefaultSkinController> activeSkinController = new SimpleObjectProperty<>() {
 
         @Override
@@ -298,6 +297,9 @@ public class WorkflowDiagramEditorController {
     private void checkConnectorButtonsToDisable() {
     }
 
-    public void generateSpecification(ActionEvent actionEvent) {
+    @FXML
+    public void generateSpecification() {
+        System.out.println(graphEditor.getModel().getNodes());
+        System.out.println(graphEditor.getModel().getConnections().get(0).getSource());
     }
 }

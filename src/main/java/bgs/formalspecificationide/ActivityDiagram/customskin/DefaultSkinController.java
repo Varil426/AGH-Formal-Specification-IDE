@@ -1,8 +1,8 @@
-package bgs.formalspecificationide.WorkflowDiagram.customskin;
+package bgs.formalspecificationide.ActivityDiagram.customskin;
 
-import bgs.formalspecificationide.WorkflowDiagram.managers.*;
-import bgs.formalspecificationide.WorkflowDiagram.ownImpl.*;
-import bgs.formalspecificationide.WorkflowDiagram.selections.*;
+import bgs.formalspecificationide.ActivityDiagram.managers.*;
+import bgs.formalspecificationide.ActivityDiagram.ownImpl.*;
+import bgs.formalspecificationide.ActivityDiagram.selections.*;
 import io.github.eckig.grapheditor.*;
 import io.github.eckig.grapheditor.core.connectors.*;
 import io.github.eckig.grapheditor.core.view.*;
@@ -12,6 +12,8 @@ import org.eclipse.emf.common.command.*;
 import org.eclipse.emf.ecore.*;
 import org.eclipse.emf.edit.command.*;
 import org.eclipse.emf.edit.domain.*;
+
+import java.util.*;
 
 /**
  * Responsible for default-skin specific logic in the graph editor demo.
@@ -53,6 +55,9 @@ public class DefaultSkinController implements SkinController {
 
         node.setWidth(180);
         node.setHeight(150);
+
+        UUID uuid = UUID.randomUUID();
+        node.setId(uuid.toString());
 
         final GConnector bottomOutput = GraphFactory.eINSTANCE.createGConnector();
         bottomOutput.setType(DefaultConnectorTypes.BOTTOM_OUTPUT);
@@ -99,6 +104,9 @@ public class DefaultSkinController implements SkinController {
 
                     final GConnector connector = GraphFactory.eINSTANCE.createGConnector();
                     connector.setType(type);
+
+                    UUID uuid = UUID.randomUUID();
+                    connector.setId(uuid.toString());
 
                     final EReference connectors = GraphPackage.Literals.GNODE__CONNECTORS;
                     command.append(AddCommand.create(editingDomain, node, connectors, connector));

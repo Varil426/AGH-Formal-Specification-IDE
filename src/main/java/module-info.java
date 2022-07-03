@@ -23,8 +23,8 @@ module bgs.formalspecificationide {
     opens bgs.formalspecificationide.Factories to com.google.guice;
     opens bgs.formalspecificationide.Model to com.fasterxml.jackson.databind;
     opens bgs.formalspecificationide to com.google.guice, javafx.fxml;
-    opens bgs.formalspecificationide.WorkflowDiagram to com.google.guice, javafx.fxml, javafx.graphics;
-    opens bgs.formalspecificationide.WorkflowDiagram.ownImpl to com.google.guice, javafx.fxml, javafx.graphics;
+    opens bgs.formalspecificationide.ActivityDiagram to com.google.guice, javafx.fxml, javafx.graphics;
+    opens bgs.formalspecificationide.ActivityDiagram.ownImpl to com.google.guice, javafx.fxml, javafx.graphics;
 
     exports bgs.formalspecificationide;
 }
