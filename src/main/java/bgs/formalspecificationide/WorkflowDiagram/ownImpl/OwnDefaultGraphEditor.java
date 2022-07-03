@@ -1,4 +1,4 @@
-package bgs.formalspecificationide.tutorial3.ownImpl;
+package bgs.formalspecificationide.WorkflowDiagram.ownImpl;
 
 import io.github.eckig.grapheditor.*;
 import io.github.eckig.grapheditor.core.*;

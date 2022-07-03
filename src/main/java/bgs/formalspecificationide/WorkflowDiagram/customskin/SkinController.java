@@ -1,6 +1,6 @@
-package bgs.formalspecificationide.tutorial3.customskin;
+package bgs.formalspecificationide.WorkflowDiagram.customskin;
 
-import bgs.formalspecificationide.tutorial3.selections.*;
+import bgs.formalspecificationide.WorkflowDiagram.selections.*;
 import javafx.geometry.*;
 
 /**

@@ -1,10 +1,10 @@
-package bgs.formalspecificationide.tutorial3;
+package bgs.formalspecificationide.WorkflowDiagram;
 
-import bgs.formalspecificationide.tutorial3.customskin.*;
-import bgs.formalspecificationide.tutorial3.managers.*;
-import bgs.formalspecificationide.tutorial3.ownImpl.*;
-import bgs.formalspecificationide.tutorial3.selections.*;
-import bgs.formalspecificationide.tutorial3.utils.*;
+import bgs.formalspecificationide.WorkflowDiagram.customskin.*;
+import bgs.formalspecificationide.WorkflowDiagram.managers.*;
+import bgs.formalspecificationide.WorkflowDiagram.ownImpl.*;
+import bgs.formalspecificationide.WorkflowDiagram.selections.*;
+import bgs.formalspecificationide.WorkflowDiagram.utils.*;
 import io.github.eckig.grapheditor.*;
 import io.github.eckig.grapheditor.core.skins.defaults.connection.*;
 import io.github.eckig.grapheditor.core.view.*;

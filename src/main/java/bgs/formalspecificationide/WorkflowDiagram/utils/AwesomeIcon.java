@@ -1,4 +1,4 @@
-package bgs.formalspecificationide.tutorial3.utils;
+package bgs.formalspecificationide.WorkflowDiagram.utils;
 
 import javafx.scene.*;
 import javafx.scene.text.*;

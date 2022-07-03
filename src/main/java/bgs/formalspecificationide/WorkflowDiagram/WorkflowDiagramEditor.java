@@ -1,4 +1,4 @@
-package bgs.formalspecificationide.tutorial3;
+package bgs.formalspecificationide.WorkflowDiagram;
 
 import io.github.eckig.grapheditor.*;
 import javafx.application.*;
@@ -25,7 +25,7 @@ public class WorkflowDiagramEditor extends Application {
     @Override
     public void start(final Stage stage) throws Exception {
 
-        final URL location = getClass().getClassLoader().getResource("GraphEditorDemo.fxml");
+        final URL location = getClass().getClassLoader().getResource("WorkflowDiagramEditor.fxml");
         final FXMLLoader loader = new FXMLLoader();
         final Parent root = loader.load(location.openStream());
 

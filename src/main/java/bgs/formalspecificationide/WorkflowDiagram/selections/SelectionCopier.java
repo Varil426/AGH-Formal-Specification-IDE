@@ -1,4 +1,4 @@
-package bgs.formalspecificationide.tutorial3.selections;
+package bgs.formalspecificationide.WorkflowDiagram.selections;
 
 import io.github.eckig.grapheditor.*;
 import io.github.eckig.grapheditor.core.connections.*;

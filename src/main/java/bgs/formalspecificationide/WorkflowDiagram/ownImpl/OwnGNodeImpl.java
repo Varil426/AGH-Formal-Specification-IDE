@@ -1,4 +1,4 @@
-package bgs.formalspecificationide.tutorial3.ownImpl;
+package bgs.formalspecificationide.WorkflowDiagram.ownImpl;
 
 import io.github.eckig.grapheditor.model.*;
 import org.eclipse.emf.common.notify.*;

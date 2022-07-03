@@ -1,4 +1,4 @@
-package bgs.formalspecificationide.tutorial3.managers;
+package bgs.formalspecificationide.WorkflowDiagram.managers;
 
 
 public class NodesManager {

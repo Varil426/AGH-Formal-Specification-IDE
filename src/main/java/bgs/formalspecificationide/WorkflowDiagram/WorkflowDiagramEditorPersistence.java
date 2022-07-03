@@ -1,4 +1,4 @@
-package bgs.formalspecificationide.tutorial3;
+package bgs.formalspecificationide.WorkflowDiagram;
 
 import io.github.eckig.grapheditor.*;
 import io.github.eckig.grapheditor.model.*;
