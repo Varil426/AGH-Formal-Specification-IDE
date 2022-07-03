@@ -1,25 +1,21 @@
 package bgs.formalspecificationide.tutorial3;
 
-import java.util.ArrayList;
-import java.util.List;
+import bgs.formalspecificationide.tutorial3.world.*;
+import io.github.eckig.grapheditor.*;
+import io.github.eckig.grapheditor.core.connectors.*;
+import io.github.eckig.grapheditor.model.*;
+import io.github.eckig.grapheditor.utils.*;
+import javafx.collections.*;
+import javafx.css.*;
+import javafx.geometry.*;
+import javafx.scene.*;
+import javafx.scene.control.*;
+import javafx.scene.input.*;
+import javafx.scene.layout.*;
+import javafx.scene.shape.*;
+import org.slf4j.*;
 
-import io.github.eckig.grapheditor.core.connectors.DefaultConnectorTypes;
-import io.github.eckig.grapheditor.utils.GeometryUtils;
-import io.github.eckig.grapheditor.utils.ResizableBox;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.github.eckig.grapheditor.GConnectorSkin;
-import io.github.eckig.grapheditor.GNodeSkin;
-import io.github.eckig.grapheditor.model.GConnector;
-import io.github.eckig.grapheditor.model.GNode;
-import javafx.css.PseudoClass;
-import javafx.geometry.Point2D;
-import javafx.geometry.Side;
-import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Rectangle;
+import java.util.*;
 
 /**
  * The default node skin. Uses a {@link ResizableBox}.
@@ -158,12 +154,9 @@ public class OwnDefaultNodeSkin extends GNodeSkin {
     /**
      * Checks that the node and its connectors have the correct values to be displayed using this skin.
      */
-    private void performChecks()
-    {
-        for (final GConnector connector : getItem().getConnectors())
-        {
-            if (!DefaultConnectorTypes.isValid(connector.getType()))
-            {
+    private void performChecks() {
+        for (final GConnector connector : getItem().getConnectors()) {
+            if (!DefaultConnectorTypes.isValid(connector.getType())) {
                 LOGGER.error("Connector type '{}' not recognized, setting to 'left-input'.", connector.getType());
                 connector.setType(DefaultConnectorTypes.LEFT_INPUT);
             }
@@ -185,8 +178,8 @@ public class OwnDefaultNodeSkin extends GNodeSkin {
      * Lays out the given connector skins in a horizontal or vertical direction at the given offset.
      *
      * @param connectorSkins the skins to lay out
-     * @param vertical {@code true} to lay out vertically, {@code false} to lay out horizontally
-     * @param offset the offset in the other dimension that the skins are layed out in
+     * @param vertical       {@code true} to lay out vertically, {@code false} to lay out horizontally
+     * @param offset         the offset in the other dimension that the skins are layed out in
      */
     private void layoutConnectors(final List<GConnectorSkin> connectorSkins, final boolean vertical, final double offset) {
 
@@ -222,6 +215,47 @@ public class OwnDefaultNodeSkin extends GNodeSkin {
     private void addSelectionHalo() {
 
         getRoot().getChildren().add(selectionHalo);
+
+        String currentNodeType = World.getInstance().getCurrentNodeType();
+        if (currentNodeType.equals("SEQ")) {
+            ObservableList<String> options =
+                    FXCollections.observableArrayList(
+                            "Option 1",
+                            "Option 2"
+                    );
+            ComboBox<String> stringComboBox = new ComboBox<>(options);
+            stringComboBox.setPromptText("placeholder1");
+
+            getRoot().getChildren().add(stringComboBox);
+        } else if (currentNodeType.equals("BRANCH")) {
+
+
+            ObservableList<String> options =
+                    FXCollections.observableArrayList(
+                            "Option 1",
+                            "Option 2",
+                            "Option 3"
+                    );
+            ComboBox<String> stringComboBox = new ComboBox<>(options);
+            stringComboBox.setPromptText("placeholder1");
+
+            ObservableList<String> options2 =
+                    FXCollections.observableArrayList(
+                            "Option 1",
+                            "Option 2",
+                            "Option 3",
+                            "Option 4"
+                    );
+            ComboBox<String> stringComboBox2 = new ComboBox<>(options2);
+            stringComboBox2.setPromptText("placeholder2");
+
+            VBox vBox = new VBox();
+            vBox.setAlignment(Pos.CENTER);
+            vBox.setFillWidth(true);
+            vBox.getChildren().add(stringComboBox);
+            vBox.getChildren().add(stringComboBox2);
+            getRoot().getChildren().add(vBox);
+        }
 
         selectionHalo.setManaged(false);
         selectionHalo.setMouseTransparent(false);

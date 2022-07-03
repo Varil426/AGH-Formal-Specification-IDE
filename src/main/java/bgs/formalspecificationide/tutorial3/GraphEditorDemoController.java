@@ -1,30 +1,23 @@
 package bgs.formalspecificationide.tutorial3;
 
-import bgs.formalspecificationide.tutorial3.customskins.DefaultSkinController;
-import bgs.formalspecificationide.tutorial3.customskins.SkinController;
-import bgs.formalspecificationide.tutorial3.selections.SelectionCopier;
-import bgs.formalspecificationide.tutorial3.utils.AwesomeIcon;
-import io.github.eckig.grapheditor.Commands;
-import io.github.eckig.grapheditor.EditorElement;
-import io.github.eckig.grapheditor.GraphEditor;
-import io.github.eckig.grapheditor.core.DefaultGraphEditor;
-import io.github.eckig.grapheditor.core.skins.defaults.connection.SimpleConnectionSkin;
-import io.github.eckig.grapheditor.core.view.GraphEditorContainer;
+import bgs.formalspecificationide.tutorial3.customskins.*;
+import bgs.formalspecificationide.tutorial3.selections.*;
+import bgs.formalspecificationide.tutorial3.utils.*;
+import bgs.formalspecificationide.tutorial3.world.*;
+import io.github.eckig.grapheditor.*;
+import io.github.eckig.grapheditor.core.skins.defaults.connection.*;
+import io.github.eckig.grapheditor.core.view.*;
 import io.github.eckig.grapheditor.model.*;
-import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.SetChangeListener;
-import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.geometry.Side;
+import javafx.application.*;
+import javafx.beans.property.*;
+import javafx.collections.*;
+import javafx.fxml.*;
+import javafx.geometry.*;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import org.eclipse.emf.ecore.EObject;
+import javafx.scene.layout.*;
+import org.eclipse.emf.ecore.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Controller for the {@link GraphEditorDemo} application.
@@ -34,7 +27,7 @@ public class GraphEditorDemoController {
     private final GraphEditor graphEditor = new OwnDefaultGraphEditor();
     private final SelectionCopier selectionCopier = new SelectionCopier(graphEditor.getSkinLookup(), graphEditor.getSelectionManager());
     private final GraphEditorPersistence graphEditorPersistence = new GraphEditorPersistence();
-    private final ObjectProperty<SkinController> activeSkinController = new SimpleObjectProperty<>() {
+    private final ObjectProperty<DefaultSkinController> activeSkinController = new SimpleObjectProperty<>() {
 
         @Override
         protected void invalidated() {
@@ -191,14 +184,15 @@ public class GraphEditorDemoController {
     }
 
     @FXML
-    public void addNode() {
-        System.out.println(graphEditor);
-        System.out.println(graphEditor.getView());
-        System.out.println(graphEditor.getView().getLocalToSceneTransform());
-        System.out.println(graphEditor.getView().getLocalToSceneTransform().getMxx());
+    public void addSeq() {
+        World.getInstance().setCurrentNodeType("SEQ");
         activeSkinController.get().addNode(graphEditor.getView().getLocalToSceneTransform().getMxx());
-        System.out.println(activeSkinController);
-        System.out.println(activeSkinController.get());
+    }
+
+    @FXML
+    public void addBranch() {
+        World.getInstance().setCurrentNodeType("BRANCH");
+        activeSkinController.get().addNode(graphEditor.getView().getLocalToSceneTransform().getMxx());
     }
 
     @FXML

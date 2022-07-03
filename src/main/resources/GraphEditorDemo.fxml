@@ -38,7 +38,8 @@
 				</Menu>
 				<Menu text="Actions">
 					<items>
-						<MenuItem text="Add Node" onAction="#addNode" accelerator="Shortcut+N"/>
+						<MenuItem text="Add Seq" onAction="#addSeq" accelerator="Shortcut+N"/>
+						<MenuItem text="Add Branch" onAction="#addBranch"/>
 						<MenuItem text="Add Connector" fx:id="addConnectorButton" onAction="#addConnector" accelerator="Shortcut+E"/>
 						<MenuItem text="Clear Connectors" fx:id="clearConnectorsButton" onAction="#clearConnectors" accelerator="Shortcut+W"/>
 						<Menu fx:id="connectorTypeMenu" text="Connector Type">
