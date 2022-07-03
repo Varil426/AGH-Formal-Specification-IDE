@@ -1,8 +1,8 @@
-package bgs.formalspecificationide.tutorial3.customskins;
+package bgs.formalspecificationide.tutorial3.customskin;
 
-import bgs.formalspecificationide.tutorial3.*;
+import bgs.formalspecificationide.tutorial3.managers.*;
+import bgs.formalspecificationide.tutorial3.ownImpl.*;
 import bgs.formalspecificationide.tutorial3.selections.*;
-import bgs.formalspecificationide.tutorial3.world.*;
 import io.github.eckig.grapheditor.*;
 import io.github.eckig.grapheditor.core.connectors.*;
 import io.github.eckig.grapheditor.core.view.*;
@@ -47,7 +47,7 @@ public class DefaultSkinController implements SkinController {
         final double windowXOffset = graphEditorContainer.getContentX() / currentZoomFactor;
         final double windowYOffset = graphEditorContainer.getContentY() / currentZoomFactor;
 
-        final GNode node = new GNodeOwnImpl();
+        final GNode node = new OwnGNodeImpl();
         node.setX(NODE_INITIAL_X + windowXOffset);
         node.setY(NODE_INITIAL_Y + windowYOffset);
 
@@ -62,7 +62,7 @@ public class DefaultSkinController implements SkinController {
         topInput.setType(DefaultConnectorTypes.TOP_INPUT);
         node.getConnectors().add(topInput);
 
-        String currentNodeType = World.getInstance().getCurrentNodeType();
+        String currentNodeType = NodesManager.getInstance().getCurrentNodeType();
         if (currentNodeType.equals("BRANCH") || currentNodeType.equals("CONCUR")) {
             final GConnector secondBottomOutput = GraphFactory.eINSTANCE.createGConnector();
             secondBottomOutput.setType(DefaultConnectorTypes.BOTTOM_OUTPUT);

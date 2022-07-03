@@ -1,28 +1,25 @@
 package bgs.formalspecificationide.tutorial3;
 
-import io.github.eckig.grapheditor.GraphEditor;
-import io.github.eckig.grapheditor.model.GModel;
-import javafx.scene.Scene;
-import javafx.stage.FileChooser;
-import javafx.stage.Window;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.emf.edit.domain.EditingDomain;
+import io.github.eckig.grapheditor.*;
+import io.github.eckig.grapheditor.model.*;
+import javafx.scene.*;
+import javafx.stage.*;
+import org.eclipse.emf.common.util.*;
+import org.eclipse.emf.ecore.resource.*;
+import org.eclipse.emf.ecore.xmi.impl.*;
+import org.eclipse.emf.edit.domain.*;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
+import java.io.*;
+import java.util.*;
 
 /**
  * Helper class for crudely loading {@link GModel} states to and from XML.
  *
  * <p>
- * Not part of the graph editor library, only used in the {@link GraphEditorDemo} application.
+ * Not part of the graph editor library, only used in the {@link WorkflowDiagramEditor} application.
  * </p>
  */
-public class GraphEditorPersistence {
+public class WorkflowDiagramEditorPersistence {
 
     private static final String FILE_EXTENSION = ".graph"; //$NON-NLS-1$
     private static final String CHOOSER_TEXT = "Graph Model Files (*" + FILE_EXTENSION + ")"; //$NON-NLS-1$ //$NON-NLS-2$

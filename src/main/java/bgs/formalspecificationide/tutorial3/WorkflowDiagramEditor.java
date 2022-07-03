@@ -1,25 +1,26 @@
-package bgs.formalspecificationide.tutorial3;/*
- * Copyright (C) 2005 - 2014 by TESIS DYNAware GmbH
- */
+package bgs.formalspecificationide.tutorial3;
 
-import java.net.URL;
+import io.github.eckig.grapheditor.*;
+import javafx.application.*;
+import javafx.fxml.*;
+import javafx.scene.*;
+import javafx.scene.text.*;
+import javafx.stage.*;
 
-import io.github.eckig.grapheditor.GraphEditor;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.text.Font;
-import javafx.stage.Stage;
+import java.net.*;
 
 /**
  * A demo application to show uses of the {@link GraphEditor} library.
  */
-public class GraphEditorDemo extends Application {
+public class WorkflowDiagramEditor extends Application {
 
-    private static final String APPLICATION_TITLE = "Graph Editor Demo";
+    private static final String APPLICATION_TITLE = "Workflow Diagram";
     private static final String DEMO_STYLESHEET = "demo.css";
     private static final String FONT_AWESOME = "fontawesome.ttf";
+
+    public static void main(final String[] args) {
+        launch(args);
+    }
 
     @Override
     public void start(final Stage stage) throws Exception {
@@ -37,12 +38,8 @@ public class GraphEditorDemo extends Application {
         stage.setTitle(APPLICATION_TITLE);
 
         stage.show();
-        
-        final GraphEditorDemoController controller = loader.getController();
-        controller.panToCenter();
-    }
 
-    public static void main(final String[] args) {
-        launch(args);
+        final WorkflowDiagramEditorController controller = loader.getController();
+        controller.panToCenter();
     }
 }

@@ -1,8 +1,7 @@
 package bgs.formalspecificationide.tutorial3.utils;
 
-import javafx.scene.Node;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
+import javafx.scene.*;
+import javafx.scene.text.*;
 
 /**
  * A few icons.

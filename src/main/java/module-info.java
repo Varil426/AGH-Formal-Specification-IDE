@@ -27,4 +27,5 @@ module bgs.formalspecificationide {
     opens bgs.formalspecificationide.tutorial3 to com.google.guice, javafx.fxml, javafx.graphics;
 
     exports bgs.formalspecificationide;
+    opens bgs.formalspecificationide.tutorial3.ownImpl to com.google.guice, javafx.fxml, javafx.graphics;
 }

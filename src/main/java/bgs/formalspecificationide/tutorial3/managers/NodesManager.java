@@ -1,34 +1,31 @@
-package bgs.formalspecificationide.tutorial3.world;
+package bgs.formalspecificationide.tutorial3.managers;
 
 
-import java.util.*;
-
-public class World {
-    private static World instance;
+public class NodesManager {
+    private static NodesManager instance;
 //    private final List<Tank> allTanks = new ArrayList<>();
 
     private String currentNodeType;
 
-    public static World getInstance() {
-        // Result variable here may seem pointless, but it's needed for DCL (Double-checked locking).
+    public static NodesManager getInstance() {
         var result = instance;
         if (instance != null) {
             return result;
         }
-        synchronized (World.class) {
+        synchronized (NodesManager.class) {
             if (instance == null) {
-                instance = new World();
+                instance = new NodesManager();
             }
             return instance;
         }
     }
 
-    public void setCurrentNodeType(String nodeType){
-        currentNodeType = nodeType;
-    }
-
     public String getCurrentNodeType() {
         return currentNodeType;
+    }
+
+    public void setCurrentNodeType(String nodeType) {
+        currentNodeType = nodeType;
     }
 
     //    public void addTank(Tank tank) {
@@ -48,6 +45,4 @@ public class World {
 //            return allTanks;
 //        }
 //    }
-
-
 }

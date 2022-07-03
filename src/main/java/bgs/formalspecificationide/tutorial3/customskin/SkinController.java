@@ -1,7 +1,7 @@
-package bgs.formalspecificationide.tutorial3.customskins;
+package bgs.formalspecificationide.tutorial3.customskin;
 
-import bgs.formalspecificationide.tutorial3.selections.SelectionCopier;
-import javafx.geometry.Side;
+import bgs.formalspecificationide.tutorial3.selections.*;
+import javafx.geometry.*;
 
 /**
  * Responsible for skin-specific logic in the graph editor demo.
@@ -24,7 +24,7 @@ public interface SkinController {
      * Adds a connector of the given type to all selected nodes.
      *
      * @param position the currently selected connector position
-     * @param input {@code true} for input, {@code false} for output
+     * @param input    {@code true} for input, {@code false} for output
      */
     void addConnector(Side position, boolean input);
 
@@ -35,6 +35,7 @@ public interface SkinController {
 
     /**
      * Handles the paste operation.
+     *
      * @param selectionCopier {@link SelectionCopier}
      */
     void handlePaste(SelectionCopier selectionCopier);

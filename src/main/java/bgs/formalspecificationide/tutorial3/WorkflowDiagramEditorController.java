@@ -1,9 +1,10 @@
 package bgs.formalspecificationide.tutorial3;
 
-import bgs.formalspecificationide.tutorial3.customskins.*;
+import bgs.formalspecificationide.tutorial3.customskin.*;
+import bgs.formalspecificationide.tutorial3.managers.*;
+import bgs.formalspecificationide.tutorial3.ownImpl.*;
 import bgs.formalspecificationide.tutorial3.selections.*;
 import bgs.formalspecificationide.tutorial3.utils.*;
-import bgs.formalspecificationide.tutorial3.world.*;
 import io.github.eckig.grapheditor.*;
 import io.github.eckig.grapheditor.core.skins.defaults.connection.*;
 import io.github.eckig.grapheditor.core.view.*;
@@ -11,6 +12,7 @@ import io.github.eckig.grapheditor.model.*;
 import javafx.application.*;
 import javafx.beans.property.*;
 import javafx.collections.*;
+import javafx.event.*;
 import javafx.fxml.*;
 import javafx.geometry.*;
 import javafx.scene.control.*;
@@ -20,13 +22,13 @@ import org.eclipse.emf.ecore.*;
 import java.util.*;
 
 /**
- * Controller for the {@link GraphEditorDemo} application.
+ * Controller for the {@link WorkflowDiagramEditor} application.
  */
-public class GraphEditorDemoController {
+public class WorkflowDiagramEditorController {
 
     private final GraphEditor graphEditor = new OwnDefaultGraphEditor();
     private final SelectionCopier selectionCopier = new SelectionCopier(graphEditor.getSkinLookup(), graphEditor.getSelectionManager());
-    private final GraphEditorPersistence graphEditorPersistence = new GraphEditorPersistence();
+    private final WorkflowDiagramEditorPersistence graphEditorPersistence = new WorkflowDiagramEditorPersistence();
     private final ObjectProperty<DefaultSkinController> activeSkinController = new SimpleObjectProperty<>() {
 
         @Override
@@ -38,6 +40,8 @@ public class GraphEditorDemoController {
         }
 
     };
+    @FXML
+    public Button generateSpecification;
     @FXML
     private AnchorPane root;
     @FXML
@@ -185,49 +189,49 @@ public class GraphEditorDemoController {
 
     @FXML
     public void addSeq() {
-        World.getInstance().setCurrentNodeType("SEQ");
+        NodesManager.getInstance().setCurrentNodeType("SEQ");
         activeSkinController.get().addNode(graphEditor.getView().getLocalToSceneTransform().getMxx());
     }
 
     @FXML
     public void addBranch() {
-        World.getInstance().setCurrentNodeType("BRANCH");
+        NodesManager.getInstance().setCurrentNodeType("BRANCH");
         activeSkinController.get().addNode(graphEditor.getView().getLocalToSceneTransform().getMxx());
     }
 
     @FXML
     public void addBranchRe() {
-        World.getInstance().setCurrentNodeType("BRANCHRE");
+        NodesManager.getInstance().setCurrentNodeType("BRANCHRE");
         activeSkinController.get().addNode(graphEditor.getView().getLocalToSceneTransform().getMxx());
     }
 
     @FXML
     public void addConcur() {
-        World.getInstance().setCurrentNodeType("CONCUR");
+        NodesManager.getInstance().setCurrentNodeType("CONCUR");
         activeSkinController.get().addNode(graphEditor.getView().getLocalToSceneTransform().getMxx());
     }
 
     @FXML
     public void addConcurRe() {
-        World.getInstance().setCurrentNodeType("CONCURRE");
+        NodesManager.getInstance().setCurrentNodeType("CONCURRE");
         activeSkinController.get().addNode(graphEditor.getView().getLocalToSceneTransform().getMxx());
     }
 
     @FXML
     public void addCond() {
-        World.getInstance().setCurrentNodeType("COND");
+        NodesManager.getInstance().setCurrentNodeType("COND");
         activeSkinController.get().addNode(graphEditor.getView().getLocalToSceneTransform().getMxx());
     }
 
     @FXML
     public void addPara() {
-        World.getInstance().setCurrentNodeType("PARA");
+        NodesManager.getInstance().setCurrentNodeType("PARA");
         activeSkinController.get().addNode(graphEditor.getView().getLocalToSceneTransform().getMxx());
     }
 
     @FXML
     public void addLoop() {
-        World.getInstance().setCurrentNodeType("LOOP");
+        NodesManager.getInstance().setCurrentNodeType("LOOP");
         activeSkinController.get().addNode(graphEditor.getView().getLocalToSceneTransform().getMxx());
     }
 
@@ -291,5 +295,9 @@ public class GraphEditorDemoController {
     /**
      * Checks if the connector buttons need disabling (e.g. because no nodes are selected).
      */
-    private void checkConnectorButtonsToDisable() {}
+    private void checkConnectorButtonsToDisable() {
+    }
+
+    public void generateSpecification(ActionEvent actionEvent) {
+    }
 }

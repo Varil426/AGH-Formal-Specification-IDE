@@ -1,6 +1,6 @@
-package bgs.formalspecificationide.tutorial3;
+package bgs.formalspecificationide.tutorial3.ownImpl;
 
-import bgs.formalspecificationide.tutorial3.world.*;
+import bgs.formalspecificationide.tutorial3.managers.*;
 import io.github.eckig.grapheditor.*;
 import io.github.eckig.grapheditor.core.connectors.*;
 import io.github.eckig.grapheditor.model.*;
@@ -213,7 +213,7 @@ public class OwnDefaultNodeSkin extends GNodeSkin {
     private void addSelectionHalo() {
         getRoot().getChildren().add(selectionHalo);
 
-        String currentNodeType = World.getInstance().getCurrentNodeType();
+        String currentNodeType = NodesManager.getInstance().getCurrentNodeType();
         ObservableList<String> options = FXCollections.observableArrayList("Option 1", "Option 2", "Option 3");
         switch (currentNodeType) {
             case "SEQ" -> {
