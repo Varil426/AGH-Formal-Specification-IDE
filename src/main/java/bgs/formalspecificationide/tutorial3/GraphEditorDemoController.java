@@ -196,6 +196,42 @@ public class GraphEditorDemoController {
     }
 
     @FXML
+    public void addBranchRe() {
+        World.getInstance().setCurrentNodeType("BRANCHRE");
+        activeSkinController.get().addNode(graphEditor.getView().getLocalToSceneTransform().getMxx());
+    }
+
+    @FXML
+    public void addConcur() {
+        World.getInstance().setCurrentNodeType("CONCUR");
+        activeSkinController.get().addNode(graphEditor.getView().getLocalToSceneTransform().getMxx());
+    }
+
+    @FXML
+    public void addConcurRe() {
+        World.getInstance().setCurrentNodeType("CONCURRE");
+        activeSkinController.get().addNode(graphEditor.getView().getLocalToSceneTransform().getMxx());
+    }
+
+    @FXML
+    public void addCond() {
+        World.getInstance().setCurrentNodeType("COND");
+        activeSkinController.get().addNode(graphEditor.getView().getLocalToSceneTransform().getMxx());
+    }
+
+    @FXML
+    public void addPara() {
+        World.getInstance().setCurrentNodeType("PARA");
+        activeSkinController.get().addNode(graphEditor.getView().getLocalToSceneTransform().getMxx());
+    }
+
+    @FXML
+    public void addLoop() {
+        World.getInstance().setCurrentNodeType("LOOP");
+        activeSkinController.get().addNode(graphEditor.getView().getLocalToSceneTransform().getMxx());
+    }
+
+    @FXML
     public void addConnector() {
         activeSkinController.get().addConnector(getSelectedConnectorPosition(), inputConnectorTypeButton.isSelected());
     }

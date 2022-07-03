@@ -40,6 +40,12 @@
 					<items>
 						<MenuItem text="Add Seq" onAction="#addSeq" accelerator="Shortcut+N"/>
 						<MenuItem text="Add Branch" onAction="#addBranch"/>
+						<MenuItem text="Add BranchRe" onAction="#addBranchRe"/>
+						<MenuItem text="Add Concur" onAction="#addConcur"/>
+						<MenuItem text="Add ConcurRe" onAction="#addConcurRe"/>
+						<MenuItem text="Add Cond" onAction="#addCond"/>
+						<MenuItem text="Add Para" onAction="#addPara"/>
+						<MenuItem text="Add Loop" onAction="#addLoop"/>
 						<MenuItem text="Add Connector" fx:id="addConnectorButton" onAction="#addConnector" accelerator="Shortcut+E"/>
 						<MenuItem text="Clear Connectors" fx:id="clearConnectorsButton" onAction="#clearConnectors" accelerator="Shortcut+W"/>
 						<Menu fx:id="connectorTypeMenu" text="Connector Type">

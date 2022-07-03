@@ -1,25 +1,17 @@
 package bgs.formalspecificationide.tutorial3.customskins;
 
 import bgs.formalspecificationide.tutorial3.*;
-import bgs.formalspecificationide.tutorial3.selections.SelectionCopier;
-import io.github.eckig.grapheditor.core.connectors.DefaultConnectorTypes;
-
-import org.eclipse.emf.common.command.CompoundCommand;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.edit.command.AddCommand;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.emf.edit.domain.EditingDomain;
-
-import io.github.eckig.grapheditor.Commands;
-import io.github.eckig.grapheditor.GraphEditor;
-import io.github.eckig.grapheditor.SkinLookup;
-import io.github.eckig.grapheditor.core.view.GraphEditorContainer;
-import io.github.eckig.grapheditor.model.GConnector;
-import io.github.eckig.grapheditor.model.GModel;
-import io.github.eckig.grapheditor.model.GNode;
-import io.github.eckig.grapheditor.model.GraphFactory;
-import io.github.eckig.grapheditor.model.GraphPackage;
-import javafx.geometry.Side;
+import bgs.formalspecificationide.tutorial3.selections.*;
+import bgs.formalspecificationide.tutorial3.world.*;
+import io.github.eckig.grapheditor.*;
+import io.github.eckig.grapheditor.core.connectors.*;
+import io.github.eckig.grapheditor.core.view.*;
+import io.github.eckig.grapheditor.model.*;
+import javafx.geometry.*;
+import org.eclipse.emf.common.command.*;
+import org.eclipse.emf.ecore.*;
+import org.eclipse.emf.edit.command.*;
+import org.eclipse.emf.edit.domain.*;
 
 /**
  * Responsible for default-skin specific logic in the graph editor demo.
@@ -28,16 +20,14 @@ public class DefaultSkinController implements SkinController {
 
     protected static final int NODE_INITIAL_X = 19;
     protected static final int NODE_INITIAL_Y = 19;
-
+    private static final int MAX_CONNECTOR_COUNT = 5;
     protected final GraphEditor graphEditor;
     protected final GraphEditorContainer graphEditorContainer;
-
-    private static final int MAX_CONNECTOR_COUNT = 5;
 
     /**
      * Creates a new {@link DefaultSkinController} instance.
      *
-     * @param graphEditor the graph editor on display in this demo
+     * @param graphEditor          the graph editor on display in this demo
      * @param graphEditorContainer the graph editor container on display in this demo
      */
     public DefaultSkinController(final GraphEditor graphEditor, final GraphEditorContainer graphEditorContainer) {
@@ -47,8 +37,7 @@ public class DefaultSkinController implements SkinController {
     }
 
     @Override
-    public void activate()
-    {
+    public void activate() {
         graphEditorContainer.getMinimap().setConnectionFilter(c -> true);
     }
 
@@ -58,22 +47,28 @@ public class DefaultSkinController implements SkinController {
         final double windowXOffset = graphEditorContainer.getContentX() / currentZoomFactor;
         final double windowYOffset = graphEditorContainer.getContentY() / currentZoomFactor;
 
-//        final GNode node = GraphFactory.eINSTANCE.createGNode();
         final GNode node = new GNodeOwnImpl();
-        node.setWidth(200);
-
+        node.setX(NODE_INITIAL_X + windowXOffset);
         node.setY(NODE_INITIAL_Y + windowYOffset);
 
         final GConnector bottomOutput = GraphFactory.eINSTANCE.createGConnector();
+        bottomOutput.setType(DefaultConnectorTypes.BOTTOM_OUTPUT);
         node.getConnectors().add(bottomOutput);
 
         final GConnector topInput = GraphFactory.eINSTANCE.createGConnector();
+        topInput.setType(DefaultConnectorTypes.TOP_INPUT);
         node.getConnectors().add(topInput);
 
-        node.setX(NODE_INITIAL_X + windowXOffset);
-
-        bottomOutput.setType(DefaultConnectorTypes.BOTTOM_OUTPUT);
-        topInput.setType(DefaultConnectorTypes.TOP_INPUT);
+        String currentNodeType = World.getInstance().getCurrentNodeType();
+        if (currentNodeType.equals("BRANCH") || currentNodeType.equals("CONCUR")) {
+            final GConnector secondBottomOutput = GraphFactory.eINSTANCE.createGConnector();
+            secondBottomOutput.setType(DefaultConnectorTypes.BOTTOM_OUTPUT);
+            node.getConnectors().add(secondBottomOutput);
+        } else if (currentNodeType.equals("BRANCHRE") || currentNodeType.equals("CONCURRE")) {
+            final GConnector secondTopInput = GraphFactory.eINSTANCE.createGConnector();
+            secondTopInput.setType(DefaultConnectorTypes.TOP_INPUT);
+            node.getConnectors().add(secondTopInput);
+        }
 
         Commands.addNode(graphEditor.getModel(), node);
     }
@@ -82,7 +77,7 @@ public class DefaultSkinController implements SkinController {
      * Adds a connector of the given type to all nodes that are currently selected.
      *
      * @param position the position of the new connector
-     * @param input {@code true} for input, {@code false} for output
+     * @param input    {@code true} for input, {@code false} for output
      */
     @Override
     public void addConnector(final Side position, final boolean input) {
@@ -120,12 +115,12 @@ public class DefaultSkinController implements SkinController {
 
     @Override
     public void handlePaste(final SelectionCopier selectionCopier) {
-    	selectionCopier.paste(null);
+        selectionCopier.paste(null);
     }
 
     @Override
     public void handleSelectAll() {
-    	graphEditor.getSelectionManager().selectAll();
+        graphEditor.getSelectionManager().selectAll();
     }
 
     /**
@@ -152,11 +147,10 @@ public class DefaultSkinController implements SkinController {
      * Gets the connector type string corresponding to the given position and input values.
      *
      * @param position a {@link Side} value
-     * @param input {@code true} for input, {@code false} for output
+     * @param input    {@code true} for input, {@code false} for output
      * @return the connector type corresponding to these values
      */
-    private String getType(final Side position, final boolean input)
-    {
+    private String getType(final Side position, final boolean input) {
         switch (position) {
             case TOP -> {
                 if (input) {

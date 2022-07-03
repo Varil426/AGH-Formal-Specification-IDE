@@ -13,7 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.shape.*;
-import org.slf4j.*;
+import javafx.scene.text.*;
 
 import java.util.*;
 
@@ -30,8 +30,6 @@ import java.util.*;
  * </p>
  */
 public class OwnDefaultNodeSkin extends GNodeSkin {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(OwnDefaultNodeSkin.class);
 
     private static final String STYLE_CLASS_BORDER = "default-node-border";
     private static final String STYLE_CLASS_BACKGROUND = "default-node-background";
@@ -157,7 +155,7 @@ public class OwnDefaultNodeSkin extends GNodeSkin {
     private void performChecks() {
         for (final GConnector connector : getItem().getConnectors()) {
             if (!DefaultConnectorTypes.isValid(connector.getType())) {
-                LOGGER.error("Connector type '{}' not recognized, setting to 'left-input'.", connector.getType());
+                System.out.println("Connector type '{}' not recognized, setting to 'left-input'." + connector.getType());
                 connector.setType(DefaultConnectorTypes.LEFT_INPUT);
             }
         }
@@ -213,48 +211,53 @@ public class OwnDefaultNodeSkin extends GNodeSkin {
      * Adds the selection halo and initializes some of its values.
      */
     private void addSelectionHalo() {
-
         getRoot().getChildren().add(selectionHalo);
 
         String currentNodeType = World.getInstance().getCurrentNodeType();
-        if (currentNodeType.equals("SEQ")) {
-            ObservableList<String> options =
-                    FXCollections.observableArrayList(
-                            "Option 1",
-                            "Option 2"
-                    );
-            ComboBox<String> stringComboBox = new ComboBox<>(options);
-            stringComboBox.setPromptText("placeholder1");
+        ObservableList<String> options = FXCollections.observableArrayList("Option 1", "Option 2", "Option 3");
+        switch (currentNodeType) {
+            case "SEQ" -> {
+                Text type = new Text(currentNodeType);
+                ComboBox<String> A1 = new ComboBox<>(options);
+                A1.setPromptText("a1");
+                ComboBox<String> A2 = new ComboBox<>(options);
+                A2.setPromptText("a2");
 
-            getRoot().getChildren().add(stringComboBox);
-        } else if (currentNodeType.equals("BRANCH")) {
+                VBox vBox = new VBox();
+                vBox.setAlignment(Pos.CENTER);
+                vBox.getChildren().addAll(type, A1, A2);
+                getRoot().getChildren().add(vBox);
+            }
+            case "BRANCH", "BRANCHRE", "CONCUR", "CONCURRE" -> {
+                Text type = new Text(currentNodeType);
+                ComboBox<String> A1 = new ComboBox<>(options);
+                A1.setPromptText("a1");
+                ComboBox<String> A2 = new ComboBox<>(options);
+                A2.setPromptText("a2");
+                ComboBox<String> A3 = new ComboBox<>(options);
+                A3.setPromptText("a3");
 
+                VBox vBox = new VBox();
+                vBox.setAlignment(Pos.CENTER);
+                vBox.getChildren().addAll(type, A1, A2, A3);
+                getRoot().getChildren().add(vBox);
+            }
+            case "COND", "PARA", "LOOP" -> {
+                Text type = new Text(currentNodeType);
+                ComboBox<String> A1 = new ComboBox<>(options);
+                A1.setPromptText("a1");
+                ComboBox<String> A2 = new ComboBox<>(options);
+                A2.setPromptText("a2");
+                ComboBox<String> A3 = new ComboBox<>(options);
+                A3.setPromptText("a3");
+                ComboBox<String> A4 = new ComboBox<>(options);
+                A4.setPromptText("a4");
 
-            ObservableList<String> options =
-                    FXCollections.observableArrayList(
-                            "Option 1",
-                            "Option 2",
-                            "Option 3"
-                    );
-            ComboBox<String> stringComboBox = new ComboBox<>(options);
-            stringComboBox.setPromptText("placeholder1");
-
-            ObservableList<String> options2 =
-                    FXCollections.observableArrayList(
-                            "Option 1",
-                            "Option 2",
-                            "Option 3",
-                            "Option 4"
-                    );
-            ComboBox<String> stringComboBox2 = new ComboBox<>(options2);
-            stringComboBox2.setPromptText("placeholder2");
-
-            VBox vBox = new VBox();
-            vBox.setAlignment(Pos.CENTER);
-            vBox.setFillWidth(true);
-            vBox.getChildren().add(stringComboBox);
-            vBox.getChildren().add(stringComboBox2);
-            getRoot().getChildren().add(vBox);
+                VBox vBox = new VBox();
+                vBox.setAlignment(Pos.CENTER);
+                vBox.getChildren().addAll(type, A1, A2, A3, A4);
+                getRoot().getChildren().add(vBox);
+            }
         }
 
         selectionHalo.setManaged(false);
