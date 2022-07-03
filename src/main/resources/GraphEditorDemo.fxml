@@ -1,91 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.eckig.grapheditor.core.view.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import io.github.eckig.grapheditor.core.view.GraphEditorContainer?>
-
-<AnchorPane fx:id="root" xmlns:fx="http://javafx.com/fxml" fx:controller="bgs.formalspecificationide.tutorial3.GraphEditorDemoController">
-	<VBox fillWidth="true" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
-		<MenuBar fx:id="menuBar">
-			<menus>
-				<Menu text="File">
-					<items>
-						<MenuItem text="Load File" onAction="#load"/>
-						<Menu text="Load Sample">
-							<items>
-								<MenuItem text="Default Skins - Small" onAction="#loadSample"/>
-								<MenuItem text="Default Skins - Large" onAction="#loadSampleLarge"/>
-							</items>
-						</Menu>
-						<MenuItem text="Save" onAction="#save"/>
-						<MenuItem text="Clear All" onAction="#clearAll"/>
-						<SeparatorMenuItem/>
-						<MenuItem text="Exit" onAction="#exit"/>
-					</items>
-				</Menu>
-				<Menu text="Edit">
-					<items>
-						<MenuItem text="Undo" onAction="#undo" accelerator="Shortcut+Z"/>
-						<MenuItem text="Redo" onAction="#redo" accelerator="Shortcut+Y"/>
-						<SeparatorMenuItem/>
-						<MenuItem text="Copy" onAction="#copy" accelerator="Shortcut+C"/>
-						<MenuItem text="Paste" onAction="#paste" accelerator="Shortcut+V"/>
-						<SeparatorMenuItem/>
-						<!-- Added blank spaces to force menu to be wider. -->
-						<MenuItem text="Select All          " onAction="#selectAll" accelerator="Shortcut+A"/>
-						<MenuItem text="Delete" onAction="#deleteSelection" accelerator="Delete"/>
-					</items>
-				</Menu>
-				<Menu text="Actions">
-					<items>
-						<MenuItem text="Add Seq" onAction="#addSeq" accelerator="Shortcut+N"/>
-						<MenuItem text="Add Branch" onAction="#addBranch"/>
-						<MenuItem text="Add BranchRe" onAction="#addBranchRe"/>
-						<MenuItem text="Add Concur" onAction="#addConcur"/>
-						<MenuItem text="Add ConcurRe" onAction="#addConcurRe"/>
-						<MenuItem text="Add Cond" onAction="#addCond"/>
-						<MenuItem text="Add Para" onAction="#addPara"/>
-						<MenuItem text="Add Loop" onAction="#addLoop"/>
-						<MenuItem text="Add Connector" fx:id="addConnectorButton" onAction="#addConnector" accelerator="Shortcut+E"/>
-						<MenuItem text="Clear Connectors" fx:id="clearConnectorsButton" onAction="#clearConnectors" accelerator="Shortcut+W"/>
-						<Menu fx:id="connectorTypeMenu" text="Connector Type">
-							<items>
-								<RadioMenuItem fx:id="inputConnectorTypeButton" text="Input" selected="true"/>
-								<RadioMenuItem fx:id="outputConnectorTypeButton" text="Output"/>
-							</items>
-						</Menu>
-						<Menu fx:id="connectorPositionMenu" text="Connector Position">
-							<items>
-								<RadioMenuItem fx:id="leftConnectorPositionButton" text="Left" selected="true"/>
-								<RadioMenuItem fx:id="rightConnectorPositionButton" text="Right"/>
-								<RadioMenuItem fx:id="topConnectorPositionButton" text="Top"/>
-								<RadioMenuItem fx:id="bottomConnectorPositionButton" text="Bottom"/>
-							</items>
-						</Menu>
-					</items>
-				</Menu>
-				<Menu text="Settings">
-					<items>
-						<RadioMenuItem fx:id="showGridButton" text="Show Grid" />
-						<RadioMenuItem fx:id="snapToGridButton" text="Snap to Grid" />
-						<Menu fx:id="readOnlyMenu" text="Read Only" />
-						<Menu text="Skin Type">
-							<items>
-								<RadioMenuItem fx:id="defaultSkinButton" text="Default" onAction="#setDefaultSkin" selected="true"/>
-							</items>
-						</Menu>
-						<!-- Added blank spaces to force menu to be wider. -->
-						<Menu fx:id="intersectionStyle" text="Intersection Style  ">
-							<items>
-								<RadioMenuItem fx:id="detouredStyleButton" text="Detours" onAction="#setDetouredStyle" selected="true"/>
-								<RadioMenuItem fx:id="gappedStyleButton" text="Gaps" onAction="#setGappedStyle"/>
-							</items>
-						</Menu>
-					</items>
-				</Menu>
-			</menus>
-		</MenuBar>
-		<GraphEditorContainer fx:id="graphEditorContainer" minWidth="0" minHeight="0" maxWidth="+Infinity" maxHeight="+Infinity" VBox.vgrow="ALWAYS"/>
-	</VBox>
-	<ToggleButton fx:id="minimapButton" onAction="#toggleMinimap" focusTraversable="false" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="4"/>
+<AnchorPane fx:id="root" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="bgs.formalspecificationide.tutorial3.GraphEditorDemoController">
+    <VBox AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0"
+          AnchorPane.bottomAnchor="0">
+        <MenuBar fx:id="menuBar">
+            <Menu text="File">
+                <MenuItem text="Load File" onAction="#load"/>
+                <Menu text="Load Sample">
+                    <MenuItem text="Default Skins - Small" onAction="#loadSample"/>
+                    <MenuItem text="Default Skins - Large" onAction="#loadSampleLarge"/>
+                </Menu>
+                <MenuItem text="Save" onAction="#save"/>
+                <MenuItem text="Clear All" onAction="#clearAll"/>
+                <SeparatorMenuItem/>
+                <MenuItem text="Exit" onAction="#exit"/>
+            </Menu>
+            <Menu text="Edit">
+                <MenuItem text="Undo" onAction="#undo" accelerator="Shortcut+Z"/>
+                <MenuItem text="Redo" onAction="#redo" accelerator="Shortcut+Y"/>
+                <SeparatorMenuItem/>
+                <MenuItem text="Copy" onAction="#copy" accelerator="Shortcut+C"/>
+                <MenuItem text="Paste" onAction="#paste" accelerator="Shortcut+V"/>
+                <SeparatorMenuItem/>
+                <MenuItem text="Select All          " onAction="#selectAll" accelerator="Shortcut+A"/>
+                <MenuItem text="Delete" onAction="#deleteSelection" accelerator="Delete"/>
+            </Menu>
+            <Menu text="Actions">
+                <MenuItem text="Add Seq" onAction="#addSeq" accelerator="Shortcut+Q"/>
+                <MenuItem text="Add Branch" onAction="#addBranch" accelerator="Shortcut+W"/>
+                <MenuItem text="Add BranchRe" onAction="#addBranchRe" accelerator="Shortcut+E"/>
+                <MenuItem text="Add Concur" onAction="#addConcur" accelerator="Shortcut+R"/>
+                <MenuItem text="Add ConcurRe" onAction="#addConcurRe" accelerator="Shortcut+T"/>
+                <MenuItem text="Add Cond" onAction="#addCond" accelerator="Shortcut+Y"/>
+                <MenuItem text="Add Para" onAction="#addPara" accelerator="Shortcut+U"/>
+                <MenuItem text="Add Loop" onAction="#addLoop" accelerator="Shortcut+I"/>
+            </Menu>
+            <Menu text="Settings">
+                <RadioMenuItem fx:id="showGridButton" text="Show Grid" selected="true"/>
+                <RadioMenuItem fx:id="snapToGridButton" text="Snap to Grid"/>
+                <Menu fx:id="intersectionStyle" text="Intersection Style  ">
+                    <RadioMenuItem fx:id="detouredStyleButton" text="Detours" onAction="#setDetouredStyle"
+                                   selected="true"/>
+                    <RadioMenuItem fx:id="gappedStyleButton" text="Gaps" onAction="#setGappedStyle"/>
+                </Menu>
+            </Menu>
+        </MenuBar>
+        <GraphEditorContainer fx:id="graphEditorContainer" minWidth="0" minHeight="0" maxWidth="+Infinity"
+                              maxHeight="+Infinity" VBox.vgrow="ALWAYS"/>
+    </VBox>
+    <ToggleButton fx:id="minimapButton" onAction="#toggleMinimap" focusTraversable="false" AnchorPane.rightAnchor="10"
+                  AnchorPane.topAnchor="4"/>
 </AnchorPane>

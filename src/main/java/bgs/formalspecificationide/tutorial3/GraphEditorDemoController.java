@@ -232,16 +232,6 @@ public class GraphEditorDemoController {
     }
 
     @FXML
-    public void addConnector() {
-        activeSkinController.get().addConnector(getSelectedConnectorPosition(), inputConnectorTypeButton.isSelected());
-    }
-
-    @FXML
-    public void clearConnectors() {
-        activeSkinController.get().clearConnectors();
-    }
-
-    @FXML
     public void setDefaultSkin() {
         activeSkinController.set(defaultSkinController);
     }
@@ -271,18 +261,8 @@ public class GraphEditorDemoController {
      */
     private void initializeMenuBar() {
 
-        final ToggleGroup skinGroup = new ToggleGroup();
-        skinGroup.getToggles().addAll(defaultSkinButton);
-
         final ToggleGroup connectionStyleGroup = new ToggleGroup();
         connectionStyleGroup.getToggles().addAll(gappedStyleButton, detouredStyleButton);
-
-        final ToggleGroup connectorTypeGroup = new ToggleGroup();
-        connectorTypeGroup.getToggles().addAll(inputConnectorTypeButton, outputConnectorTypeButton);
-
-        final ToggleGroup positionGroup = new ToggleGroup();
-        positionGroup.getToggles().addAll(leftConnectorPositionButton, rightConnectorPositionButton);
-        positionGroup.getToggles().addAll(topConnectorPositionButton, bottomConnectorPositionButton);
 
         graphEditor.getProperties().gridVisibleProperty().bind(showGridButton.selectedProperty());
         graphEditor.getProperties().snapToGridProperty().bind(snapToGridButton.selectedProperty());
@@ -290,7 +270,6 @@ public class GraphEditorDemoController {
         for (final EditorElement type : EditorElement.values()) {
             final CheckMenuItem readOnly = new CheckMenuItem(type.name());
             graphEditor.getProperties().readOnlyProperty(type).bind(readOnly.selectedProperty());
-            readOnlyMenu.getItems().add(readOnly);
         }
 
         minimapButton.setGraphic(AwesomeIcon.MAP.node());
@@ -312,39 +291,5 @@ public class GraphEditorDemoController {
     /**
      * Checks if the connector buttons need disabling (e.g. because no nodes are selected).
      */
-    private void checkConnectorButtonsToDisable() {
-
-        final boolean nothingSelected = graphEditor.getSelectionManager().getSelectedItems().stream()
-                .noneMatch(e -> e instanceof GNode);
-
-        if (nothingSelected) {
-            addConnectorButton.setDisable(true);
-            clearConnectorsButton.setDisable(true);
-            connectorTypeMenu.setDisable(false);
-            connectorPositionMenu.setDisable(false);
-        } else {
-            addConnectorButton.setDisable(false);
-            clearConnectorsButton.setDisable(false);
-            connectorTypeMenu.setDisable(false);
-            connectorPositionMenu.setDisable(false);
-        }
-    }
-
-    /**
-     * Gets the side corresponding to the currently selected connector position in the menu.
-     *
-     * @return the {@link Side} corresponding to the currently selected connector position
-     */
-    private Side getSelectedConnectorPosition() {
-
-        if (leftConnectorPositionButton.isSelected()) {
-            return Side.LEFT;
-        } else if (rightConnectorPositionButton.isSelected()) {
-            return Side.RIGHT;
-        } else if (topConnectorPositionButton.isSelected()) {
-            return Side.TOP;
-        } else {
-            return Side.BOTTOM;
-        }
-    }
+    private void checkConnectorButtonsToDisable() {}
 }
