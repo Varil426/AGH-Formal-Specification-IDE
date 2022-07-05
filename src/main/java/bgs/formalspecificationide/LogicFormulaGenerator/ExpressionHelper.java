@@ -1,14 +1,22 @@
 package bgs.formalspecificationide.LogicFormulaGenerator;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.json.simple.parser.*;
+
+import java.io.*;
+import java.util.*;
 
 public class ExpressionHelper {
-    public static PatternPropertySet patternPropertySet = new PatternPropertySet();
+    public static PatternPropertySet FOLPatternPropertySet;
+    public static PatternPropertySet LTLPatternPropertySet;
+
+    static {
+        try {
+            FOLPatternPropertySet = new PatternPropertySet("FOL");
+            LTLPatternPropertySet = new PatternPropertySet("LTL");
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static String labelExpressions(String expression) {
         StringBuilder result = new StringBuilder();
@@ -17,9 +25,9 @@ public class ExpressionHelper {
                 expression.toCharArray()) {
             if (c == '(') {
                 labelNumber++;
-                result.append("(" + labelNumber + "]");
+                result.append("(").append(labelNumber).append("]");
             } else if (c == ')') {
-                result.append("[" + labelNumber + ")");
+                result.append("[").append(labelNumber).append(")");
                 labelNumber--;
             } else {
                 result.append(c);
@@ -28,21 +36,18 @@ public class ExpressionHelper {
         return result.toString();
     }
 
-
     public static int getMaxedLabelPattern(String labeledExpression) {
         labeledExpression = labeledExpression.replaceAll("[^0-9]+", " ");
-        List<String> labels = Arrays.asList(labeledExpression.trim().split(" "));
+        String[] labels = labeledExpression.trim().split(" ");
         int maxLabel = -1;
         for (String label : labels) {
-            int castedLabel = Integer.valueOf(label);
+            int castedLabel = Integer.parseInt(label);
             maxLabel = Math.max(castedLabel, maxLabel);
         }
-
         return maxLabel;
     }
 
-
-    public static PredefinedSetEntry getPat(String labeledExpression, int l, int c) {
+    public static PredefinedSetEntry getPat(String labeledExpression, int l, int c, String logicType) {
         int occurenceIndex = 0;
         do {
             if (occurenceIndex == 0)
@@ -70,7 +75,12 @@ public class ExpressionHelper {
             expressionName = labeledExpression.substring(beginExpressionIndex + 1, occurenceIndex - 1);
         else
             expressionName = labeledExpression.substring(0, occurenceIndex - 1);
-        PredefinedSetEntry result = patternPropertySet.findByIdentifier(expressionName.trim());
+        PredefinedSetEntry result = null;
+        if (logicType.equals("FOL")) {
+            result = FOLPatternPropertySet.findByIdentifier(expressionName.trim());
+        } else if (logicType.equals("LTL")) {
+            result = LTLPatternPropertySet.findByIdentifier(expressionName.trim());
+        }
         if (result != null) {
             List<String> arguments = extractArgumentsFromFunction(args);
             result.PassArguments(arguments);
@@ -78,9 +88,14 @@ public class ExpressionHelper {
         return result;
     }
 
-    public static PredefinedSetEntry getPredefinedSetEntryByExpression(String expression) {
+    public static PredefinedSetEntry getPredefinedSetEntryByExpression(String expression, String logicType) {
         String identifier = expression.substring(0, expression.indexOf("("));
-        PredefinedSetEntry result = patternPropertySet.findByIdentifier(identifier);
+        PredefinedSetEntry result = null;
+        if (logicType.equals("FOL")) {
+            result = FOLPatternPropertySet.findByIdentifier(identifier);
+        } else if (logicType.equals("LTL")) {
+            result = LTLPatternPropertySet.findByIdentifier(identifier);
+        }
         if (result != null) {
             List<String> args = extractFromLabeled(expression);
             result.PassArguments(args);
@@ -125,17 +140,12 @@ public class ExpressionHelper {
     }
 
     public static List<String> extractFromLabeled(String labeled) {
-
         int x = labeled.indexOf("]");
-
-        List<String> argsLabeled = extractArgumentsFromFunction(labeled.substring(x + 1, labeled.length() - 3));
-
-        return argsLabeled;
+        return extractArgumentsFromFunction(labeled.substring(x + 1, labeled.length() - 3));
 
     }
 
-
-    public static boolean isAtomic(String argument) {
-        return !(argument.contains("=>") || argument.contains("|") || argument.contains("^") || argument.contains("]"));
+    public static boolean isNotAtomic(String argument) {
+        return argument.contains("=>") || argument.contains("|") || argument.contains("^") || argument.contains("]");
     }
 }

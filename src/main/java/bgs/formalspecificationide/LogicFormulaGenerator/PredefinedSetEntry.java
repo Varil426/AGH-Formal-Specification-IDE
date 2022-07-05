@@ -1,10 +1,7 @@
 package bgs.formalspecificationide.LogicFormulaGenerator;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.regex.Pattern;
-import java.util.ArrayList;
+import java.util.*;
+import java.util.regex.*;
 
 public class PredefinedSetEntry {
     Pattern pattern;
@@ -12,7 +9,6 @@ public class PredefinedSetEntry {
     int argNumber;
     String[] possibleOutcomes;
     List<String> passedArgs;
-
 
     PredefinedSetEntry(String identifier, int argNumber, String[] possibleOutcomes) {
         String pattern = identifier;
@@ -38,7 +34,6 @@ public class PredefinedSetEntry {
         }
     }
 
-
     public List<String> getPossibleOutcomes() {
         if (passedArgs.size() > 0) {
             List<String> outcomes = new LinkedList<>();
@@ -51,7 +46,6 @@ public class PredefinedSetEntry {
             }
             return outcomes;
         } else {
-
             return Arrays.asList(possibleOutcomes);
         }
     }

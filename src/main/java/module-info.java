@@ -16,6 +16,7 @@ module bgs.formalspecificationide {
     requires org.eclipse.core.resources;
     requires org.eclipse.equinox.common;
     requires jface;
+    requires json.simple;
 
     opens bgs.formalspecificationide.Services to com.google.guice;
     opens bgs.formalspecificationide.Persistence to com.google.guice;
