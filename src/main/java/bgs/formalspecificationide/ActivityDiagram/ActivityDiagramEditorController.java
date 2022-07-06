@@ -12,12 +12,18 @@ import io.github.eckig.grapheditor.model.*;
 import javafx.application.*;
 import javafx.beans.property.*;
 import javafx.collections.*;
+import javafx.event.*;
 import javafx.fxml.*;
 import javafx.geometry.*;
+import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.text.*;
+import javafx.stage.*;
 import org.eclipse.emf.ecore.*;
 
+import java.io.*;
+import java.net.*;
 import java.util.*;
 
 /**
@@ -25,6 +31,11 @@ import java.util.*;
  */
 public class ActivityDiagramEditorController {
 
+    private static final String APPLICATION_TITLE = "Results";
+    private static final String DEMO_STYLESHEET = "demo.css";
+    private static final String FONT_AWESOME = "fontawesome.ttf";
+
+    private static final Stage resultsStage = new Stage();
     private final GraphEditor graphEditor = new OwnDefaultGraphEditor();
     private final SelectionCopier selectionCopier = new SelectionCopier(graphEditor.getSkinLookup(), graphEditor.getSelectionManager());
     private final ActivityDiagramEditorPersistence graphEditorPersistence = new ActivityDiagramEditorPersistence();
@@ -40,7 +51,7 @@ public class ActivityDiagramEditorController {
 
     };
     @FXML
-    public Button generateSpecification;
+    private Button generateSpecification;
     @FXML
     private AnchorPane root;
     @FXML
@@ -105,6 +116,30 @@ public class ActivityDiagramEditorController {
         selectionCopier.initialize(model);
 
         initializeMenuBar();
+
+        generateSpecification.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                final URL location = getClass().getClassLoader().getResource("ResultsEditor.fxml");
+                final FXMLLoader loader = new FXMLLoader();
+                Parent root = null;
+                try {
+                    root = loader.load(location.openStream());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                final Scene scene = new Scene(root, 600, 800);
+                scene.getStylesheets().add(getClass().getClassLoader().getResource(DEMO_STYLESHEET).toExternalForm());
+                Font.loadFont(getClass().getClassLoader().getResource(FONT_AWESOME).toExternalForm(), 12);
+
+                resultsStage.setScene(scene);
+                resultsStage.setTitle(APPLICATION_TITLE);
+                resultsStage.show();
+
+                // close current window
+//                ((Node)(event.getSource())).getScene().getWindow().hide();
+            }
+        });
     }
 
     /**

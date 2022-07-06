@@ -25,6 +25,7 @@ module bgs.formalspecificationide {
     opens bgs.formalspecificationide.Model to com.fasterxml.jackson.databind;
     opens bgs.formalspecificationide to com.google.guice, javafx.fxml;
     opens bgs.formalspecificationide.ActivityDiagram to com.google.guice, javafx.fxml, javafx.graphics;
+    opens bgs.formalspecificationide.ResultsEditor to com.google.guice, javafx.fxml, javafx.graphics;
     opens bgs.formalspecificationide.ActivityDiagram.ownImpl to com.google.guice, javafx.fxml, javafx.graphics;
 
     exports bgs.formalspecificationide;
