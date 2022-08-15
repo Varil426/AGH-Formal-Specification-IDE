@@ -1,9 +1,9 @@
 package bgs.formalspecificationide;
 
-import bgs.formalspecificationide.Factories.IModelFactory;
-import bgs.formalspecificationide.Factories.ModelFactory;
-import bgs.formalspecificationide.Persistence.Repositories.RepositoriesModule;
-import bgs.formalspecificationide.Services.*;
+import bgs.formalspecificationide.factories.IModelFactory;
+import bgs.formalspecificationide.factories.ModelFactory;
+import bgs.formalspecificationide.persistence.repositories.RepositoriesModule;
+import bgs.formalspecificationide.services.*;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 
