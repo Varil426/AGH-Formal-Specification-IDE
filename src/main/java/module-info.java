@@ -17,5 +17,9 @@ module bgs.formalspecificationide {
     opens bgs.formalspecificationide.model to com.fasterxml.jackson.databind;
     opens bgs.formalspecificationide to com.google.guice, javafx.fxml;
 
+    opens bgs.formalspecificationide.ui to javafx.fxml, com.google.guice;
+    opens bgs.formalspecificationide.ui.editors.useCaseSelector to javafx.fxml, com.google.guice;
+    opens bgs.formalspecificationide.ui.editors.useCaseSelector.controls to javafx.fxml, com.google.guice;
+
     exports bgs.formalspecificationide;
 }

@@ -1,12 +1,11 @@
 package bgs.formalspecificationide;
 
-import bgs.formalspecificationide.Factories.ModelFactory;
-import bgs.formalspecificationide.Model.Project;
-import bgs.formalspecificationide.Persistence.Repositories.IProjectRepository;
-import bgs.formalspecificationide.Services.IResourceService;
+import bgs.formalspecificationide.services.IResourceService;
+import bgs.formalspecificationide.ui.MainWindow;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class FormalSpecificationIde extends Application {
@@ -18,7 +17,10 @@ public class FormalSpecificationIde extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle(resourceService.getText("ApplicationTitle"));
+        
+        var root = injector.getInstance(MainWindow.class);
 
+        stage.setScene(new Scene(root));
 
         stage.show();
     }
