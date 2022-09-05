@@ -1,8 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import bgs.formalspecificationide.ui.*?>
+<!-- type="bgs.formalspecificationide.ui.MainWindow" -->
+<!-- type="javafx.scene.layout.AnchorPane" -->
 
 <?import bgs.formalspecificationide.ui.editors.useCaseSelector.UseCaseSelectorEditor?>
-<fx:root prefHeight="1000.0" prefWidth="1400.0" type="bgs.formalspecificationide.ui.MainWindow" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
-    <UseCaseSelectorEditor fx:id="useCaseSelectorEditor"/>
+<?import bgs.formalspecificationide.ui.editors.scenarioSelector.ScenarioSelectorEditor?>
+<?import bgs.formalspecificationide.ui.editors.actionEditor.ActionEditor?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<fx:root prefHeight="1000.0" prefWidth="1400.0" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml">
+    
+    <MenuBar prefHeight="25.0" prefWidth="1400.0">
+        <Menu mnemonicParsing="false" text="File">
+            <MenuItem mnemonicParsing="false" text="Save" />
+            <MenuItem mnemonicParsing="false" text="Load" />
+            <MenuItem mnemonicParsing="false" text="Import from XML" />
+        </Menu>
+    </MenuBar>
+    
+<!--    <AnchorPane id="useCaseSelectorEditor" layoutY="25.0" prefHeight="460.0" prefWidth="400.0" />-->
+    <UseCaseSelectorEditor fx:id="useCaseSelectorEditor" layoutY="25.0" prefHeight="460.0" prefWidth="400.0" />
+<!--    <AnchorPane id="imageViewer" layoutY="485.0" prefHeight="515.0" prefWidth="400.0" />-->
+    <AnchorPane fx:id="imageViewer" layoutY="485.0" prefHeight="515.0" prefWidth="400.0" />
+<!--    <AnchorPane id="scenarioSelectorEditor" layoutX="400.0" layoutY="25.0" prefHeight="400.0" prefWidth="400.0" />-->
+    <ScenarioSelectorEditor fx:id="scenarioSelectorEditor" layoutX="400.0" layoutY="25.0" prefHeight="400.0" prefWidth="400.0" />
+<!--    <AnchorPane id="actionEditor" layoutX="400.0" layoutY="425.0" prefHeight="575.0" prefWidth="400.0" />-->
+    <ActionEditor fx:id="actionEditor" layoutX="400.0" layoutY="425.0" prefHeight="575.0" prefWidth="400.0" />
+    
+    
 </fx:root>
