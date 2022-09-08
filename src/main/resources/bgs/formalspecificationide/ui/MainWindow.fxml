@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- type="bgs.formalspecificationide.ui.MainWindow" -->
+<!-- type="bgs.formalspecificationide.ui.MainWindowController" -->
 <!-- type="javafx.scene.layout.AnchorPane" -->
 
-<?import bgs.formalspecificationide.ui.editors.useCaseSelector.UseCaseSelectorEditor?>
-<?import bgs.formalspecificationide.ui.editors.scenarioSelector.ScenarioSelectorEditor?>
-<?import bgs.formalspecificationide.ui.editors.actionEditor.ActionEditor?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.layout.AnchorPane?>
-<fx:root prefHeight="1000.0" prefWidth="1400.0" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root prefHeight="1000.0" prefWidth="1400.0" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bgs.formalspecificationide.ui.MainWindowController">
     
     <MenuBar prefHeight="25.0" prefWidth="1400.0">
         <Menu mnemonicParsing="false" text="File">
@@ -20,14 +16,22 @@
         </Menu>
     </MenuBar>
     
-<!--    <AnchorPane id="useCaseSelectorEditor" layoutY="25.0" prefHeight="460.0" prefWidth="400.0" />-->
-    <UseCaseSelectorEditor fx:id="useCaseSelectorEditor" layoutY="25.0" prefHeight="460.0" prefWidth="400.0" />
-<!--    <AnchorPane id="imageViewer" layoutY="485.0" prefHeight="515.0" prefWidth="400.0" />-->
-    <AnchorPane fx:id="imageViewer" layoutY="485.0" prefHeight="515.0" prefWidth="400.0" />
-<!--    <AnchorPane id="scenarioSelectorEditor" layoutX="400.0" layoutY="25.0" prefHeight="400.0" prefWidth="400.0" />-->
-    <ScenarioSelectorEditor fx:id="scenarioSelectorEditor" layoutX="400.0" layoutY="25.0" prefHeight="400.0" prefWidth="400.0" />
-<!--    <AnchorPane id="actionEditor" layoutX="400.0" layoutY="425.0" prefHeight="575.0" prefWidth="400.0" />-->
-    <ActionEditor fx:id="actionEditor" layoutX="400.0" layoutY="425.0" prefHeight="575.0" prefWidth="400.0" />
+<!--&lt;!&ndash;    <AnchorPane id="useCaseSelectorEditor" layoutY="25.0" prefHeight="460.0" prefWidth="400.0" />&ndash;&gt;-->
+<!--    <UseCaseSelectorEditor fx:id="useCaseSelectorEditor" layoutY="25.0" prefHeight="460.0" prefWidth="400.0" />-->
+<!--&lt;!&ndash;    <AnchorPane id="imageViewer" layoutY="485.0" prefHeight="515.0" prefWidth="400.0" />&ndash;&gt;-->
+<!--    <AnchorPane fx:id="imageViewer" layoutY="485.0" prefHeight="515.0" prefWidth="400.0" />-->
+<!--&lt;!&ndash;    <AnchorPane id="scenarioSelectorEditor" layoutX="400.0" layoutY="25.0" prefHeight="400.0" prefWidth="400.0" />&ndash;&gt;-->
+<!--    <ScenarioSelectorEditor fx:id="scenarioSelectorEditor" layoutX="400.0" layoutY="25.0" prefHeight="400.0" prefWidth="400.0" />-->
+<!--&lt;!&ndash;    <AnchorPane id="actionEditor" layoutX="400.0" layoutY="425.0" prefHeight="575.0" prefWidth="400.0" />&ndash;&gt;-->
+<!--    <ActionEditor fx:id="actionEditor" layoutX="400.0" layoutY="425.0" prefHeight="575.0" prefWidth="400.0" />-->
+<!--    -->
+<!--&lt;!&ndash;    <fx:include source="editors/useCaseSelector/UseCaseSelectorEditor.fxml" fx:id="useCaseSelectorEditor" />&ndash;&gt;-->
     
-    
+    <AnchorPane layoutY="25.0">
+        <fx:include fx:id="useCaseSelectorEditor" source="editors/useCaseSelector/UseCaseSelectorEditor.fxml" />
+    </AnchorPane>
+    <AnchorPane fx:id="imageViewer" layoutY="530.0" prefHeight="515.0" prefWidth="400.0" /> <!-- TODO -->
+    <AnchorPane layoutX="300.0" layoutY="25.0">
+        <fx:include fx:id="scenarioSelectorEditor" source="editors/scenarioSelector/ScenarioSelectorEditor.fxml" />
+    </AnchorPane>
 </fx:root>

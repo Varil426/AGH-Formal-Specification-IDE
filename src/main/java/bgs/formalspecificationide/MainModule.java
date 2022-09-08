@@ -4,7 +4,7 @@ import bgs.formalspecificationide.factories.IModelFactory;
 import bgs.formalspecificationide.factories.ModelFactory;
 import bgs.formalspecificationide.persistence.repositories.RepositoriesModule;
 import bgs.formalspecificationide.services.*;
-import bgs.formalspecificationide.ui.UiModule;
+import bgs.formalspecificationide.ui.UIModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 
@@ -26,6 +26,6 @@ public class MainModule extends AbstractModule {
 
         // Submodules
         install(new RepositoriesModule());
-        install(new UiModule());
+        install(new UIModule());
     }
 }
