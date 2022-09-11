@@ -19,6 +19,7 @@ public class FormalSpecificationIde extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle(resourceService.getText("ApplicationTitle"));
+        stage.setResizable(false);
 
         fxmlLoader = new FXMLLoader(getClass().getResource("ui/MainWindow.fxml"));
         fxmlLoader.setControllerFactory(injector::getInstance);
