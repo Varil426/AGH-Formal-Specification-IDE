@@ -3,6 +3,7 @@ package bgs.formalspecificationide.ui;
 import bgs.formalspecificationide.model.ModelBase;
 import bgs.formalspecificationide.model.Project;
 import bgs.formalspecificationide.ui.editors.actionEditor.ActionEditorController;
+import bgs.formalspecificationide.ui.editors.imageViewer.ImageViewerController;
 import bgs.formalspecificationide.ui.editors.scenarioSelector.ScenarioSelectorEditorController;
 import bgs.formalspecificationide.ui.editors.useCaseSelector.UseCaseSelectorEditorController;
 import com.google.inject.Inject;
@@ -23,6 +24,9 @@ public class MainWindowController implements IController {
     
     @FXML
     public ActionEditorController actionEditorController;
+
+    @FXML
+    public ImageViewerController imageViewerController;
     
 //    public MainWindow() {
 //        injector = null;

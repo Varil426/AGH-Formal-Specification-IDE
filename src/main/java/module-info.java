@@ -23,7 +23,8 @@ module bgs.formalspecificationide {
     opens bgs.formalspecificationide.ui.editors.scenarioSelector to javafx.fxml, com.google.guice;
     opens bgs.formalspecificationide.ui.editors.scenarioSelector.controls to javafx.fxml, com.google.guice;
     opens bgs.formalspecificationide.ui.editors.actionEditor to javafx.fxml, com.google.guice;
-//    opens bgs.formalspecificationide.ui.editors.actionEditor.controls to javafx.fxml, com.google.guice;
+    opens bgs.formalspecificationide.ui.editors.actionEditor.controls to javafx.fxml, com.google.guice;
+    opens bgs.formalspecificationide.ui.editors.imageViewer to javafx.fxml, com.google.guice;
 
     exports bgs.formalspecificationide;
 }
