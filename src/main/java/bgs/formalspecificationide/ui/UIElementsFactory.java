@@ -1,9 +1,11 @@
 package bgs.formalspecificationide.ui;
 
+import bgs.formalspecificationide.model.UseCase;
 import bgs.formalspecificationide.ui.editors.useCaseSelector.controls.UseCaseController;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Pair;
 
@@ -23,8 +25,13 @@ class UIElementsFactory implements IUIElementFactory {
     public UIElementsFactory(Injector injector) {
 
         this.injector = injector;
-//        fxmlLoader = new FXMLLoader();
-//        fxmlLoader.setControllerFactory(injector::getInstance);
+    }
+
+    @Override
+    public Pair<AnchorPane, UseCaseController> CreateUseCase(UseCase useCase) {
+        var pair = this.<AnchorPane, UseCaseController>loadFromFxmnl(useCaseSelectorControlsPath + "UseCase.fxml");
+        
+        return pair;
     }
     
     @Override
@@ -32,7 +39,7 @@ class UIElementsFactory implements IUIElementFactory {
         return loadFromFxmnl(useCaseSelectorControlsPath + "UseCase.fxml");
     }
     
-    private <TUIElement, TController> Pair<TUIElement, TController> loadFromFxmnl(String path) {
+    private <TUIElement extends Node, TController extends IController> Pair<TUIElement, TController> loadFromFxmnl(String path) {
         try {
             var fxmlLoader = new FXMLLoader(getClass().getResource(path));
             fxmlLoader.setControllerFactory(injector::getInstance);
