@@ -2,7 +2,7 @@ package bgs.formalspecificationide.ui.editors.useCaseSelector.controls;
 
 import bgs.formalspecificationide.model.ModelBase;
 import bgs.formalspecificationide.model.UseCase;
-import bgs.formalspecificationide.ui.IDomainAware;
+import bgs.formalspecificationide.ui.IController;
 import com.google.inject.Inject;
 import javafx.beans.property.ObjectProperty;
 import javafx.event.ActionEvent;
@@ -12,7 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 
-public class UseCaseController implements IDomainAware {
+public class UseCaseController implements IController {
 
     private UseCase useCase;
     

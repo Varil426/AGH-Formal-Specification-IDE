@@ -3,7 +3,7 @@ package bgs.formalspecificationide.ui.editors.useCaseSelector;
 import bgs.formalspecificationide.factories.IModelFactory;
 import bgs.formalspecificationide.model.ModelBase;
 import bgs.formalspecificationide.model.UseCaseDiagram;
-import bgs.formalspecificationide.ui.IDomainAware;
+import bgs.formalspecificationide.ui.IController;
 import bgs.formalspecificationide.ui.IUIElementFactory;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
@@ -12,7 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 
-public class UseCaseSelectorEditorController implements IDomainAware {
+public class UseCaseSelectorEditorController implements IController {
 
     @FXML
     private ListView<AnchorPane> useCasesList;

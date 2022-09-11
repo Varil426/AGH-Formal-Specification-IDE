@@ -2,14 +2,10 @@ package bgs.formalspecificationide.ui.editors.scenarioSelector;
 
 import bgs.formalspecificationide.model.ModelBase;
 import bgs.formalspecificationide.model.UseCase;
-import bgs.formalspecificationide.ui.IDomainAware;
+import bgs.formalspecificationide.ui.IController;
 import com.google.inject.Inject;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.AnchorPane;
 
-import java.io.IOException;
-
-public class ScenarioSelectorEditorController implements IDomainAware {
+public class ScenarioSelectorEditorController implements IController {
     
     private UseCase useCase;
     

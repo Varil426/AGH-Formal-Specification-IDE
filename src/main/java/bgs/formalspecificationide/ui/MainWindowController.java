@@ -9,7 +9,7 @@ import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 
-public class MainWindowController implements IDomainAware {
+public class MainWindowController implements IController {
 
 //    private final Injector injector;
     

@@ -2,10 +2,10 @@ package bgs.formalspecificationide.ui.editors.scenarioSelector.controls;
 
 import bgs.formalspecificationide.model.ModelBase;
 import bgs.formalspecificationide.model.Scenario;
-import bgs.formalspecificationide.ui.IDomainAware;
+import bgs.formalspecificationide.ui.IController;
 import com.google.inject.Inject;
 
-public class ScenarioController implements IDomainAware {
+public class ScenarioController implements IController {
 
     private Scenario scenario;
 
