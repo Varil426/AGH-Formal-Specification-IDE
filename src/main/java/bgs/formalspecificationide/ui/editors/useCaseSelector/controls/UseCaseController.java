@@ -11,10 +11,18 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.function.Function;
 
 public class UseCaseController implements IController {
 
     private UseCase useCase;
+    
+    @FXML
+    private AnchorPane pane;
     
     @FXML
     private TextField useCaseNameTextField;
@@ -27,34 +35,25 @@ public class UseCaseController implements IController {
 
     @FXML
     private Button removeButton;
-
-//    public UseCaseController(bgs.formalspecificationide.model.UseCase useCase) {
-//        super();
-//        this.useCase = useCase;
-//        
-//        var fxmlLoader = new FXMLLoader(getClass().getResource(
-//                "UseCase.fxml"));
-//        fxmlLoader.setController(this);
-//
-//        try {
-//            var result = fxmlLoader.<AnchorPane>load();
-//            this.getChildren().add(result);
-//        } catch (IOException exception) {
-//            throw new RuntimeException(exception);
-//        }
-//    }
+    
+    private Function<AnchorPane, Void> onRemoveClicked;
     
     @Inject
-    public UseCaseController() {
-        
+    public UseCaseController() { }
+    
+    public void initialize() {
+        isImportedCheckBox.setDisable(true);
     }
     
     public ObjectProperty<EventHandler<ActionEvent>> onIsSelectedChanged() {
         return isSelectedCheckBox.onActionProperty();
     }
 
-    public ObjectProperty<EventHandler<ActionEvent>> onRemoveButtonClicked() {
-        return removeButton.onActionProperty();
+    public void onRemoveButtonClicked() throws InvocationTargetException, IllegalAccessException {
+        useCase.getParent().ifPresent(x -> x.removeChild(useCase));
+        
+        if (onRemoveClicked != null)
+            onRemoveClicked.apply(pane);
     }
 
     public bgs.formalspecificationide.model.UseCase getUseCase() {
@@ -63,8 +62,12 @@ public class UseCaseController implements IController {
 
     @Override
     public void load(ModelBase object) {
-        if (object instanceof UseCase useCase)
+        if (object instanceof UseCase useCase) {
             this.useCase = useCase;
+            useCaseNameTextField.setText(useCase.getUseCaseName());
+            isImportedCheckBox.setSelected(useCase.isImported());
+            removeButton.setDisable(useCase.isImported());
+        }
         else
             throw new IllegalArgumentException();
     }
@@ -72,5 +75,14 @@ public class UseCaseController implements IController {
     @Override
     public void unload() {
 
+    }
+
+    public void setOnRemoveClicked(Function<AnchorPane, Void> onRemoveClicked) {
+        this.onRemoveClicked = onRemoveClicked;
+    }
+    
+    @FXML
+    private void useCaseNameChanged() {
+        useCase.setName(useCaseNameTextField.getText());
     }
 }
