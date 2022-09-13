@@ -43,6 +43,7 @@ class PersistenceHelper implements IPersistenceHelper {
         var polymorphicTypeValidator = BasicPolymorphicTypeValidator.builder()
                 .allowIfBaseType(ModelBase.class)
                 .allowIfBaseType(List.class)
+                .allowIfBaseType(Map.class)
                 .build();
 
 

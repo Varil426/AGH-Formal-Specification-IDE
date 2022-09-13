@@ -1,6 +1,7 @@
 package bgs.formalspecificationide.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -10,6 +11,8 @@ import java.util.UUID;
 public class UseCaseDiagram extends ModelAggregate {
 
     private UUID imageID;
+    
+    @JsonIgnore
     private Map<String, Map<String, List<String>>> useCasesRaw;
 
     @JsonCreator

@@ -106,6 +106,6 @@ class ProjectRepository implements IProjectRepository {
 
     @Override
     public Optional<Project> getById(UUID id) {
-        return getAll().stream().filter(x -> x.getId() == id).findFirst();
+        return getAll().stream().filter(x -> x.getId().equals(id)).findFirst();
     }
 }
