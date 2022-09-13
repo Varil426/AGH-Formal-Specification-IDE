@@ -13,7 +13,7 @@ public interface IModelFactory {
 
     UseCaseDiagram createUseCaseDiagram(Project parent, UUID id, UUID imageID);
 
-    UseCase createUseCase(UseCaseDiagram parent, UUID id, String name);
+    UseCase createUseCase(UseCaseDiagram parent, UUID id, String name, boolean isImported);
 
     Scenario createScenario(UseCase parent, UUID id, boolean isMain);
 

@@ -12,17 +12,19 @@ public class UseCase extends ModelAggregate{
 
     private String useCaseName; // np.: create_order
     private String useCasePrettyName; // np.: Create Order
+    private final boolean isImported;
     private final HashMap<UUID, ArrayList<RelationEnum>> relations;
-
+    
     public enum RelationEnum {
         EXTEND,
         INCLUDE,
     }
 
     @JsonCreator
-    public UseCase(@JsonProperty("id")UUID id, @JsonProperty("useCaseName") String useCaseName){
+    public UseCase(@JsonProperty("id")UUID id, @JsonProperty("useCaseName") String useCaseName, @JsonProperty("isImported") boolean isImported){
         super(id);
         this.useCaseName = useCaseName;
+        this.isImported = isImported;
         this.relations = new HashMap<>();
     }
 
@@ -57,9 +59,8 @@ public class UseCase extends ModelAggregate{
 
     @Override
     public void addChild(ModelBase item) {
-        //TODO poprawić to bo nie działa
-//        if (item instanceof Scenario scenario && scenario.isMainScenario() && getScenarioList().stream().anyMatch(Scenario::isMainScenario))
-//            throw new IllegalArgumentException("Can't add more than one main scenario");
+        if (item instanceof Scenario scenario && scenario.isMainScenario() && getScenarioList().stream().anyMatch(Scenario::isMainScenario))
+            throw new IllegalArgumentException("Can't add more than one main scenario");
         super.addChild(item);
     }
 
@@ -96,6 +97,11 @@ public class UseCase extends ModelAggregate{
     public String getUseCasePrettyName() {
         return useCasePrettyName;
     }
+
+    public boolean isImported() {
+        return isImported;
+    }
+
 
     public HashMap<UUID, ArrayList<RelationEnum>> getRelations() {
         return new HashMap<>(relations);

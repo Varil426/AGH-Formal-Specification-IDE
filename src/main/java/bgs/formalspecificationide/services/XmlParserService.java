@@ -58,7 +58,7 @@ public class XmlParserService {
         useCaseDiagram.setUseCasesRaw(useCases);
         var useCasesList = new ArrayList<UseCase>();
         for (var entry : useCases.entrySet()) {
-            var useCase = modelFactory.createUseCase(useCaseDiagram, UUID.randomUUID(), entry.getKey());
+            var useCase = modelFactory.createUseCase(useCaseDiagram, UUID.randomUUID(), entry.getKey(), true);
             useCase.setPrettyName(entry.getValue().get("NAME").get(0));
             useCasesList.add(useCase);
         }

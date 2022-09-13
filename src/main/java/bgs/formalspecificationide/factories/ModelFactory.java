@@ -92,8 +92,8 @@ public class ModelFactory implements IModelFactory {
     }
 
     @Override
-    public UseCase createUseCase(UseCaseDiagram parent, UUID id, String name){
-        UseCase useCase = new UseCase(id, name);
+    public UseCase createUseCase(UseCaseDiagram parent, UUID id, String name, boolean isImported){
+        UseCase useCase = new UseCase(id, name, isImported);
         parent.addChild(useCase);
 
         var mainScenario = createScenario(useCase, UUID.randomUUID(), true);
