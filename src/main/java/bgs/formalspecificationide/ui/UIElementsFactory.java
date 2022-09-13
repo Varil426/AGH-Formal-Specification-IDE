@@ -30,7 +30,7 @@ class UIElementsFactory implements IUIElementFactory {
     @Override
     public Pair<AnchorPane, UseCaseController> CreateUseCase(UseCase useCase) {
         var pair = this.<AnchorPane, UseCaseController>loadFromFxmnl(useCaseSelectorControlsPath + "UseCase.fxml");
-        
+        pair.getValue().load(useCase);
         return pair;
     }
     

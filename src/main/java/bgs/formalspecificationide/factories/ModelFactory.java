@@ -97,7 +97,7 @@ public class ModelFactory implements IModelFactory {
         parent.addChild(useCase);
 
         var mainScenario = createScenario(useCase, UUID.randomUUID(), true);
-        useCase.addScenario(mainScenario);
+//        useCase.addScenario(mainScenario);
 
         registerInModelTracker(useCase);
         return useCase;
