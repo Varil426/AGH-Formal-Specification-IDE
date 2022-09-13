@@ -6,11 +6,13 @@ import bgs.formalspecificationide.model.Project;
 import bgs.formalspecificationide.model.ProjectName;
 import bgs.formalspecificationide.persistence.repositories.IProjectNameRepository;
 import bgs.formalspecificationide.persistence.repositories.IProjectRepository;
+import bgs.formalspecificationide.services.EventAggregatorService;
 import bgs.formalspecificationide.services.XmlParserService;
 import bgs.formalspecificationide.ui.editors.actionEditor.ActionEditorController;
 import bgs.formalspecificationide.ui.editors.imageViewer.ImageViewerController;
 import bgs.formalspecificationide.ui.editors.scenarioSelector.ScenarioSelectorEditorController;
 import bgs.formalspecificationide.ui.editors.useCaseSelector.UseCaseSelectorEditorController;
+import bgs.formalspecificationide.ui.events.ProjectLoadedEvent;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceDialog;
@@ -24,6 +26,7 @@ public class MainWindowController implements IController {
     private final IModelFactory modelFactory;
     private final IProjectRepository projectRepository;
     private final IProjectNameRepository projectNameRepository;
+    private final EventAggregatorService eventAggregatorService;
 
     private Project project;
     
@@ -40,18 +43,25 @@ public class MainWindowController implements IController {
     public ImageViewerController imageViewerController;
 
     @Inject
-    public MainWindowController(XmlParserService xmlParserService, IModelFactory modelFactory, IProjectRepository projectRepository, IProjectNameRepository projectNameRepository) {
+    public MainWindowController(XmlParserService xmlParserService,
+                                IModelFactory modelFactory,
+                                IProjectRepository projectRepository,
+                                IProjectNameRepository projectNameRepository,
+                                EventAggregatorService eventAggregatorService) {
 
         this.xmlParserService = xmlParserService;
         this.modelFactory = modelFactory;
         this.projectRepository = projectRepository;
         this.projectNameRepository = projectNameRepository;
+        this.eventAggregatorService = eventAggregatorService;
     }
 
     @Override
     public void load(ModelBase object) {
-        if (object instanceof Project project)
+        if (object instanceof Project project) {
             this.project = project;
+            eventAggregatorService.publish(new ProjectLoadedEvent(this, project));
+        }
         else 
             throw new UnsupportedOperationException();
     }
@@ -59,7 +69,7 @@ public class MainWindowController implements IController {
     @Override
     public void unload() {
         project = null;
-        // TODO
+        // TODO Publish new event - ProjectUnloaded
     }
     
     @FXML
@@ -71,22 +81,7 @@ public class MainWindowController implements IController {
     @FXML
     private void loadClicked() {
 
-        class ProjectNamePresenter {
-            public ProjectName getProjectName() {
-                return projectName;
-            }
 
-            final ProjectName projectName;
-            
-            public ProjectNamePresenter(ProjectName projectName) {
-                this.projectName = projectName;
-            }
-            
-            @Override
-            public String toString() {
-                return projectName.getProjectName();
-            }
-        }
         
         var projectChooserDialog = new ChoiceDialog<ProjectNamePresenter>();
         projectChooserDialog.getItems().addAll(projectNameRepository.getAll().stream().map(ProjectNamePresenter::new).toList());
@@ -98,7 +93,7 @@ public class MainWindowController implements IController {
         if (result == null)
             return;
         
-        var project = projectRepository.getById(result.getProjectName().getProjectId());
+        var project = projectRepository.getById(result.projectName().getProjectId());
 
         project.ifPresent(this::load);
     }
@@ -119,10 +114,16 @@ public class MainWindowController implements IController {
             return;
         
         var project = modelFactory.createProject(projectName);
-        load(project);
-        
         var useCaseDiagram = modelFactory.createUseCaseDiagram(project, UUID.randomUUID(), null);
-        
         xmlParserService.parseXml(useCaseDiagram, file);
+
+        load(project);
+    }
+
+    private record ProjectNamePresenter(ProjectName projectName) {
+        @Override
+        public String toString() {
+            return projectName.getProjectName();
+        }
     }
 }
