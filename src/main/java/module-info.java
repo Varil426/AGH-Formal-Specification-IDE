@@ -9,6 +9,14 @@ module bgs.formalspecificationide {
     requires com.fasterxml.jackson.annotation;
     requires com.fasterxml.jackson.databind;
     requires org.jetbrains.annotations;
+    requires io.github.eckig.grapheditor.api;
+    requires io.github.eckig.grapheditor.core;
+    requires org.eclipse.emf.edit;
+    requires org.eclipse.emf.ecore.xmi;
+    requires org.eclipse.core.resources;
+    requires org.eclipse.equinox.common;
+    requires jface;
+    requires json.simple;
 
     opens bgs.formalspecificationide.services to com.google.guice;
     opens bgs.formalspecificationide.persistence to com.google.guice;
@@ -16,6 +24,9 @@ module bgs.formalspecificationide {
     opens bgs.formalspecificationide.factories to com.google.guice;
     opens bgs.formalspecificationide.model to com.fasterxml.jackson.databind;
     opens bgs.formalspecificationide to com.google.guice, javafx.fxml;
+    opens bgs.formalspecificationide.ActivityDiagram to com.google.guice, javafx.fxml, javafx.graphics;
+    opens bgs.formalspecificationide.ResultsEditor to com.google.guice, javafx.fxml, javafx.graphics;
+    opens bgs.formalspecificationide.ActivityDiagram.ownImpl to com.google.guice, javafx.fxml, javafx.graphics;
 
     opens bgs.formalspecificationide.ui to javafx.fxml, com.google.guice;
     opens bgs.formalspecificationide.ui.editors.useCaseSelector to javafx.fxml, com.google.guice;
