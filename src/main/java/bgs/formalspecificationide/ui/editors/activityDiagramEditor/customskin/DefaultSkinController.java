@@ -1,8 +1,8 @@
-package bgs.formalspecificationide.ActivityDiagram.customskin;
+package bgs.formalspecificationide.ui.editors.activityDiagramEditor.customskin;
 
-import bgs.formalspecificationide.ActivityDiagram.managers.*;
-import bgs.formalspecificationide.ActivityDiagram.ownImpl.*;
-import bgs.formalspecificationide.ActivityDiagram.selections.*;
+import bgs.formalspecificationide.ui.editors.activityDiagramEditor.managers.*;
+import bgs.formalspecificationide.ui.editors.activityDiagramEditor.ownImpl.*;
+import bgs.formalspecificationide.ui.editors.activityDiagramEditor.selections.*;
 import io.github.eckig.grapheditor.*;
 import io.github.eckig.grapheditor.core.connectors.*;
 import io.github.eckig.grapheditor.core.view.*;

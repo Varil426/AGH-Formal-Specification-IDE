@@ -1,6 +1,6 @@
-package bgs.formalspecificationide.ActivityDiagram.customskin;
+package bgs.formalspecificationide.ui.editors.activityDiagramEditor.customskin;
 
-import bgs.formalspecificationide.ActivityDiagram.selections.*;
+import bgs.formalspecificationide.ui.editors.activityDiagramEditor.selections.*;
 import javafx.geometry.*;
 
 /**

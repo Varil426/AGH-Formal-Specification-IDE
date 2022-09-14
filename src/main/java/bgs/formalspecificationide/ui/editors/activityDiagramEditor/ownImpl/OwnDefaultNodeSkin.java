@@ -1,6 +1,6 @@
-package bgs.formalspecificationide.ActivityDiagram.ownImpl;
+package bgs.formalspecificationide.ui.editors.activityDiagramEditor.ownImpl;
 
-import bgs.formalspecificationide.ActivityDiagram.managers.*;
+import bgs.formalspecificationide.ui.editors.activityDiagramEditor.managers.*;
 import io.github.eckig.grapheditor.*;
 import io.github.eckig.grapheditor.core.connectors.*;
 import io.github.eckig.grapheditor.model.*;

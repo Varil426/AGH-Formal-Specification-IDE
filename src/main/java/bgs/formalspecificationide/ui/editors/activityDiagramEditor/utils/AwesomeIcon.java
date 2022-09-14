@@ -1,4 +1,4 @@
-package bgs.formalspecificationide.ActivityDiagram.utils;
+package bgs.formalspecificationide.ui.editors.activityDiagramEditor.utils;
 
 import javafx.scene.*;
 import javafx.scene.text.*;

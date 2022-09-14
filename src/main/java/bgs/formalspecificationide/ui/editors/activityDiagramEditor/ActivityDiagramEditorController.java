@@ -1,30 +1,41 @@
-package bgs.formalspecificationide.ActivityDiagram;
+package bgs.formalspecificationide.ui.editors.activityDiagramEditor;
 
-import bgs.formalspecificationide.ActivityDiagram.customskin.*;
-import bgs.formalspecificationide.ActivityDiagram.managers.*;
-import bgs.formalspecificationide.ActivityDiagram.ownImpl.*;
-import bgs.formalspecificationide.ActivityDiagram.selections.*;
-import bgs.formalspecificationide.ActivityDiagram.utils.*;
-import io.github.eckig.grapheditor.*;
-import io.github.eckig.grapheditor.core.skins.defaults.connection.*;
-import io.github.eckig.grapheditor.core.view.*;
-import io.github.eckig.grapheditor.model.*;
-import javafx.application.*;
-import javafx.beans.property.*;
-import javafx.collections.*;
-import javafx.event.*;
-import javafx.fxml.*;
-import javafx.geometry.*;
-import javafx.scene.*;
+
+
+import bgs.formalspecificationide.ui.editors.activityDiagramEditor.customskin.DefaultSkinController;
+import bgs.formalspecificationide.ui.editors.activityDiagramEditor.managers.NodesManager;
+import bgs.formalspecificationide.ui.editors.activityDiagramEditor.ownImpl.OwnDefaultGraphEditor;
+import bgs.formalspecificationide.ui.editors.activityDiagramEditor.resultsEditor.ResultsEditorController;
+import bgs.formalspecificationide.ui.editors.activityDiagramEditor.selections.SelectionCopier;
+import bgs.formalspecificationide.ui.editors.activityDiagramEditor.utils.AwesomeIcon;
+import io.github.eckig.grapheditor.Commands;
+import io.github.eckig.grapheditor.EditorElement;
+import io.github.eckig.grapheditor.GraphEditor;
+import io.github.eckig.grapheditor.core.skins.defaults.connection.SimpleConnectionSkin;
+import io.github.eckig.grapheditor.core.view.GraphEditorContainer;
+import io.github.eckig.grapheditor.model.GModel;
+import io.github.eckig.grapheditor.model.GraphFactory;
+import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.SetChangeListener;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.text.*;
-import javafx.stage.*;
-import org.eclipse.emf.ecore.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+import org.eclipse.emf.ecore.EObject;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Controller for the {@link ActivityDiagramEditor} application.
@@ -119,11 +130,11 @@ public class ActivityDiagramEditorController {
 
         generateSpecification.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                final URL location = getClass().getClassLoader().getResource("ResultsEditor.fxml");
-                final FXMLLoader loader = new FXMLLoader();
+//                final URL location = getClass().getClassLoader().getResource("ResultsEditor.fxml");
+                final FXMLLoader loader = new FXMLLoader(ResultsEditorController.class.getResource("ResultsEditor.fxml"));
                 Parent root = null;
                 try {
-                    root = loader.load(location.openStream());
+                    root = loader.load();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

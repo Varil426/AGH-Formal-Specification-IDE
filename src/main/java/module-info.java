@@ -24,9 +24,12 @@ module bgs.formalspecificationide {
     opens bgs.formalspecificationide.factories to com.google.guice;
     opens bgs.formalspecificationide.model to com.fasterxml.jackson.databind;
     opens bgs.formalspecificationide to com.google.guice, javafx.fxml;
-    opens bgs.formalspecificationide.ActivityDiagram to com.google.guice, javafx.fxml, javafx.graphics;
-    opens bgs.formalspecificationide.ResultsEditor to com.google.guice, javafx.fxml, javafx.graphics;
-    opens bgs.formalspecificationide.ActivityDiagram.ownImpl to com.google.guice, javafx.fxml, javafx.graphics;
+    opens bgs.formalspecificationide.ui.editors.activityDiagramEditor to com.google.guice, javafx.fxml, javafx.graphics;
+    opens bgs.formalspecificationide.ui.editors.activityDiagramEditor.resultsEditor to com.google.guice, javafx.fxml, javafx.graphics;
+    opens bgs.formalspecificationide.ui.editors.activityDiagramEditor.ownImpl to com.google.guice, javafx.fxml, javafx.graphics;
+    opens bgs.formalspecificationide.ui.editors.activityDiagramEditor.customskin to com.google.guice, javafx.fxml, javafx.graphics;
+    opens bgs.formalspecificationide.ui.editors.activityDiagramEditor.managers to com.google.guice, javafx.fxml, javafx.graphics;
+    opens bgs.formalspecificationide.ui.editors.activityDiagramEditor.utils to com.google.guice, javafx.fxml, javafx.graphics;
 
     opens bgs.formalspecificationide.ui to javafx.fxml, com.google.guice;
     opens bgs.formalspecificationide.ui.editors.useCaseSelector to javafx.fxml, com.google.guice;

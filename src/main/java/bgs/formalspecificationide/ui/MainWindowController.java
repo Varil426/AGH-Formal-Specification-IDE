@@ -9,16 +9,24 @@ import bgs.formalspecificationide.persistence.repositories.IProjectRepository;
 import bgs.formalspecificationide.services.EventAggregatorService;
 import bgs.formalspecificationide.services.XmlParserService;
 import bgs.formalspecificationide.ui.editors.actionEditor.ActionEditorController;
+import bgs.formalspecificationide.ui.editors.activityDiagramEditor.ActivityDiagramEditorController;
 import bgs.formalspecificationide.ui.editors.imageViewer.ImageViewerController;
 import bgs.formalspecificationide.ui.editors.scenarioSelector.ScenarioSelectorEditorController;
 import bgs.formalspecificationide.ui.editors.useCaseSelector.UseCaseSelectorEditorController;
 import bgs.formalspecificationide.ui.events.ProjectLoadedEvent;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.UUID;
 
 public class MainWindowController implements IController {
@@ -118,6 +126,32 @@ public class MainWindowController implements IController {
         xmlParserService.parseXml(useCaseDiagram, file);
 
         load(project);
+    }
+    
+    @FXML
+    private void startActivityDiagramClicked() {
+        var stage = new Stage();
+//        final var location = getClass().getClassLoader().getResource("bgs/formalspecificationide/ui/editors/activityDiagramEditor/ActivityDiagramEditor.fxml");
+        final var loader = new FXMLLoader(ActivityDiagramEditorController.class.getResource("ActivityDiagramEditor.fxml"));
+        final Parent root;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        final Scene scene = new Scene(root, 830, 630);
+
+        scene.getStylesheets().add(ActivityDiagramEditorController.class.getResource("demo.css").toExternalForm());
+        Font.loadFont(ActivityDiagramEditorController.class.getResource("fontawesome.ttf").toExternalForm(), 12);
+
+        stage.setScene(scene);
+        stage.setTitle("Results");
+
+        stage.show();
+
+        final ActivityDiagramEditorController controller = loader.getController();
+        controller.panToCenter();
     }
 
     private record ProjectNamePresenter(ProjectName projectName) {

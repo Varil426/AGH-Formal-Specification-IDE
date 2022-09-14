@@ -1,4 +1,4 @@
-package bgs.formalspecificationide.ActivityDiagram;
+package bgs.formalspecificationide.ui.editors.activityDiagramEditor;
 
 import io.github.eckig.grapheditor.*;
 import javafx.application.*;
@@ -15,8 +15,8 @@ import java.net.*;
 public class ActivityDiagramEditor extends Application {
 
     private static final String APPLICATION_TITLE = "Workflow Diagram";
-    private static final String DEMO_STYLESHEET = "demo.css";
-    private static final String FONT_AWESOME = "fontawesome.ttf";
+    private static final String DEMO_STYLESHEET = "bgs/formalspecificationide/ui/editors/activityDiagramEditor/demo.css";
+    private static final String FONT_AWESOME = "bgs/formalspecificationide/ui/editors/activityDiagramEditor/fontawesome.ttf";
 
     public static void main(final String[] args) {
         launch(args);
@@ -25,7 +25,7 @@ public class ActivityDiagramEditor extends Application {
     @Override
     public void start(final Stage stage) throws Exception {
 
-        final URL location = getClass().getClassLoader().getResource("ActivityDiagramEditor.fxml");
+        final URL location = getClass().getClassLoader().getResource("bgs/formalspecificationide/ui/editors/activityDiagramEditor/ActivityDiagramEditor.fxml");
         final FXMLLoader loader = new FXMLLoader();
         final Parent root = loader.load(location.openStream());
 

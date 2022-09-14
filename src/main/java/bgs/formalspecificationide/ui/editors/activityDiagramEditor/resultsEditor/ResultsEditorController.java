@@ -1,4 +1,4 @@
-package bgs.formalspecificationide.ResultsEditor;
+package bgs.formalspecificationide.ui.editors.activityDiagramEditor.resultsEditor;
 
 import javafx.fxml.*;
 import javafx.scene.control.*;

@@ -1,4 +1,4 @@
-package bgs.formalspecificationide.ActivityDiagram.ownImpl;
+package bgs.formalspecificationide.ui.editors.activityDiagramEditor.ownImpl;
 
 import io.github.eckig.grapheditor.model.*;
 import org.eclipse.emf.common.notify.*;

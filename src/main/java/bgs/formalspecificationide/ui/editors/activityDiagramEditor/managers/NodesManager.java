@@ -1,4 +1,4 @@
-package bgs.formalspecificationide.ActivityDiagram.managers;
+package bgs.formalspecificationide.ui.editors.activityDiagramEditor.managers;
 
 
 public class NodesManager {
