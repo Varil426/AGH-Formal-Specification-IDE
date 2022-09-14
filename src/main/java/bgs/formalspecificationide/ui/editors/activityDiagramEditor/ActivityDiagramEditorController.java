@@ -140,8 +140,8 @@ public class ActivityDiagramEditorController {
                 }
 
                 final Scene scene = new Scene(root, 600, 800);
-                scene.getStylesheets().add(getClass().getClassLoader().getResource(DEMO_STYLESHEET).toExternalForm());
-                Font.loadFont(getClass().getClassLoader().getResource(FONT_AWESOME).toExternalForm(), 12);
+                scene.getStylesheets().add(ResultsEditorController.class.getResource(DEMO_STYLESHEET).toExternalForm());
+                Font.loadFont(ResultsEditorController.class.getResource(FONT_AWESOME).toExternalForm(), 12);
 
                 resultsStage.setScene(scene);
                 resultsStage.setTitle(APPLICATION_TITLE);
