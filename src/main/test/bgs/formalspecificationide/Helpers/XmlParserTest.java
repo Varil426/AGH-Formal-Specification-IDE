@@ -1,9 +1,9 @@
 package bgs.formalspecificationide.Helpers;
 
-import bgs.formalspecificationide.Factories.ModelFactory;
+import bgs.formalspecificationide.factories.ModelFactory;
 import bgs.formalspecificationide.MainModule;
-import bgs.formalspecificationide.Model.UseCase;
-import bgs.formalspecificationide.Services.XmlParserService;
+import bgs.formalspecificationide.model.UseCase;
+import bgs.formalspecificationide.services.XmlParserService;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.junit.jupiter.api.Test;
